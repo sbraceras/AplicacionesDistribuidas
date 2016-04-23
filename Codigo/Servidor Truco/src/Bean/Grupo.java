@@ -2,13 +2,27 @@ package Bean;
 
 import java.util.ArrayList;
 
+import javax.persistence.*;
+
 import DTO.RankingDTO;
 
+
+@Entity
+@Table (name = "Grupos")
 public class Grupo {
+	
+	@Id
+	@Column (name = "id_grupo", nullable = false)
 	private int id;
+	@Column
 	private String nombre;
+	@OneToMany (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_grupo")
 	private ArrayList<MiembroGrupo> miembros;
+	/* Las Parejas Activas no se persisten */
 	private ArrayList<Pareja> parejasActivas;
+	@OneToMany (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_grupo")
 	private ArrayList<Partido> partidos;
 	
 	

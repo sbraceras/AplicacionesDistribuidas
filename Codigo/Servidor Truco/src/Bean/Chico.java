@@ -2,15 +2,29 @@ package Bean;
 
 import java.util.ArrayList;
 
+import javax.persistence.*;
+
 import DTO.ChicoDTO;
 
 /**
  * Chico es la partida corta de 15 puntos
 **/
+
+
+@Entity
+@Table (name = "Chicos")
 public class Chico {
+	
+	@Id
+	@Column (name = "id_chico", nullable = false)
 	private int id;
+	@OneToMany (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_chico")
 	private ArrayList<Mano> manos;
+	@OneToMany (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_chico")
 	private ArrayList<PuntajePareja> puntajes;
+	@Column (name = "puntaje_maximo")
 	private int puntajeMaximo;
 	
 	

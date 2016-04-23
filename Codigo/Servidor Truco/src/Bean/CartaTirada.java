@@ -1,5 +1,8 @@
 package Bean;
 
+////falta hacer persistencia
+
+
 public class CartaTirada extends Movimiento {
 	private Object cartaJugador;
 

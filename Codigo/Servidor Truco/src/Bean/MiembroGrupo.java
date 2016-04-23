@@ -1,30 +1,44 @@
 package Bean;
 
+import javax.persistence.*;
 import DTO.JugadorDTO;
 import DTO.RankingDTO;
 
 /**
  * Intermediario entre el grupo y el miembro
 **/
+
+@Entity
+@Table (name = "Miembros_Grupo")
 public class MiembroGrupo {
+	@Id
+	@Column (name = "id_miembro", nullable = false)
 	private int id;
-	private int idGrupo;
+	@ManyToOne (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_jugador")
 	private Jugador jugador;
+	@OneToOne (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_ranking")
 	private Ranking ranking;
+	@Column (columnDefinition = "bit")
 	private boolean activo;
-	public boolean tenesMiembro(JugadorDTO jugador) {
-		return false;
-	}
+	
+	
+	
 	
 	public MiembroGrupo() {
 	}
 
-	public MiembroGrupo(int id, int idGrupo, Jugador jugador, Ranking ranking, boolean activo) {
+		
+	public MiembroGrupo(int id, Jugador jugador, Ranking ranking, boolean activo) {
 		this.id = id;
-		this.idGrupo = idGrupo;
 		this.jugador = jugador;
 		this.ranking = ranking;
 		this.activo = activo;
+	}
+	
+	public boolean tenesMiembro(JugadorDTO jugador) {
+		return false;
 	}
 
 	public RankingDTO obtenerRanking() {
@@ -39,14 +53,7 @@ public class MiembroGrupo {
 		this.id = id;
 	}
 
-	public int getIdGrupo() {
-		return idGrupo;
-	}
-
-	public void setIdGrupo(int idGrupo) {
-		this.idGrupo = idGrupo;
-	}
-
+	
 	public Jugador getJugador() {
 		return jugador;
 	}

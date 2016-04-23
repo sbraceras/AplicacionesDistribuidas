@@ -2,6 +2,7 @@ package Bean;
 
 import java.util.ArrayList;
 
+/*No se persiste el mazo */
 public class Mazo {
 	private int id;
 	private ArrayList<Carta> cartas;

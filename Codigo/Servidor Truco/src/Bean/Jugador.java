@@ -2,17 +2,34 @@ package Bean;
 
 import java.util.ArrayList;
 
+import javax.persistence.*;
+
 import DTO.GrupoDTO;
 import DTO.JugadorDTO;
 import DTO.RankingDTO;
 
+@Entity
+@Table (name = "Jugadores")
 public class Jugador {
+	
+	@Id
+	@Column (name = "id_jugador", nullable = false)
 	private int id;
+	@Column
 	private String apodo;
+	@OneToOne (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_jugador")
 	private Ranking ranking;
+	@Column (columnDefinition = "varchar(50)")
 	private String mail;
+	@Column (name = "clave", columnDefinition = "varchar(50)")
 	private String password;
-	private TipoCategoria categoria;  ///ver como hacer enumeration
+	@Column (columnDefinition = "tinyint")
+	private TipoCategoria categoria;
+	@ManyToMany (cascade = CascadeType.ALL)
+	@JoinTable (name = "Grupo_Jugador",
+	joinColumns = {@JoinColumn (name = "id_jugador")},
+	inverseJoinColumns = {@JoinColumn (name = "id_grupo")})	
 	private ArrayList<Grupo> grupos;
 	
 	

@@ -3,6 +3,8 @@ package Bean;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import javax.persistence.*;
+
 import DTO.ManoDTO;
 
 /**
@@ -10,12 +12,24 @@ import DTO.ManoDTO;
  * 
  * Identifica quien es el que comienza la mano
 **/
+
+@Entity
+@Table (name = "Manos")
 public class Mano {
+	@Id
+	@Column (name = "id_mano", nullable = false)
 	private int id;
+	@Column (name = "id_mano")
 	private int numeroMano;
+	@OneToMany (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_mano")
 	private ArrayList<Baza> bazas;
+	@OneToMany (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_mano")
 	private ArrayList<CartaJugador> cartasJugador;
+	/*No se persiste el envite Actual */
 	private Envite enviteActual;
+	/*No se persiste el mazo */
 	private Mazo mazo;
 	
 	

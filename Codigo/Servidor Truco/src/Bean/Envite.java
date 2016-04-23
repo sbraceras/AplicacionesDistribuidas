@@ -1,7 +1,10 @@
 package Bean;
 
+//falta lo de persistencia
+
 public class Envite extends Movimiento {
-	private TipoEnvite tipoEnvite; ///////VER COMO CODIFICAR ENUMERATION
+
+	private TipoEnvite tipoEnvite; 
 
 	public TipoEnvite getTipoEnvite() {
 		return tipoEnvite;
