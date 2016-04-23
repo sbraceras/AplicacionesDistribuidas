@@ -1,15 +1,24 @@
 package Controlador;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import Bean.*;
+import DTO.*;
+
 /**
  * Es el controlador del negocio
 **/
 public class ServicioCentral {
 	private static ServicioCentral instancia;
-	private Collection<Jugador> jugadores;
-	private Collection<Partido> partidos;
-	private Collection<Grupo> grupos;
-	private Collection<Jugador> sesiones;
-	private Collection<Jugador> esperandoLibreInvidividual;
-	private Collection<Parejas> esperandoLibreParejas;
+	private ArrayList<Jugador> jugadores;
+	private ArrayList<Partido> partidos;
+	private ArrayList<Grupo> grupos;
+	private ArrayList<Jugador> sesiones;
+	private ArrayList<Jugador> esperandoLibreInvidividual;
+	private ArrayList<Pareja> esperandoLibreParejas;
+	
+	
 	public static ServicioCentral getInstance() {
 	
 	}
@@ -19,10 +28,13 @@ public class ServicioCentral {
 	}
 	
 	private Jugador obtenerJugador(JugadorDTO jugador) {
-	
+		
+		return null;	
 	}
 	
 	public boolean existeGrupo(String nombre) {
+		
+		return false;
 	
 	}
 	
@@ -30,36 +42,43 @@ public class ServicioCentral {
 	
 	}
 	
-	public void agregarJugadorGrupo(Collection<JugadorDTO> jugadores, String grupo, JugadorDTO administrador) {
+	public void agregarJugadorGrupo(ArrayList<JugadorDTO> jugadores, String grupo, JugadorDTO administrador) {
 	
 	}
 	
-	public void armarParejaGrupo(Collection<JugadorDTO> integrantes, String grupo, JugadorDTO administrador) {
+	public void armarParejaGrupo(ArrayList<JugadorDTO> integrantes, String grupo, JugadorDTO administrador) {
 	
 	}
 	
-	public void crearPartidaGrupo(Collection<ParejaDTO> parejas, String grupo, JugadorDTO administrador) {
+	public void crearPartidaGrupo(ArrayList<ParejaDTO> parejas, String grupo, JugadorDTO administrador) {
 	
 	}
 	
+	/*
+	// que onda esto?
 	public OpcionesDisponiblesDTO iniciarSesion(JugadorDTO jugador) {
 	
-	}
+		
+	}*/
 	
 	public void jugarLibreIndividual(JugadorDTO jugador) {
 	
 	}
 	
-	private Collection<Pareja> armarParejasInvididual(TipoCategoria categoria) {
+	private ArrayList<Pareja> armarParejasInvididual(TipoCategoria categoria) {
 	
+		return null;
 	}
 	
-	private Partido armarPartido(Collection<Pareja> parejas, String tipoPartido) {
+	private Partido armarPartido(ArrayList<Pareja> parejas, String tipoPartido) {
+		
+		return null;
 	
 	}
 	
 	private Pareja obtenerParejaEnemiga(TipoCategoria categoria) {
 	
+		return null;
 	}
 	
 	public void jugarLibreParejas(ParejaDTO pareja) {
@@ -78,35 +97,43 @@ public class ServicioCentral {
 	
 	}
 	
-	public Collection<JugadorDTO> obtenerJugadores() {
+	public ArrayList<JugadorDTO> obtenerJugadores() {
 	
+		return null;
 	}
 	
-	public Collection<PartidoDTO> obtenerPartidos(timeStamp fechaDesde, timeStamp fechaHasta, TipoPartido modalidad, JugadorDTO jugador) {
+	public ArrayList<PartidoDTO> obtenerPartidos(Timestamp fechaDesde, Timestamp fechaHasta, TipoPartido modalidad, JugadorDTO jugador) {
 	
+		return null;
 	}
 	
 	public PartidoDTO obtenerPartidoJugado(PartidoDTO partido) {
 	
+		return null;
 	}
 	
-	public ChicoDTO obtenerChicoDTO(partidoDTO partido, int chico) {
+	public ChicoDTO obtenerChicoDTO(PartidoDTO partido, int chico) {
 	
+		return null;
 	}
 	
-	public Collection<RankingDTO> obtenerRankingGeneral(JugadorDTO jugador) {
+	public ArrayList<RankingDTO> obtenerRankingGeneral(JugadorDTO jugador) {
 	
+			return null;
 	}
 	
-	public Collection<RankingDTO> obtenerRankingGrupo(GrupoDTO grupo, JugadorDTO jugador) {
+	public ArrayList<RankingDTO> obtenerRankingGrupo(GrupoDTO grupo, JugadorDTO jugador) {
 	
+		return null;
 	}
 	
-	public Pareja armarPareja(Collection<Jugador jugadores) {
+	public Pareja armarPareja(ArrayList<Jugador> jugadores) {
 	
+			return null;
 	}
 	
 	public Grupo obtenerGrupo(String nombre) {
 	
+			return null;
 	}
 }
