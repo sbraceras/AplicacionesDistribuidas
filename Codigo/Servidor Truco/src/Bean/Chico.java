@@ -1,6 +1,7 @@
 package Bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -20,10 +21,10 @@ public class Chico {
 	private int id;
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_chico")
-	private ArrayList<Mano> manos;
+	private List<Mano> manos;
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_chico")
-	private ArrayList<PuntajePareja> puntajes;
+	private List<PuntajePareja> puntajes;
 	@Column (name = "puntaje_maximo")
 	private int puntajeMaximo;
 	
@@ -31,10 +32,10 @@ public class Chico {
 	public Chico() {
 	}
 
-	public Chico(int id, ArrayList<Mano> manos, ArrayList<PuntajePareja> puntajes, int puntajeMaximo) {
+	public Chico(int id, int puntajeMaximo) {
 		this.id = id;
-		this.manos = manos;
-		this.puntajes = puntajes;
+		this.manos = new ArrayList<Mano>();
+		this.puntajes = new ArrayList<PuntajePareja>();
 		this.puntajeMaximo = puntajeMaximo;
 	}
 
@@ -46,7 +47,7 @@ public class Chico {
 		this.id = id;
 	}
 
-	public ArrayList<Mano> getManos() {
+	public List<Mano> getManos() {
 		return manos;
 	}
 
@@ -54,7 +55,7 @@ public class Chico {
 		this.manos = manos;
 	}
 
-	public ArrayList<PuntajePareja> getPuntajes() {
+	public List<PuntajePareja> getPuntajes() {
 		return puntajes;
 	}
 

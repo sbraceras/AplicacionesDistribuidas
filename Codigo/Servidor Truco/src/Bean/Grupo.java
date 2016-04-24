@@ -1,6 +1,7 @@
 package Bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -18,24 +19,30 @@ public class Grupo {
 	private String nombre;
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_grupo")
-	private ArrayList<MiembroGrupo> miembros;
+	private List<MiembroGrupo> miembros;
+	
+	
 	/* Las Parejas Activas no se persisten */
-	private ArrayList<Pareja> parejasActivas;
+	@Transient
+	private List<Pareja> parejasActivas;
+	
+	
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_grupo")
-	private ArrayList<Partido> partidos;
+	private List<Partido> partidos;
 	
 	
 	public Grupo() {
+		
+		parejasActivas = new ArrayList<Pareja>();
 	}
 
-	public Grupo(int id, String nombre, ArrayList<MiembroGrupo> miembros, ArrayList<Pareja> parejasActivas,
-			ArrayList<Partido> partidos) {
+	public Grupo(int id, String nombre) {
 		this.id = id;
 		this.nombre = nombre;
-		this.miembros = miembros;
-		this.parejasActivas = parejasActivas;
-		this.partidos = partidos;
+		this.miembros = new ArrayList<MiembroGrupo>();
+		this.parejasActivas = new ArrayList<Pareja>();
+		this.partidos = new ArrayList<Partido>();
 	}
 
 	public int getId() {
@@ -54,7 +61,7 @@ public class Grupo {
 		this.nombre = nombre;
 	}
 
-	public ArrayList<MiembroGrupo> getMiembros() {
+	public List<MiembroGrupo> getMiembros() {
 		return miembros;
 	}
 
@@ -62,7 +69,7 @@ public class Grupo {
 		this.miembros = miembros;
 	}
 
-	public ArrayList<Pareja> getParejasActivas() {
+	public List<Pareja> getParejasActivas() {
 		return parejasActivas;
 	}
 
@@ -70,7 +77,7 @@ public class Grupo {
 		this.parejasActivas = parejasActivas;
 	}
 
-	public ArrayList<Partido> getPartidos() {
+	public List<Partido> getPartidos() {
 		return partidos;
 	}
 

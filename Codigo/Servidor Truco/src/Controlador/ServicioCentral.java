@@ -17,10 +17,26 @@ public class ServicioCentral {
 	private ArrayList<Jugador> sesiones;
 	private ArrayList<Jugador> esperandoLibreInvidividual;
 	private ArrayList<Pareja> esperandoLibreParejas;
+	private static ServicioCentral controlador;
 	
 	
+	
+	public ServicioCentral() {
+		this.jugadores = new ArrayList<Jugador>();
+		this.partidos = new ArrayList<Partido>();
+		this.grupos = new ArrayList<Grupo>();
+		this.sesiones = new ArrayList<Jugador>();
+		this.esperandoLibreInvidividual = new ArrayList<Jugador>();
+		this.esperandoLibreParejas = new ArrayList<Pareja>();
+	}
+
 	public static ServicioCentral getInstance() {
-	
+		
+		if(controlador==null)
+		{
+			controlador = new ServicioCentral();
+		}
+		return controlador;
 	}
 	
 	public void registrarJugador(JugadorDTO jugador) {

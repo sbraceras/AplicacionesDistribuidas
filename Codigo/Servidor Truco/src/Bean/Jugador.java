@@ -1,6 +1,7 @@
 package Bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -30,22 +31,21 @@ public class Jugador {
 	@JoinTable (name = "Grupo_Jugador",
 	joinColumns = {@JoinColumn (name = "id_jugador")},
 	inverseJoinColumns = {@JoinColumn (name = "id_grupo")})	
-	private ArrayList<Grupo> grupos;
+	private List<Grupo> grupos;
 	
 	
 	
 	public Jugador() {
 	}
 
-	public Jugador(int id, String apodo, Ranking ranking, String mail, String password, TipoCategoria categoria,
-			ArrayList<Grupo> grupos) {
+	public Jugador(int id, String apodo, Ranking ranking, String mail, String password, TipoCategoria categoria) {
 		this.id = id;
 		this.apodo = apodo;
 		this.ranking = ranking;
 		this.mail = mail;
 		this.password = password;
 		this.categoria = categoria;
-		this.grupos = grupos;
+		this.grupos = new ArrayList<Grupo>();
 	}
 
 	public int getId() {
@@ -96,7 +96,7 @@ public class Jugador {
 		this.categoria = categoria;
 	}
 
-	public ArrayList<Grupo> getGrupos() {
+	public List<Grupo> getGrupos() {
 		return grupos;
 	}
 
@@ -105,15 +105,15 @@ public class Jugador {
 	}
 
 	public boolean sosJugador(JugadorDTO jugador) {
-	
+		return false;
 	}
 	
 	public boolean contraseñaCorrecta(String contraseña) {
-	
+		return false;
 	}
 	
 	public TipoCategoria cambiarCategoria() { ////////VER ENUMERATION
-	
+		return null;
 	}
 	
 	public void actualizarRanking(int puntos, Partido partido) {
@@ -125,6 +125,6 @@ public class Jugador {
 	}
 	
 	public RankingDTO obtenerRanking() {
-	
+		return null;
 	}
 }

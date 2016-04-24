@@ -1,6 +1,7 @@
 package Bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -20,16 +21,32 @@ public class Baza {
 	
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_baza")
-	private ArrayList<Movimiento> turnosBaza;
+	private List<Movimiento> turnosBaza;
+	
 	@Column (name = "nro_baza")
 	private int numeroBaza;
-	@ManyToOne (cascade = CascadeType.ALL)
+	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_jugador")
 	private Jugador ganador;
+	
 	/* No se persiste el orden de juego */
 	private ArrayList<Jugador> ordenJuego;
+	
+	
+	public Baza(int id, int numeroBaza) {
+		this.id = id;
+		this.turnosBaza = new ArrayList<Movimiento>();
+		this.numeroBaza = numeroBaza;
+		this.ordenJuego = new ArrayList<Jugador>();
+	}
+
+	public Baza() {
+	}
+	
+	
+	
 	public Jugador obtenerGanador() {
-		return null;///////////
+		return null;
 	}
 	
 	public BazaDTO toDTO() {
@@ -44,7 +61,7 @@ public class Baza {
 		this.id = id;
 	}
 
-	public ArrayList<Movimiento> getTurnosBaza() {
+	public List<Movimiento> getTurnosBaza() {
 		return turnosBaza;
 	}
 
@@ -76,17 +93,7 @@ public class Baza {
 		this.ordenJuego = ordenJuego;
 	}
 
-	public Baza(int id, ArrayList<Movimiento> turnosBaza, int numeroBaza, Jugador ganador,
-			ArrayList<Jugador> ordenJuego) {
-		this.id = id;
-		this.turnosBaza = turnosBaza;
-		this.numeroBaza = numeroBaza;
-		this.ganador = ganador;
-		this.ordenJuego = ordenJuego;
-	}
 
-	public Baza() {
-	}
 	
 	
 }

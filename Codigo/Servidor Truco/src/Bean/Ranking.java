@@ -1,22 +1,36 @@
 package Bean;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.*;
 
 import DTO.RankingDTO;
 
+
+@Entity
+@Table (name = "Rankings")
 public class Ranking {
+	@Id
+	@Column (name = "id_ranking")
 	private int id;
-	private ArrayList<Partido> partidos;
+	@ManyToMany (cascade = CascadeType.ALL)
+	@JoinTable (name = "Ranking_Partido", 
+	joinColumns ={@JoinColumn (name = "id_partido")},
+	inverseJoinColumns = {@JoinColumn (name = "id_ranking")})
+	private List<Partido> partidos;
+	@Column
 	private int puntos;
+	@Column (name = "cant_ganadas")
 	private int cantidadGanadas;
 	
 	
 	public Ranking() {
 	}
 
-	public Ranking(int id, ArrayList<Partido> partidos, int puntos, int cantidadGanadas) {
+	public Ranking(int id, int puntos, int cantidadGanadas) {
 		this.id = id;
-		this.partidos = partidos;
+		this.partidos = new ArrayList<Partido>();
 		this.puntos = puntos;
 		this.cantidadGanadas = cantidadGanadas;
 	}
@@ -29,7 +43,7 @@ public class Ranking {
 		this.id = id;
 	}
 
-	public ArrayList<Partido> getPartidos() {
+	public List<Partido> getPartidos() {
 		return partidos;
 	}
 

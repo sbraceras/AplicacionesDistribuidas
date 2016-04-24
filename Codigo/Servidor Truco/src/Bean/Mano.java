@@ -2,6 +2,7 @@ package Bean;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -19,17 +20,17 @@ public class Mano {
 	@Id
 	@Column (name = "id_mano", nullable = false)
 	private int id;
-	@Column (name = "id_mano")
+	@Column (name = "nro_mano")
 	private int numeroMano;
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_mano")
-	private ArrayList<Baza> bazas;
+	private List<Baza> bazas;
 	@OneToMany (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_mano")
-	private ArrayList<CartaJugador> cartasJugador;
-	/*No se persiste el envite Actual */
+	private List<CartaJugador> cartasJugador;
+	@Transient
 	private Envite enviteActual;
-	/*No se persiste el mazo */
+	@Transient
 	private Mazo mazo;
 	
 	
@@ -37,14 +38,13 @@ public class Mano {
 	public Mano() {
 	}
 
-	public Mano(int id, int numeroMano, ArrayList<Baza> bazas, ArrayList<CartaJugador> cartasJugador,
-			Envite enviteActual, Mazo mazo) {
+	public Mano(int id, int numeroMano) {
 		this.id = id;
 		this.numeroMano = numeroMano;
-		this.bazas = bazas;
-		this.cartasJugador = cartasJugador;
-		this.enviteActual = enviteActual;
-		this.mazo = mazo;
+		this.bazas = new ArrayList<Baza>();
+		this.cartasJugador = new ArrayList<CartaJugador>();
+		this.enviteActual = null;
+		this.mazo = new Mazo();
 	}
 
 	public int getId() {
@@ -63,7 +63,7 @@ public class Mano {
 		this.numeroMano = numeroMano;
 	}
 
-	public ArrayList<Baza> getBazas() {
+	public List<Baza> getBazas() {
 		return bazas;
 	}
 
@@ -71,7 +71,7 @@ public class Mano {
 		this.bazas = bazas;
 	}
 
-	public ArrayList<CartaJugador> getCartasJugador() {
+	public List<CartaJugador> getCartasJugador() {
 		return cartasJugador;
 	}
 

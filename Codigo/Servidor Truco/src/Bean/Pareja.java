@@ -1,13 +1,26 @@
 package Bean;
 
+import javax.persistence.*;
+
 /**
  * Si no tiene asignado un numero pareja no esta en un partido
 **/
+
+@Entity
+@Table (name = "Parejas")
 public class Pareja {
+	@Id
+	@Column (name = "id_pareja", nullable = false)
 	private int id;
+	@ManyToOne (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_jugador1")
 	private Jugador jugador1;
+	@ManyToOne (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_jugador2")
 	private Jugador jugador2;
+	@Column (name = "nro_Pareja")
 	private int numeroPareja;
+	
 	public TipoCategoria obtenerCategoriaSuperior() { //ver como hacer enumeration
 	
 		return null;

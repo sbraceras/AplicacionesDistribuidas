@@ -2,12 +2,25 @@ package Bean;
 
 import java.sql.Timestamp;
 
+import javax.persistence.*;
+
 import DTO.MovimientoDTO;
 
+@MappedSuperclass
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn( name="tipo",discriminatorType=DiscriminatorType.STRING)
+@Entity
 public class Movimiento {
+	
+	@Id
+	@Column (name = "id_movimiento", nullable = false)
 	protected int id;
+	@Column (name = "nro_turno")
 	protected int numeroTurno;
+	@Column (name = "fecha_hora")
 	protected Timestamp fechaHora;
+	
+	
 	protected MovimientoDTO toDTO() {
 		return null;
 	}

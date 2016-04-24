@@ -1,9 +1,11 @@
 package Bean;
 
-////falta hacer persistencia
+import javax.persistence.*;
 
-
+@DiscriminatorValue("ct")
 public class CartaTirada extends Movimiento {
+	@OneToOne (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_cartaJugador")
 	private Object cartaJugador;
 
 	public CartaTirada(Object cartaJugador) {

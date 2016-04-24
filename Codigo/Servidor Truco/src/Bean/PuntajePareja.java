@@ -1,8 +1,17 @@
 package Bean;
 
+import javax.persistence.*;
+
+@Entity
+@Table (name = "PuntajesPareja")
 public class PuntajePareja {
+	@Id
+	@Column (name = "id_puntaje", nullable = false)
 	private int id;
+	@OneToOne (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_pareja")
 	private Pareja pareja;
+	@Column
 	private int puntaje;
 	
 	

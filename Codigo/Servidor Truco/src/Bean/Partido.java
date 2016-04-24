@@ -3,6 +3,9 @@ package Bean;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.*;
 
 import DTO.PartidoDTO;
 
@@ -11,22 +14,39 @@ import DTO.PartidoDTO;
  * 
  * Va a ser el controladorDelJuego, es decir, quien va a jugar, que cosas se cantaron, conoce todo.
 **/
+
+@Entity
+@Table (name = "Partidos")
 public class Partido {
-	private ArrayList<Pareja> parejas;
+	@Id 
+	@Column (name = "id_partido", nullable = false)
+	private int id;
+	@OneToMany (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_partido")
+	private List<Pareja> parejas;
+	
+	@Column
 	private int parejaGanadora;
+	@Column (name = "fecha_inicio")
 	private Timestamp fechaInicio;
+	@Column (name = "fecha_fin")
 	private Timestamp fechaFin;
+	@Column (columnDefinition = "int")
 	private TipoPartido tipoPartido;
+	@Column (columnDefinition = "int")
 	private EstadoPartido estadoPartido;
+	@OneToMany (cascade = CascadeType.ALL)
+	@JoinColumn (name = "id_partido")
+	private List<Chico> chicos;
 	
 	
 	public Partido() {
 	}
 
-	public Partido(int idPartida, ArrayList<Chico> chicos, ArrayList<Pareja> parejas, int parejaGanadora,
+	public Partido(int idPartida, ArrayList<Pareja> parejas, int parejaGanadora,
 			Timestamp fechaInicio, Timestamp fechaFin, TipoPartido tipoPartido, EstadoPartido estadoPartido) {
-		this.idPartida = idPartida;
-		this.chicos = chicos;
+		this.id = idPartida;
+		this.chicos = new ArrayList<Chico>();
 		this.parejas = parejas;
 		this.parejaGanadora = parejaGanadora;
 		this.fechaInicio = fechaInicio;
@@ -34,18 +54,11 @@ public class Partido {
 		this.tipoPartido = tipoPartido;
 		this.estadoPartido = estadoPartido;
 	}
+	
+	
 
-	private int idPartida;
-	private ArrayList<Chico> chicos;
-	public int getIdPartida() {
-		return idPartida;
-	}
 
-	public void setIdPartida(int idPartida) {
-		this.idPartida = idPartida;
-	}
-
-	public ArrayList<Chico> getChicos() {
+	public List<Chico> getChicos() {
 		return chicos;
 	}
 
@@ -53,7 +66,7 @@ public class Partido {
 		this.chicos = chicos;
 	}
 
-	public ArrayList<Pareja> getParejas() {
+	public List<Pareja> getParejas() {
 		return parejas;
 	}
 
@@ -111,15 +124,15 @@ public class Partido {
 	}
 	
 	public boolean participoJugador(Jugador jugador) {
-	
+		return false;
 	}
 	
 	public Jugador calcularResultadoEnvido() {
-	
+		return null;
 	}
 	
 	public Chico obtenerChicoActivo() {
-	
+		return null;
 	}
 	
 	public void actualizarRankingJugadores() {

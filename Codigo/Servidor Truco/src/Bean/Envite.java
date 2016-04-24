@@ -1,9 +1,11 @@
 package Bean;
 
-//falta lo de persistencia
+import javax.persistence.*;
 
+@DiscriminatorValue("env")
 public class Envite extends Movimiento {
 
+	@Column (columnDefinition = "int")
 	private TipoEnvite tipoEnvite; 
 
 	public TipoEnvite getTipoEnvite() {
