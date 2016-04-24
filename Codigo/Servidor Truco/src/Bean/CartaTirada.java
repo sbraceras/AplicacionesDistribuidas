@@ -6,9 +6,9 @@ import javax.persistence.*;
 public class CartaTirada extends Movimiento {
 	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn (name = "id_cartaJugador")
-	private Object cartaJugador;
+	private CartaJugador cartaJugador;
 
-	public CartaTirada(Object cartaJugador) {
+	public CartaTirada(CartaJugador cartaJugador) {
 		this.cartaJugador = cartaJugador;
 	}
 
@@ -19,7 +19,7 @@ public class CartaTirada extends Movimiento {
 		return cartaJugador;
 	}
 
-	public void setCartaJugador(Object cartaJugador) {
+	public void setCartaJugador(CartaJugador cartaJugador) {
 		this.cartaJugador = cartaJugador;
 	}
 	

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import DTO.GrupoDTO;
 import DTO.JugadorDTO;
 import DTO.RankingDTO;
+import ENUMS.TipoCategoria;
 
 @Entity
 @Table (name = "Jugadores")

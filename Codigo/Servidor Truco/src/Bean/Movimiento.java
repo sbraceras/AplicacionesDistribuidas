@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.*;
 
-import DTO.MovimientoDTO;
+
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -21,9 +21,7 @@ public class Movimiento {
 	protected Timestamp fechaHora;
 	
 	
-	protected MovimientoDTO toDTO() {
-		return null;
-	}
+
 	public int getId() {
 		return id;
 	}

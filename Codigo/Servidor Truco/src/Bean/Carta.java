@@ -2,6 +2,8 @@ package Bean;
 
 import javax.persistence.*;
 
+import ENUMS.Palo;
+
 /**
  * El atributo posicionValor, que sirve para el caso de tirar una carta ya sea jugando normal o en truco. Ya que por ejemplo el ancho de espada va a tener posicion 1, y en el caso que haya valores iguales como por ejemplo el numero "3", se le asigna la misma posicion a la carta.
 **/

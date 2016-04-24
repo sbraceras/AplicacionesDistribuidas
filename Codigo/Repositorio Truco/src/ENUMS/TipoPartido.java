@@ -1,4 +1,4 @@
-package Bean;
+package ENUMS;
 
 public enum TipoPartido {
 

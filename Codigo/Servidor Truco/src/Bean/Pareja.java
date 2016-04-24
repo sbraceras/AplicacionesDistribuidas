@@ -2,6 +2,8 @@ package Bean;
 
 import javax.persistence.*;
 
+import ENUMS.TipoCategoria;
+
 /**
  * Si no tiene asignado un numero pareja no esta en un partido
 **/

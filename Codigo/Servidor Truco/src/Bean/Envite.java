@@ -2,6 +2,8 @@ package Bean;
 
 import javax.persistence.*;
 
+import ENUMS.TipoEnvite;
+
 @DiscriminatorValue("env")
 public class Envite extends Movimiento {
 

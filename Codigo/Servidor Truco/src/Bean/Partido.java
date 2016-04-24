@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.*;
 
 import DTO.PartidoDTO;
+import ENUMS.EstadoPartido;
+import ENUMS.TipoPartido;
 
 /**
  * Partido esta compuesto por varios chicos. 

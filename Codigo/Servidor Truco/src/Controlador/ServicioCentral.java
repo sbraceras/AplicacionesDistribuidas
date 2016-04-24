@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import Bean.*;
 import DTO.*;
+import ENUMS.TipoCategoria;
+import ENUMS.TipoPartido;
 
 /**
  * Es el controlador del negocio
