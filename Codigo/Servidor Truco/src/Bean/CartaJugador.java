@@ -2,6 +2,8 @@ package Bean;
 
 import javax.persistence.*;
 
+import DTO.CartaJugadorDTO;
+
 
 
 
@@ -22,13 +24,24 @@ public class CartaJugador {
 	@Column (columnDefinition = "bit")
 	private boolean tirada;
 	
-	public CartaJugador(int id, Jugador jugador, Carta carta, boolean tirada) {
-		this.id = id;
+	public CartaJugador(Jugador jugador, Carta carta, boolean tirada) {
 		this.jugador = jugador;
 		this.carta = carta;
 		this.tirada = tirada;
 	}
 	public CartaJugador() {
+	}
+	
+	public CartaJugadorDTO toDTO(){
+		
+		CartaJugadorDTO dto = new CartaJugadorDTO();
+		
+		dto.setCarta(this.carta.toDTO());
+		dto.setId(this.id);
+		dto.setJugador(this.jugador.toDTO());
+		dto.setTirada(this.tirada);
+		
+		return dto;
 	}
 	
 	

@@ -2,12 +2,14 @@ package DTO;
 
 import ENUMS.TipoEnvite;
 
-public class EnviteDTO {
+public class EnviteDTO extends MovimientoDTO{
 	
 	
 	private TipoEnvite tipoEnvite;
 
 	public EnviteDTO() {
+		
+		super();
 	}
 
 	public TipoEnvite getTipoEnvite() {

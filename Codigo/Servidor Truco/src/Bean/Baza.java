@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.*;
 
 import DTO.BazaDTO;
+import DTO.JugadorDTO;
+import DTO.MovimientoDTO;
 
 /**
  * La baza es cuando uno arroja 1 carta de las 3 que posee
@@ -44,13 +46,37 @@ public class Baza {
 	}
 	
 	
-	
+	////* HACER BIEN */////
 	public Jugador obtenerGanador() {
 		return null;
 	}
 	
 	public BazaDTO toDTO() {
-		return null;
+
+		BazaDTO dto = new BazaDTO();
+		dto.setId(this.id);
+		dto.setNumeroBaza(this.numeroBaza);
+		ArrayList<JugadorDTO> orden = new ArrayList<JugadorDTO>();
+		JugadorDTO jugador;
+		for(int i=0; i<ordenJuego.size(); i++){
+			
+			jugador = ordenJuego.get(i).toDTO();
+			orden.add(jugador);
+		}
+		dto.setOrdenJuego(orden);
+		
+		MovimientoDTO mov;
+		ArrayList<MovimientoDTO> movimientos = new ArrayList<MovimientoDTO>();
+		for(int i=0; i<turnosBaza.size(); i++)
+		{
+			mov = turnosBaza.get(i).toDTO();
+			movimientos.add(mov);
+		}
+		dto.setTurnosBaza(movimientos);
+		
+		dto.setGanador(this.ganador.toDTO());
+		
+		return dto;
 	}
 
 	public int getId() {
@@ -75,10 +101,6 @@ public class Baza {
 
 	public void setNumeroBaza(int numeroBaza) {
 		this.numeroBaza = numeroBaza;
-	}
-
-	public Jugador getGanador() {
-		return ganador;
 	}
 
 	public void setGanador(Jugador ganador) {

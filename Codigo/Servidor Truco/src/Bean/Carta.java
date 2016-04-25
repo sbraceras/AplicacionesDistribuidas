@@ -2,6 +2,7 @@ package Bean;
 
 import javax.persistence.*;
 
+import DTO.CartaDTO;
 import ENUMS.Palo;
 
 /**
@@ -21,15 +22,26 @@ public class Carta {
 	@Column (name = "posicion_valor")
 	private int posicionValor;
 	
-	public Carta(int id, Palo palo, int numero, int posicionValor) {
-		this.id = id;
+	public Carta(Palo palo, int numero, int posicionValor) {
+		
 		this.palo = palo;
 		this.numero = numero;
 		this.posicionValor = posicionValor;
 	}
 	
 	
+		
 	public Carta() {
+	}
+	
+	public CartaDTO toDTO(){
+		
+		CartaDTO dto = new CartaDTO();
+		dto.setId(this.id);
+		dto.setNumero(this.numero);
+		dto.setPalo(this.palo);
+		dto.setPosicionValor(this.posicionValor);
+		return dto;
 	}
 	
 	public int getId() {

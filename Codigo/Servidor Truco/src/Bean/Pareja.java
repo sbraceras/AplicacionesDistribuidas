@@ -2,6 +2,7 @@ package Bean;
 
 import javax.persistence.*;
 
+import DTO.ParejaDTO;
 import ENUMS.TipoCategoria;
 
 /**
@@ -31,11 +32,21 @@ public class Pareja {
 	public Pareja() {
 	}
 
-	public Pareja(int id, Jugador jugador1, Jugador jugador2, int numeroPareja) {
-		this.id = id;
+	public Pareja(Jugador jugador1, Jugador jugador2) {
+	
 		this.jugador1 = jugador1;
 		this.jugador2 = jugador2;
-		this.numeroPareja = numeroPareja;
+		
+	}
+	
+	public ParejaDTO toDTO (){
+		
+		ParejaDTO dto = new ParejaDTO();
+		dto.setId(this.id);
+		dto.setJugador1(this.jugador1.toDTO());
+		dto.setJugador2(this.jugador2.toDTO());
+		dto.setNumeroPareja(this.numeroPareja);
+		return dto;
 	}
 
 	public int getId() {
@@ -72,6 +83,11 @@ public class Pareja {
 
 	private boolean tenesJugador(Jugador jugador) {
 	
+		if(jugador1.getApodo().equals(jugador.getApodo()))
+			return true;
+		else
+			if(jugador2.getApodo().equals(jugador.getApodo()))
+				return true;
 		return false;
 	}
 }

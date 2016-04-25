@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import DTO.PartidoDTO;
 import DTO.RankingDTO;
 
 
@@ -33,6 +34,21 @@ public class Ranking {
 		this.partidos = new ArrayList<Partido>();
 		this.puntos = puntos;
 		this.cantidadGanadas = cantidadGanadas;
+	}
+	
+	public RankingDTO toDTO() {
+
+		RankingDTO dto = new RankingDTO();
+		dto.setCantidadGanadas(this.cantidadGanadas);
+		dto.setId(this.id);
+		dto.setPuntos(this.puntos);
+		ArrayList<PartidoDTO>partidosDto = new ArrayList<PartidoDTO>();
+		for(int i=0; i<partidos.size();i++)
+		{
+			partidosDto.add(partidos.get(i).toDTO());
+		}
+		dto.setPartidos(partidosDto);
+		return dto;
 	}
 
 	public int getId() {
@@ -68,10 +84,9 @@ public class Ranking {
 	}
 
 	public float getPromedio() {
-		return 0;
+		
+		return puntos/partidos.size();
 	}
 	
-	public RankingDTO toDTO() {
-		return null;
-	}
+	
 }

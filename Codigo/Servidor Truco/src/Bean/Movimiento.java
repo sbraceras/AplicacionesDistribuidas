@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.persistence.*;
 
+import DTO.MovimientoDTO;
+
 
 
 @MappedSuperclass
@@ -21,6 +23,15 @@ public class Movimiento {
 	protected Timestamp fechaHora;
 	
 	
+	public MovimientoDTO toDTO(){
+
+		MovimientoDTO dto = new MovimientoDTO();
+		
+		dto.setFechaHora(this.fechaHora);
+		dto.setId(this.id);
+		dto.setNumeroTurno(this.numeroTurno);
+		return dto;
+	}
 
 	public int getId() {
 		return id;

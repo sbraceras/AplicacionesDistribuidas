@@ -1,6 +1,5 @@
 package Bean;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,19 +31,49 @@ public class Mano {
 	private Envite enviteActual;
 	@Transient
 	private Mazo mazo;
+	@Transient
+	private List<Jugador> ordenJuego;
 	
 	
 	
 	public Mano() {
 	}
 
-	public Mano(int id, int numeroMano) {
-		this.id = id;
+	public Mano(int numeroMano, List<Jugador> ordenJuego) {
+		
 		this.numeroMano = numeroMano;
 		this.bazas = new ArrayList<Baza>();
-		this.cartasJugador = new ArrayList<CartaJugador>();
 		this.enviteActual = null;
 		this.mazo = new Mazo();
+		this.cartasJugador = new ArrayList<CartaJugador>();
+		this.ordenJuego = ordenJuego;
+		int numeroJugador=0;
+		while(cartasJugador.size()<12){
+			
+			CartaJugador carta= new CartaJugador(ordenJuego.get(numeroJugador), mazo.obtenerCarta(), false);
+			if(numeroJugador ==3)
+			{
+				numeroJugador=0;
+			}
+			cartasJugador.add(carta);
+		}
+	}
+
+	
+	public List<Jugador> getOrdenJuego() {
+		return ordenJuego;
+	}
+
+	public void setOrdenJuego(List<Jugador> ordenJuego) {
+		this.ordenJuego = ordenJuego;
+	}
+
+	public void setBazas(List<Baza> bazas) {
+		this.bazas = bazas;
+	}
+
+	public void setCartasJugador(List<CartaJugador> cartasJugador) {
+		this.cartasJugador = cartasJugador;
 	}
 
 	public int getId() {
@@ -103,9 +132,6 @@ public class Mano {
 	
 	}
 	
-	public void repartirCartas() {
-	
-	}
 	
 	public void nuevaBaza(int numeroBaza, ArrayList<Jugador> ordenJuego) {
 	

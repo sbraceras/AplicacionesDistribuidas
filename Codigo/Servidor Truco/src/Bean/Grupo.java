@@ -1,11 +1,20 @@
 package Bean;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
+import DTO.GrupoDTO;
+import DTO.MiembroGrupoDTO;
+import DTO.ParejaDTO;
+import DTO.PartidoDTO;
 import DTO.RankingDTO;
+import ENUMS.EstadoPartido;
+import ENUMS.TipoMiembro;
+import ENUMS.TipoPartido;
 
 
 @Entity
@@ -31,6 +40,36 @@ public class Grupo {
 	@JoinColumn (name = "id_grupo")
 	private List<Partido> partidos;
 	
+	
+	public GrupoDTO toDto(){
+		
+		GrupoDTO dto = new GrupoDTO();
+		dto.setId(this.id);
+		dto.setNombre(this.nombre);
+		
+		ArrayList<MiembroGrupoDTO> miembrosDTO = new ArrayList<MiembroGrupoDTO>();
+		for(int i=0; i<miembros.size(); i++){
+			
+			miembrosDTO.add(miembros.get(i).toDTO());
+		}
+		dto.setMiembros(miembrosDTO);
+		
+		ArrayList<PartidoDTO> partidosDTO = new ArrayList<PartidoDTO>();
+		for(int i=0; i<partidos.size();i++){
+			
+			partidosDTO.add(partidos.get(i).toDTO());
+		}
+		dto.setPartidos(partidosDTO);
+		
+		ArrayList<ParejaDTO> parejasActivasDTO = new ArrayList<ParejaDTO>();
+		for(int i=0;i<parejasActivas.size();i++){
+			parejasActivasDTO.add(parejasActivas.get(i).toDTO());
+		}
+		
+		dto.setParejasActivas(parejasActivasDTO);
+		
+		return dto;
+	}
 	
 	public Grupo() {
 		
@@ -86,44 +125,69 @@ public class Grupo {
 	}
 
 	public void armarPareja(ArrayList<Jugador> integrantes) {
-	
+
+		Pareja pareja = new Pareja(integrantes.get(0), integrantes.get(1));
+		parejasActivas.add(pareja);
 	}
 	
-	public void crearPartida(ArrayList<Pareja> parejas) {
+	public void crearPartida(ArrayList<Pareja> parejas, Timestamp fechaInicio) {
 	
+		Partido partido = new Partido(parejas, fechaInicio , TipoPartido.Grupo);
+		partidos.add(partido);	
 	}
 	
+	// desarrollar esta
 	public void actualizarRankings() {
 	
 	}
 	
 	public void eliminarMiembroGrupo(Jugador jugador) {
 	
+		for(int i=0; i<miembros.size(); i++){
+			if(miembros.get(i).getJugador().getApodo().equals(jugador.getApodo()))
+				miembros.get(i).setActivo(false);
+		}
 	}
 	
+
 	public ArrayList<RankingDTO> obtenerRanking() {
-		return null;
+		
+		ArrayList<RankingDTO> rankings = new ArrayList<RankingDTO>();
+		for(int i=0; i<miembros.size();i++)
+		{
+			rankings.add(miembros.get(i).getRanking().toDTO());
+		}
+		return rankings;
 	}
 	
 	public boolean esAdministrador(Jugador jugador) {
+		
+		for(int i=0; i<miembros.size(); i++)
+		{
+			if(miembros.get(i).getJugador().getApodo().equals(jugador.getApodo()))
+			{
+				if(miembros.get(i).getTipoMiembro()==TipoMiembro.Administrador)
+					return true;
+				return false;
+			}
+		}
 		return false;
+		
+		
 	}
 	
 	public boolean sosGrupo(String nombre) {
+		
+		if(this.nombre.equals(nombre))
+			return true;
 		return false;
 	}
 	
 	public void agregarMiembro(Jugador jugador) {
 	
+		MiembroGrupo miembro = new MiembroGrupo(jugador);
+		miembros.add(miembro);
 	}
 	
-	public void armarPartido(ArrayList<Pareja> parejas) {
-	
-	}
-	
-	public ArrayList<RankingDTO> obtenerRankingsDelGrupo() {
-	
-		return null;
-		
-	}
+
 }

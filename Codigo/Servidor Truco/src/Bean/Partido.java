@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import DTO.ChicoDTO;
+import DTO.ParejaDTO;
 import DTO.PartidoDTO;
 import ENUMS.EstadoPartido;
 import ENUMS.TipoPartido;
@@ -45,16 +47,41 @@ public class Partido {
 	public Partido() {
 	}
 
-	public Partido(int idPartida, ArrayList<Pareja> parejas, int parejaGanadora,
-			Timestamp fechaInicio, Timestamp fechaFin, TipoPartido tipoPartido, EstadoPartido estadoPartido) {
-		this.id = idPartida;
+	public Partido(ArrayList<Pareja> parejas, Timestamp fechaInicio, TipoPartido tipoPartido) {
+		
 		this.chicos = new ArrayList<Chico>();
 		this.parejas = parejas;
-		this.parejaGanadora = parejaGanadora;
 		this.fechaInicio = fechaInicio;
-		this.fechaFin = fechaFin;
 		this.tipoPartido = tipoPartido;
-		this.estadoPartido = estadoPartido;
+		this.estadoPartido = EstadoPartido.Abierto;
+		this.fechaFin = null;
+	}
+	
+	public PartidoDTO toDTO (){
+		
+		PartidoDTO dto = new PartidoDTO();
+		List<ChicoDTO> chicosDto = new ArrayList<ChicoDTO>();
+		for(int i=0; i<chicos.size(); i++){
+			chicosDto.add(chicos.get(i).toDto());
+			
+		}
+		
+		dto.setEstadoPartido(this.estadoPartido);
+		
+		dto.setFechaFin(this.fechaFin);
+		dto.setFechaInicio(this.fechaInicio);
+		dto.setId(this.id);
+		dto.setParejaGanadora(this.parejaGanadora);
+		dto.setTipoPartido(this.tipoPartido);
+		List<ParejaDTO> parejasDto = new ArrayList<ParejaDTO>();
+		
+		for(int i=0; i<parejas.size();i++){
+			parejasDto.add(parejas.get(i).toDTO());
+		}
+		dto.setChicos(chicosDto);
+		dto.setParejas(parejasDto);
+		
+		return dto;
 	}
 	
 	
@@ -118,38 +145,83 @@ public class Partido {
 
 	
 	public boolean sosTipoPartido(TipoPartido tipo) {
-		return false;
+		return tipo==this.tipoPartido;
 	}
 	
 	public boolean sosDelPeriodo(Date desde, Date hasta) {
+		
+		if(this.fechaInicio.equals(desde))
+			return true;
+		else
+			if(this.fechaInicio.after(desde))
+			{
+				if(this.fechaInicio.equals(hasta))
+					return true;
+				else
+					if(this.fechaFin.before(hasta))
+						return true;
+			}
 		return false;
 	}
 	
 	public boolean participoJugador(Jugador jugador) {
+		
+		for(int i=0; i<parejas.size();i++){
+			
+			if(parejas.get(i).getJugador1().getApodo().equals(jugador.getApodo()))
+				return true;
+			if(parejas.get(i).getJugador2().getApodo().equals(jugador.getApodo()))
+				return true;
+		}
 		return false;
 	}
+	
+/*
+	
+	Desarrollarrrrrrrrrrrrrrrrrr
+	
+	////////////////
+	//////////////////
+	*/////
 	
 	public Jugador calcularResultadoEnvido() {
 		return null;
 	}
 	
+	
+	
 	public Chico obtenerChicoActivo() {
-		return null;
+		
+		Chico aux=null;
+		
+		for(int i=0; i<chicos.size();i++)
+		{
+			if(chicos.get(i).isTerminado()==false)
+				aux= chicos.get(i);
+		}
+		return aux;
 	}
+	
+	
+	/* DESARROLLAR *////////////////////////////////
+	////////////////////////////////////////////////
+	/////////////////////////////////////////////////
+	///////////////////////////////
 	
 	public void actualizarRankingJugadores() {
 	
 	}
 	
-	public PartidoDTO toDTO() {
-		return null;
-	}
 	
 	public boolean estasTerminado() {
+		
+		if(estadoPartido.equals(EstadoPartido.Cerrado))
+			return true;
 		return false;
 	}
 	
-	public boolean sosPartido(PartidoDTO partio) {
-		return false;
+	public boolean sosPartido(PartidoDTO partido) {
+
+		return partido.getId()==this.id;
 	}
 }

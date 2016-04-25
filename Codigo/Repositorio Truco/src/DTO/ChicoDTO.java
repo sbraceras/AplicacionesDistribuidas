@@ -9,6 +9,8 @@ public class ChicoDTO {
 		private List<ManoDTO> manos;
 		private List<PuntajeParejaDTO> puntajes;
 		private int puntajeMaximo;
+		private int numeroChico;
+		private boolean terminado;
 		
 		public ChicoDTO() {
 		}
@@ -29,6 +31,14 @@ public class ChicoDTO {
 			this.manos = manos;
 		}
 
+		public int getNumeroChico() {
+			return numeroChico;
+		}
+
+		public void setNumeroChico(int numeroChico) {
+			this.numeroChico = numeroChico;
+		}
+
 		public List<PuntajeParejaDTO> getPuntajes() {
 			return puntajes;
 		}
@@ -44,6 +54,16 @@ public class ChicoDTO {
 		public void setPuntajeMaximo(int puntajeMaximo) {
 			this.puntajeMaximo = puntajeMaximo;
 		}
+
+		public boolean isTerminado() {
+			return terminado;
+		}
+
+		public void setTerminado(boolean terminado) {
+			this.terminado = terminado;
+		}
+		
+		
 		
 		
 }

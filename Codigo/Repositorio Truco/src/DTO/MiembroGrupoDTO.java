@@ -1,5 +1,6 @@
 package DTO;
 
+import ENUMS.TipoMiembro;
 
 public class MiembroGrupoDTO {
 	
@@ -7,9 +8,25 @@ public class MiembroGrupoDTO {
 	private JugadorDTO jugador;
 	private RankingDTO ranking;
 	private boolean activo;
+	private TipoMiembro tipoMiembro;
+	
 	
 	public MiembroGrupoDTO() {
 	}
+
+	
+	
+	public TipoMiembro getTipoMiembro() {
+		return tipoMiembro;
+	}
+
+
+
+	public void setTipoMiembro(TipoMiembro tipoMiembro) {
+		this.tipoMiembro = tipoMiembro;
+	}
+
+
 
 	public int getId() {
 		return id;

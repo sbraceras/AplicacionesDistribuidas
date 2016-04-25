@@ -49,6 +49,10 @@ public class Jugador {
 		this.grupos = new ArrayList<Grupo>();
 	}
 
+	public JugadorDTO toDTO(){
+		return null;
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -2,6 +2,8 @@ package Bean;
 
 import javax.persistence.*;
 
+import DTO.PuntajeParejaDTO;
+
 @Entity
 @Table (name = "PuntajesPareja")
 public class PuntajePareja {
@@ -14,6 +16,15 @@ public class PuntajePareja {
 	@Column
 	private int puntaje;
 	
+	
+	public PuntajeParejaDTO toDTO(){
+		
+		PuntajeParejaDTO dto = new PuntajeParejaDTO();
+		dto.setPareja(this.pareja.toDTO());
+		dto.setPuntaje(this.puntaje);
+		dto.setId(this.id);
+		return dto;
+	}
 	
 	public int getId() {
 		return id;

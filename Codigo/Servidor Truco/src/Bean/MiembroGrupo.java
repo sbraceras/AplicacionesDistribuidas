@@ -2,7 +2,9 @@ package Bean;
 
 import javax.persistence.*;
 import DTO.JugadorDTO;
+import DTO.MiembroGrupoDTO;
 import DTO.RankingDTO;
+import ENUMS.TipoMiembro;
 
 /**
  * Intermediario entre el grupo y el miembro
@@ -22,6 +24,8 @@ public class MiembroGrupo {
 	private Ranking ranking;
 	@Column (columnDefinition = "bit")
 	private boolean activo;
+	@Column (columnDefinition = "int")
+	private TipoMiembro tipoMiembro;
 	
 	
 	
@@ -30,19 +34,44 @@ public class MiembroGrupo {
 	}
 
 		
-	public MiembroGrupo(int id, Jugador jugador, Ranking ranking, boolean activo) {
-		this.id = id;
+	public MiembroGrupo(Jugador jugador) {
+		
 		this.jugador = jugador;
-		this.ranking = ranking;
-		this.activo = activo;
+		this.ranking = new Ranking();
+		this.activo = true;
 	}
 	
+	public MiembroGrupoDTO toDTO(){
+		
+		MiembroGrupoDTO dto = new MiembroGrupoDTO();
+		
+		dto.setActivo(this.activo);
+		dto.setId(this.id);
+		dto.setJugador(this.jugador.toDTO());
+		dto.setRanking(this.ranking.toDTO());
+		dto.setTipoMiembro(tipoMiembro);
+		
+		return dto;
+	}
+	
+	
+	public TipoMiembro getTipoMiembro() {
+		return tipoMiembro;
+	}
+
+
+	public void setTipoMiembro(TipoMiembro tipoMiembro) {
+		this.tipoMiembro = tipoMiembro;
+	}
+
+
 	public boolean tenesMiembro(JugadorDTO jugador) {
-		return false;
+		
+		return this.jugador.getApodo().equals(jugador.getApodo());
 	}
 
 	public RankingDTO obtenerRanking() {
-		return null;
+		return this.ranking.toDTO();
 	}
 
 	public int getId() {
