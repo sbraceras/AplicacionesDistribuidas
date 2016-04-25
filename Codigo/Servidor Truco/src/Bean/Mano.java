@@ -49,12 +49,10 @@ public class Mano {
 		this.ordenJuego = ordenJuego;
 		int numeroJugador=0;
 		while(cartasJugador.size()<12){
-			
+			if(numeroJugador>3)
+				numeroJugador =0;
 			CartaJugador carta= new CartaJugador(ordenJuego.get(numeroJugador), mazo.obtenerCarta(), false);
-			if(numeroJugador ==3)
-			{
-				numeroJugador=0;
-			}
+			numeroJugador++;
 			cartasJugador.add(carta);
 		}
 	}
