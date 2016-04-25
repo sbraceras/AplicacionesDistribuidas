@@ -57,6 +57,7 @@ public class Partido {
 		this.fechaFin = null;
 	}
 	
+	
 	public PartidoDTO toDTO (){
 		
 		PartidoDTO dto = new PartidoDTO();
@@ -86,6 +87,22 @@ public class Partido {
 	
 	
 
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setParejas(List<Pareja> parejas) {
+		this.parejas = parejas;
+	}
+
+	public void setChicos(List<Chico> chicos) {
+		this.chicos = chicos;
+	}
 
 	public List<Chico> getChicos() {
 		return chicos;

@@ -189,5 +189,14 @@ public class Grupo {
 		miembros.add(miembro);
 	}
 	
+	public MiembroGrupo obtenerAdministrador (){
+		
+		for(int i=0; i<miembros.size(); i++)
+		{
+			if(miembros.get(i).getTipoMiembro()==TipoMiembro.Administrador)
+				return miembros.get(i);
+		}
+		return null;
+	}
 
 }
