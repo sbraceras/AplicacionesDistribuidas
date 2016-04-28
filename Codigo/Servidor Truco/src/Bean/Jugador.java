@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+
 import DTO.GrupoDTO;
 import DTO.JugadorDTO;
 import DTO.RankingDTO;
@@ -16,10 +17,11 @@ public class Jugador {
 	
 	@Id
 	@Column (name = "id_jugador", nullable = false)
+	@GeneratedValue
 	private int id;
 	@Column
 	private String apodo;
-	@OneToOne (cascade = CascadeType.ALL)
+	@OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_jugador")
 	private Ranking ranking;
 	@Column (columnDefinition = "varchar(50)")
@@ -28,24 +30,24 @@ public class Jugador {
 	private String password;
 	@Column (columnDefinition = "tinyint")
 	private TipoCategoria categoria;
-	@ManyToMany (cascade = CascadeType.ALL)
+	@ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable (name = "Grupo_Jugador",
 	joinColumns = {@JoinColumn (name = "id_jugador")},
 	inverseJoinColumns = {@JoinColumn (name = "id_grupo")})	
-	private ArrayList<GrupoDTO> grupos;
+	private List<Grupo> grupos;
 	
 	
 	
 	public Jugador() {
 	}
 
-	public Jugador(int id, String apodo, Ranking ranking, String mail, String password, TipoCategoria categoria) {
-		this.id = id;
+	public Jugador(String apodo, String mail, String password) {
+		
 		this.apodo = apodo;
-		this.ranking = ranking;
+		this.ranking = new Ranking();
 		this.mail = mail;
 		this.password = password;
-		this.categoria = categoria;
+		this.categoria = TipoCategoria.Novato;
 		this.grupos = new ArrayList<Grupo>();
 	}
 
@@ -105,7 +107,7 @@ public class Jugador {
 		return grupos;
 	}
 
-	public void setGrupos(ArrayList<GrupoDTO> arrayList) {
+	public void setGrupos(ArrayList<Grupo> arrayList) {
 		this.grupos = arrayList;
 	}
 

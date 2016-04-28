@@ -1,5 +1,4 @@
-/Server
-/ObjetoRemoto
-/Controlador
-/DAO
-/Bean
+/DAO/
+/Controlador/
+/ObjetoRemoto/
+/Bean/

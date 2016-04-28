@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Bean.*;
+import DAO.CartaDAO;
 import DAO.HibernateDAO;
+import DAO.JugadorDAO;
 import DTO.*;
 import ENUMS.Palo;
 import ENUMS.TipoCategoria;
@@ -34,6 +36,17 @@ public class ServicioCentral {
 		this.sesiones = new ArrayList<Jugador>();
 		this.esperandoLibreInvidividual = new ArrayList<Jugador>();
 		this.esperandoLibreParejas = new ArrayList<Pareja>();
+		
+		JugadorDTO jug = new JugadorDTO();
+		
+		jug.setId(1);
+		
+		
+		Jugador jugador = JugadorDAO.getinstance().buscarJugador(jug);
+		
+		System.out.println("Jugador: " + jugador.getApodo());
+		
+				
 	}
 
 	public static ServicioCentral getInstance() {
@@ -46,34 +59,15 @@ public class ServicioCentral {
 	}
 	
 
-	public static void main(String[] args) throws RemoteException {
-
-	
-		CartaDTO c = new CartaDTO();
-		c.setId(1);
-		c.setNumero(1);
-		c.setPalo(Palo.Basto);
-		c.setPosicionValor(1);
-		
-		c = HibernateDAO.getInstancia().ObtenerCarta(c);
-		System.out.print("id_carta" + c.getId() + "palo" + c.getPalo());
-	}
-	
 	
 	/* HACER SEGUN DIAGRAMA DE SECUENCIA */
 	
 	public void registrarJugador(JugadorDTO jugador) {
-		JugadorDTO validar = obtenerJugador(jugador);
+		Jugador validar = obtenerJugador(jugador);
 		if(validar == null){
-			Jugador jug = new Jugador();
-			jug.setApodo(validar.getApodo());
-			jug.setCategoria(validar.getCategoria());
-			jug.setGrupos(validar.getGrupos());
-			jug.setId(validar.getId());
-			jug.setMail(validar.getMail());
-			jug.setPassword(validar.getPassword());
-			jug.setRanking(validar.getRanking());
+			Jugador jug = new Jugador(jugador.getApodo(),jugador.getMail(), jugador.getPassword(), jugador.getCategoria());
 			jugadores.add(jug);
+			
 			/*
 			 Falta el dao
 			 de agregar jugador a la base de datos
