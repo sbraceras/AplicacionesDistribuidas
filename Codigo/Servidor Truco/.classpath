@@ -3,18 +3,18 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Repositorio Truco"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/commons-collections-3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/ejb3-persistence.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/hibernate3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/hibernate-annotations.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/hibernate-commons-annotations.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/javassist-3.4.GA.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/jta-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/jtds-1.2.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/slf4j-api-1.5.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Agustin/Documents/GitHub/AplicacionesDistribuidas/Librerias/slf4j-simple-1.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/hibernate3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/javassist-3.4.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/jtds-1.2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/gaston/Desktop/facultad/Aplicaciones Distribuidas/AD Chechu/librerias/hibernate/slf4j-simple-1.5.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

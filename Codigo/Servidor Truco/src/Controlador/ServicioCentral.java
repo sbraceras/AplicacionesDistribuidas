@@ -1,10 +1,14 @@
 package Controlador;
 
+import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import Bean.*;
+import DAO.HibernateDAO;
 import DTO.*;
+import ENUMS.Palo;
 import ENUMS.TipoCategoria;
 import ENUMS.TipoPartido;
 
@@ -41,15 +45,50 @@ public class ServicioCentral {
 		return controlador;
 	}
 	
+
+	public static void main(String[] args) throws RemoteException {
+
+	
+		CartaDTO c = new CartaDTO();
+		c.setId(1);
+		c.setNumero(1);
+		c.setPalo(Palo.Basto);
+		c.setPosicionValor(1);
+		
+		c = HibernateDAO.getInstancia().ObtenerCarta(c);
+		System.out.print("id_carta" + c.getId() + "palo" + c.getPalo());
+	}
+	
 	
 	/* HACER SEGUN DIAGRAMA DE SECUENCIA */
 	
 	public void registrarJugador(JugadorDTO jugador) {
-	
+		JugadorDTO validar = obtenerJugador(jugador);
+		if(validar == null){
+			Jugador jug = new Jugador();
+			jug.setApodo(validar.getApodo());
+			jug.setCategoria(validar.getCategoria());
+			jug.setGrupos(validar.getGrupos());
+			jug.setId(validar.getId());
+			jug.setMail(validar.getMail());
+			jug.setPassword(validar.getPassword());
+			jug.setRanking(validar.getRanking());
+			jugadores.add(jug);
+			/*
+			 Falta el dao
+			 de agregar jugador a la base de datos
+			 
+			 */
+		}
+		
 	}
 	
 	private Jugador obtenerJugador(JugadorDTO jugador) {
-		
+		List<Jugador> jugadores = new ArrayList<Jugador>();
+		for(int i =0; i<jugadores.size();i++){
+			if(jugadores.get(i).getId() == jugador.getId())
+				return jugadores.get(i);
+		}
 		return null;	
 	}
 	
@@ -61,10 +100,31 @@ public class ServicioCentral {
 	}
 	
 	
+	public RankingDTO obtenerRankingGeneral(JugadorDTO jugador, ArrayList<RankingDTO> rank){
+		Jugador jug= obtenerJugador(jugador);
+		if (jug !=null){
+			RankingDTO devolver = new RankingDTO();
+			devolver = obtenerRanking(jug);
+			return devolver;
+		}
+		return null;
+	}
+	
+	public RankingDTO obtenerRanking(Jugador jug){
+		RankingDTO devolver= new RankingDTO();
+		devolver.setCantidadGanadas(jug.getRanking().getCantidadGanadas());
+		devolver.setId(jug.getRanking().getId());
+		devolver.setPartidos(jug.getRanking().getPartidos());
+		devolver.setPuntos(jug.getRanking().getPuntos());
+	}
+	
+
+	
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	
 	public void crearGrupo(String nombre, JugadorDTO administrador) {
-	
+		
+		
 	}
 	
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
@@ -85,7 +145,15 @@ public class ServicioCentral {
 	
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */	
 	public void jugarLibreIndividual(JugadorDTO jugador) {
-	
+		Jugador jug = obtenerJugador(jugador);
+		if(jug!=null){
+			esperandoLibreInvidividual.add(jug);
+			if(esperandoLibreInvidividual.size() >= 4){
+				armarParejasInvididual(jug.getCategoria());
+				//seguir
+			}
+			
+		}
 	}
 	
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
@@ -136,7 +204,7 @@ public class ServicioCentral {
 		{
 			if(real.getMail().equals(jugador.getMail()))
 				if(real.getPassword().equals(jugador.getPassword()))
-				{
+			-	{
 					System.out.println("LogIn Correcto");
 					sesiones.add(real);
 				}
@@ -196,7 +264,11 @@ public class ServicioCentral {
 	}
 	/* DESARROLLAR */
 	public ArrayList<RankingDTO> obtenerRankingGrupo(GrupoDTO grupo, JugadorDTO jugador) {
-	
+		GrupoDTO grup = obtenerGrupo(nombre)
+		if(grup!=null){
+			jugador.getGrupos()
+			//seguir
+		}
 		return null;
 	}
 	/* DESARROLLAR */
@@ -206,7 +278,19 @@ public class ServicioCentral {
 	}
 	/* DESARROLLAR */
 	public Grupo obtenerGrupo(String nombre) {
-	
+			Grupo grup = new Grupo();
+			List<Grupo> grupos = new ArrayList<Grupo>();
+			grupos = ObtenerGrupos();
+			for(int i=0;i<grupos.size();i++){
+				if(grupos.get(i).getNombre().equals(nombre))
+					return grup;
+			}
 			return null;
 	}
+	public ArrayList<Grupo> ObtenerGrupos (){
+		/*
+		 desarrollar el dao para obtener grupos
+		 */
+	}
+	
 }

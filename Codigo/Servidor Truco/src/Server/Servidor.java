@@ -26,9 +26,10 @@ public class Servidor {
     	 try{
     		  
     		 
-    		 LocateRegistry.createRegistry(1099);
-    		 
     		 objetoRemoto = new ObjetoRemoto();
+    		 
+    		 LocateRegistry.createRegistry(1099);
+    		 	
     		 
     		 Naming.rebind ("//localhost/ObjetoRemoto", objetoRemoto);
     		 

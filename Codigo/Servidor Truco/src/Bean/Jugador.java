@@ -32,7 +32,7 @@ public class Jugador {
 	@JoinTable (name = "Grupo_Jugador",
 	joinColumns = {@JoinColumn (name = "id_jugador")},
 	inverseJoinColumns = {@JoinColumn (name = "id_grupo")})	
-	private List<Grupo> grupos;
+	private ArrayList<GrupoDTO> grupos;
 	
 	
 	
@@ -105,8 +105,8 @@ public class Jugador {
 		return grupos;
 	}
 
-	public void setGrupos(ArrayList<Grupo> grupos) {
-		this.grupos = grupos;
+	public void setGrupos(ArrayList<GrupoDTO> arrayList) {
+		this.grupos = arrayList;
 	}
 
 	public boolean sosJugador(JugadorDTO jugador) {

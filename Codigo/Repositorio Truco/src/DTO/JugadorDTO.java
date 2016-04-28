@@ -1,6 +1,8 @@
 package DTO;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 
 import ENUMS.TipoCategoria;
@@ -67,8 +69,8 @@ public class JugadorDTO {
 		this.categoria = categoria;
 	}
 
-	public List<GrupoDTO> getGrupos() {
-		return grupos;
+	public ArrayList<GrupoDTO> getGrupos() {
+		return (ArrayList<GrupoDTO>) grupos;
 	}
 
 	public void setGrupos(List<GrupoDTO> grupos) {

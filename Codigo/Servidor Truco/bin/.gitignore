@@ -1,5 +1,5 @@
-/Bean/
-/Controlador/
-/Hibernate/
-/ObjetoRemoto/
-/Server/
+/Server
+/ObjetoRemoto
+/Controlador
+/DAO
+/Bean
