@@ -15,6 +15,7 @@ public class HibernateUtil {
 	static{ 
 		try{
 			AnnotationConfiguration config = new AnnotationConfiguration();
+			config.addAnnotatedClass(Ranking.class);
 			config.addAnnotatedClass(Baza.class);
 			config.addAnnotatedClass(Carta.class);
 			config.addAnnotatedClass(CartaJugador.class);
@@ -28,7 +29,7 @@ public class HibernateUtil {
 			config.addAnnotatedClass(Pareja.class);
 			config.addAnnotatedClass(Partido.class);
 			config.addAnnotatedClass(PuntajePareja.class);
-			config.addAnnotatedClass(Ranking.class);
+			config.addAnnotatedClass(Envite.class);
 			
 			
 			sessionFactory = config.buildSessionFactory(); 

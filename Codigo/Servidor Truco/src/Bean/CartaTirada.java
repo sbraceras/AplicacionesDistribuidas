@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import DTO.CartaTiradaDTO;
 
+@Entity
 @DiscriminatorValue("ct")
 public class CartaTirada extends Movimiento {
 	@OneToOne (cascade = CascadeType.ALL)

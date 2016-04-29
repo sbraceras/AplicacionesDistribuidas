@@ -39,6 +39,11 @@ public class ServicioCentral {
 		
 		JugadorDTO jug = new JugadorDTO();
 		
+		/*
+		Jugador pepe = new Jugador("Gaston", "gastu", "pepe");
+		
+		JugadorDAO.getinstance().guardarJugador(pepe);*/
+		
 		jug.setId(1);
 		
 		

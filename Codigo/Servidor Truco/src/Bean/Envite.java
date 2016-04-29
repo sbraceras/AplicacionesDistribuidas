@@ -4,10 +4,11 @@ import javax.persistence.*;
 
 import ENUMS.TipoEnvite;
 
+@Entity
 @DiscriminatorValue("env")
 public class Envite extends Movimiento {
 
-	@Column (columnDefinition = "int")
+	@Column (name = "tipo_envite", columnDefinition = "tinyint")
 	private TipoEnvite tipoEnvite; 
 
 	public TipoEnvite getTipoEnvite() {

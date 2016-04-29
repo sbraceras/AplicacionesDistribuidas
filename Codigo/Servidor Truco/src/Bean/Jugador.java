@@ -22,7 +22,7 @@ public class Jugador {
 	@Column
 	private String apodo;
 	@OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn (name = "id_jugador")
+	@JoinColumn (name = "id_ranking")
 	private Ranking ranking;
 	@Column (columnDefinition = "varchar(50)")
 	private String mail;

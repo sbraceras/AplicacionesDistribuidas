@@ -7,11 +7,11 @@ import javax.persistence.*;
 import DTO.MovimientoDTO;
 
 
-
-@MappedSuperclass
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn( name="tipo",discriminatorType=DiscriminatorType.STRING)
 @Entity
+@Table(name ="Movimientos")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo",discriminatorType=DiscriminatorType.STRING)
+
 public class Movimiento {
 	
 	@Id
