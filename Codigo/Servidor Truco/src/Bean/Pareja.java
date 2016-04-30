@@ -90,7 +90,7 @@ public class Pareja {
 		this.numeroPareja = numeroPareja;
 	}
 
-	private boolean tenesJugador(Jugador jugador) {
+	public boolean tenesJugador(Jugador jugador) {
 	
 		if(jugador1.getApodo().equals(jugador.getApodo()))
 			return true;
@@ -98,5 +98,21 @@ public class Pareja {
 			if(jugador2.getApodo().equals(jugador.getApodo()))
 				return true;
 		return false;
+	}
+	
+	public boolean esPareja (ParejaDTO dto){
+		
+		
+		if(jugador1.getId()== dto.getJugador1().getId())
+		{
+			if(jugador2.getId() == dto.getJugador2().getId())
+				return true;
+		}
+		else
+			if(jugador1.getId() == dto.getJugador2().getId())
+				if(jugador2.getId() == dto.getJugador1().getId())
+					return true;
+		return false;
+		
 	}
 }

@@ -90,5 +90,25 @@ public class GrupoDAO {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Grupo> obtenerGrupos (){
+		
+		Session s = this.getSession();
+		List<Grupo> devolver;
+		try{
+			
+			devolver = s.createQuery("Select g from Grupo g inner join g.partidos").list();
+			s.close();
+			return devolver;
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error al obtener todos los grupos");
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+	}
 
 }

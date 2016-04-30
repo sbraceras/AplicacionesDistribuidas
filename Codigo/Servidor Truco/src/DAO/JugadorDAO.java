@@ -1,7 +1,7 @@
 package DAO;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 import org.hibernate.*;
 
@@ -91,6 +91,25 @@ public class JugadorDAO {
 		catch(Exception e){
 			e.printStackTrace();
 			System.out.println("Error al buscar jugador");
+			return null;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Jugador> obtenerJugadores(){
+		
+		Session s = this.getSession();
+		ArrayList<Jugador> jugadores;
+		try{
+			
+			jugadores = (ArrayList<Jugador>) s.createQuery("Select j from Jugador j inner join j.grupos").list();
+			s.close();
+			return jugadores;
+		}
+		catch(Exception e){
+			
+			System.out.println("Error al obtener todos los Jugadores");
+			e.printStackTrace();
 			return null;
 		}
 	}

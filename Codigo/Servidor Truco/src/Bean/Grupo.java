@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import DTO.GrupoDTO;
+import DTO.JugadorDTO;
 import DTO.MiembroGrupoDTO;
 import DTO.ParejaDTO;
 import DTO.PartidoDTO;
@@ -197,6 +198,59 @@ public class Grupo {
 				return miembros.get(i);
 		}
 		return null;
+	}
+	
+	public boolean tengoMiembro (JugadorDTO dto){
+		
+		for(int i=0; i<miembros.size(); i++){
+			
+			if(miembros.get(i).getJugador().getId() == dto.getId())
+				return true;
+		}
+		
+		return false;
+	}
+	
+	
+	public Pareja obtenerPareja (ParejaDTO dto){
+		
+		
+		for(int i=0; i<parejasActivas.size(); i++){
+			
+			if(parejasActivas.get(i).esPareja(dto))
+				return parejasActivas.get(i);
+			
+		}
+		
+		return null;
+		
+		
+	}
+	
+	public boolean tenesPareja (ParejaDTO dto){
+		
+		if(obtenerPareja(dto)==null)
+			return false;
+		return true;
+	}
+	
+	public void agregarPartido (Partido partido){
+		
+		partidos.add(partido);
+		
+		for(int i=0; i<partido.getParejas().size(); i++){
+			
+			eliminarPareja(partido.getParejas().get(i));
+		}
+		
+		
+	}
+	
+	public void eliminarPareja (Pareja pareja){
+		
+		
+		parejasActivas.remove(pareja);
+		
 	}
 
 }
