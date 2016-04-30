@@ -14,19 +14,28 @@ import ENUMS.TipoCategoria;
 public class Pareja {
 	@Id
 	@Column (name = "id_pareja", nullable = false)
+	@GeneratedValue
 	private int id;
-	@ManyToOne (cascade = CascadeType.ALL)
+	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_jugador1")
 	private Jugador jugador1;
-	@ManyToOne (cascade = CascadeType.ALL)
+	@ManyToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_jugador2")
 	private Jugador jugador2;
 	@Column (name = "nro_Pareja")
 	private int numeroPareja;
 	
-	public TipoCategoria obtenerCategoriaSuperior() { //ver como hacer enumeration
+	public TipoCategoria obtenerCategoriaSuperior() {
 	
-		return null;
+				
+		if(jugador1.getCategoria()==jugador2.getCategoria())
+			return jugador1.getCategoria();
+		else{
+			if(jugador1.getCategoria().ordinal()<jugador2.getCategoria().ordinal())
+				return jugador2.getCategoria();
+			else
+				return jugador1.getCategoria(); 
+		}
 	}
 	
 	public Pareja() {

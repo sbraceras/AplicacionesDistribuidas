@@ -15,11 +15,12 @@ import ENUMS.TipoMiembro;
 public class MiembroGrupo {
 	@Id
 	@Column (name = "id_miembro", nullable = false)
+	@GeneratedValue
 	private int id;
-	@ManyToOne (cascade = CascadeType.ALL)
+	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_jugador")
 	private Jugador jugador;
-	@OneToOne (cascade = CascadeType.ALL)
+	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_ranking")
 	private Ranking ranking;
 	@Column (columnDefinition = "bit")
@@ -34,11 +35,12 @@ public class MiembroGrupo {
 	}
 
 		
-	public MiembroGrupo(Jugador jugador) {
+	public MiembroGrupo(Jugador jugador, TipoMiembro tipo) {
 		
 		this.jugador = jugador;
 		this.ranking = new Ranking();
 		this.activo = true;
+		this.tipoMiembro = tipo;
 	}
 	
 	public MiembroGrupoDTO toDTO(){

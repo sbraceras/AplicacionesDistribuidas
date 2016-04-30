@@ -16,6 +16,8 @@ public class MiembroGrupoDTO {
 
 	
 	
+	
+	
 	public TipoMiembro getTipoMiembro() {
 		return tipoMiembro;
 	}

@@ -21,13 +21,13 @@ public class Baza {
 	@Column (name = "id_baza", nullable = false)
 	private int id;
 	
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_baza")
 	private List<Movimiento> turnosBaza;
 	
 	@Column (name = "nro_baza")
 	private int numeroBaza;
-	@OneToOne (cascade = CascadeType.ALL)
+	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_jugador")
 	private Jugador ganador;
 	

@@ -14,11 +14,12 @@ public class CartaJugador {
 	
 	@Id
 	@Column (name = "id_cartaJugador", nullable = false)
+	@GeneratedValue
 	private int id;
-	@ManyToOne (cascade = CascadeType.ALL)
+	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_jugador")
 	private Jugador jugador;
-	@ManyToOne (cascade = CascadeType.ALL)
+	@ManyToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_carta")
 	private Carta carta;
 	@Column (columnDefinition = "bit")

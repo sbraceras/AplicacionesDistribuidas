@@ -21,11 +21,12 @@ public class Chico {
 	
 	@Id
 	@Column (name = "id_chico", nullable = false)
+	@GeneratedValue
 	private int id;
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_chico")
 	private List<Mano> manos;
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_chico")
 	private List<PuntajePareja> puntajes;
 	@Column (name = "puntaje_maximo")
@@ -39,8 +40,8 @@ public class Chico {
 	public Chico() {
 	}
 
-	public Chico(int id, int puntajeMaximo) {
-		this.id = id;
+	public Chico(int puntajeMaximo) {
+		
 		this.manos = new ArrayList<Mano>();
 		this.puntajes = new ArrayList<PuntajePareja>();
 		this.puntajeMaximo = puntajeMaximo;
@@ -170,7 +171,7 @@ public class Chico {
 		List<Jugador> ordenNuevo = new ArrayList<Jugador>();
 		
 		//obtengo el Ultimo
-		Jugador jug = ordenAnterior.get(ordenAnterior.size());
+		Jugador jug = ordenAnterior.get(ordenAnterior.size()-1);
 		ordenNuevo.add(jug);
 		//obtengo el resto
 		for(int i=0; i<ordenAnterior.size()-1; i++)

@@ -11,6 +11,7 @@ import DTO.ChicoDTO;
 import DTO.ParejaDTO;
 import DTO.PartidoDTO;
 import ENUMS.EstadoPartido;
+import ENUMS.TipoCategoria;
 import ENUMS.TipoPartido;
 
 /**
@@ -24,8 +25,9 @@ import ENUMS.TipoPartido;
 public class Partido {
 	@Id 
 	@Column (name = "id_partido", nullable = false)
+	@GeneratedValue
 	private int id;
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_partido")
 	private List<Pareja> parejas;
 	
@@ -39,7 +41,7 @@ public class Partido {
 	private TipoPartido tipoPartido;
 	@Column (columnDefinition = "int")
 	private EstadoPartido estadoPartido;
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_partido")
 	private List<Chico> chicos;
 	
@@ -220,13 +222,43 @@ public class Partido {
 	}
 	
 	
-	/* DESARROLLAR *////////////////////////////////
-	////////////////////////////////////////////////
-	/////////////////////////////////////////////////
-	///////////////////////////////
-	
+		
 	public void actualizarRankingJugadores() {
-	
+		
+		Pareja ganadora = parejas.get(parejaGanadora);  /* considero que primer pareja es 0 y la segunda 1 */
+		Pareja perdedora;
+		if(parejaGanadora ==0)
+		{
+			perdedora = parejas.get(1);
+		}
+		else
+			perdedora = parejas.get(0);
+		
+		
+		if(tipoPartido == tipoPartido.Grupo){
+			
+			ganadora.getJugador1().actualizarRanking(5, this);
+			ganadora.getJugador2().actualizarRanking(5, this);
+		}
+		else
+		{
+			TipoCategoria categoriaOponente = perdedora.obtenerCategoriaSuperior();
+			
+			if(ganadora.getJugador1().getCategoria().ordinal()<categoriaOponente.ordinal()) //el jugador 1 es inferior
+				ganadora.getJugador1().actualizarRanking(12, this);
+			else
+				ganadora.getJugador1().actualizarRanking(10, this);
+			
+			if(ganadora.getJugador2().getCategoria().ordinal()<categoriaOponente.ordinal()) //el jugador 1 es inferior
+				ganadora.getJugador2().actualizarRanking(12, this);
+			else
+				ganadora.getJugador2().actualizarRanking(10, this);
+			
+			perdedora.getJugador1().actualizarRanking(0, this);
+			perdedora.getJugador2().actualizarRanking(0, this);
+		}
+		
+		
 	}
 	
 	

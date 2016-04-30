@@ -7,6 +7,7 @@ import java.util.List;
 
 import Bean.*;
 import DAO.CartaDAO;
+import DAO.GrupoDAO;
 import DAO.HibernateDAO;
 import DAO.JugadorDAO;
 import DTO.*;
@@ -37,19 +38,27 @@ public class ServicioCentral {
 		this.esperandoLibreInvidividual = new ArrayList<Jugador>();
 		this.esperandoLibreParejas = new ArrayList<Pareja>();
 		
-		JugadorDTO jug = new JugadorDTO();
+		/*Jugador jug = new Jugador("Gaston","Gaston", "123");
 		
-		/*
-		Jugador pepe = new Jugador("Gaston", "gastu", "pepe");
+		JugadorDAO.getinstance().guardarJugador(jug);
 		
-		JugadorDAO.getinstance().guardarJugador(pepe);*/
+		jug = null;
 		
-		jug.setId(1);
+		JugadorDTO pepe = new JugadorDTO();
+		pepe.setId(1);
+
+		jug = JugadorDAO.getinstance().buscarJugador(pepe);
 		
+		Grupo juan = new Grupo("los totora", jug);
 		
-		Jugador jugador = JugadorDAO.getinstance().buscarJugador(jug);
+		GrupoDAO.getInstancia().guardarGrupo(juan);
+		juan=null;
+		GrupoDTO grupo = new GrupoDTO();
+		grupo.setId(1);
+		juan = GrupoDAO.getInstancia().buscarGrupo(grupo);
 		
-		System.out.println("Jugador: " + jugador.getApodo());
+		System.out.println(juan.getNombre());*/
+		
 		
 				
 	}

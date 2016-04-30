@@ -3,6 +3,8 @@ package Bean;
 import java.util.ArrayList;
 import java.util.Random;
 
+import DTO.CartaDTO;
+import DTO.MazoDTO;
 import ENUMS.Palo;
 
 /*No se persiste el mazo */
@@ -130,5 +132,17 @@ public class Mazo {
 		
 		return mazo;
 		
+	}
+	
+	public MazoDTO toDto (){
+		
+		MazoDTO dto = new MazoDTO();
+		ArrayList<CartaDTO> cartasDto = new ArrayList<CartaDTO>();
+		
+		for(int i=0; i<cartas.size();i++){
+			cartasDto.add(cartas.get(i).toDTO());
+		}
+		
+		return dto;
 	}
 }

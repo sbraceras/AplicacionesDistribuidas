@@ -14,6 +14,7 @@ import DTO.RankingDTO;
 public class Ranking {
 	@Id
 	@Column (name = "id_ranking")
+	@GeneratedValue
 	private int id;
 	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable (name = "Ranking_Partido", 
@@ -26,14 +27,12 @@ public class Ranking {
 	private int cantidadGanadas;
 	
 	
+	
 	public Ranking() {
-	}
-
-	public Ranking(int id, int puntos, int cantidadGanadas) {
-		this.id = id;
+		
 		this.partidos = new ArrayList<Partido>();
-		this.puntos = puntos;
-		this.cantidadGanadas = cantidadGanadas;
+		this.puntos = 0;
+		this.cantidadGanadas = 0;
 	}
 	
 	public RankingDTO toDTO() {

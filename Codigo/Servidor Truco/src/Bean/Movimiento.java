@@ -16,6 +16,7 @@ public class Movimiento {
 	
 	@Id
 	@Column (name = "id_movimiento", nullable = false)
+	@GeneratedValue
 	protected int id;
 	@Column (name = "nro_turno")
 	protected int numeroTurno;

@@ -9,8 +9,9 @@ import DTO.PuntajeParejaDTO;
 public class PuntajePareja {
 	@Id
 	@Column (name = "id_puntaje", nullable = false)
+	@GeneratedValue
 	private int id;
-	@OneToOne (cascade = CascadeType.ALL)
+	@OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_pareja")
 	private Pareja pareja;
 	@Column
@@ -46,8 +47,8 @@ public class PuntajePareja {
 	}
 	public PuntajePareja() {
 	}
-	public PuntajePareja(int id, Pareja pareja, int puntaje) {
-		this.id = id;
+	public PuntajePareja(Pareja pareja, int puntaje) {
+		
 		this.pareja = pareja;
 		this.puntaje = puntaje;
 	}

@@ -1,6 +1,5 @@
 package Bean;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import DTO.MiembroGrupoDTO;
 import DTO.ParejaDTO;
 import DTO.PartidoDTO;
 import DTO.RankingDTO;
-import ENUMS.EstadoPartido;
 import ENUMS.TipoMiembro;
 import ENUMS.TipoPartido;
 
@@ -22,11 +20,12 @@ import ENUMS.TipoPartido;
 public class Grupo {
 	
 	@Id
-	@Column (name = "id_grupo", nullable = false)
+	@Column (name = "id_grupo")
+	@GeneratedValue
 	private int id;
 	@Column
 	private String nombre;
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_grupo")
 	private List<MiembroGrupo> miembros;
 	
@@ -36,7 +35,7 @@ public class Grupo {
 	private List<Pareja> parejasActivas;
 	
 	
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL)  /*fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_grupo")
 	private List<Partido> partidos;
 	
@@ -76,12 +75,13 @@ public class Grupo {
 		parejasActivas = new ArrayList<Pareja>();
 	}
 
-	public Grupo(int id, String nombre) {
-		this.id = id;
+	public Grupo(String nombre, Jugador administrador) {
+		
 		this.nombre = nombre;
 		this.miembros = new ArrayList<MiembroGrupo>();
 		this.parejasActivas = new ArrayList<Pareja>();
 		this.partidos = new ArrayList<Partido>();
+		miembros.add(new MiembroGrupo(administrador, TipoMiembro.Administrador));
 	}
 
 	public int getId() {
@@ -185,7 +185,7 @@ public class Grupo {
 	
 	public void agregarMiembro(Jugador jugador) {
 	
-		MiembroGrupo miembro = new MiembroGrupo(jugador);
+		MiembroGrupo miembro = new MiembroGrupo(jugador, TipoMiembro.Estandar);
 		miembros.add(miembro);
 	}
 	

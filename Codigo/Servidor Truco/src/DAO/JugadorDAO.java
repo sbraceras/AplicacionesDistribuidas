@@ -1,7 +1,11 @@
 package DAO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.*;
 
+import Bean.Grupo;
 import Bean.Jugador;
 import DTO.JugadorDTO;
 import Hibernate.HibernateUtil;
@@ -47,7 +51,9 @@ public class JugadorDAO {
 			t= s.beginTransaction();
 			s.save(jugador);
 			System.out.println("Jugador Guardado");
+			s.flush();
 			t.commit();
+			s.close();
 			
 		}
 		catch(Exception e){
@@ -60,9 +66,26 @@ public class JugadorDAO {
 		Session s = this.getSession();
 		Jugador devolver;
 		try{
-			System.out.println("Me meti aca");
 			devolver = (Jugador) s.createQuery("select j from Jugador j inner join j.ranking where j.id =:id").setParameter("id", jugador.getId()).uniqueResult();
-			System.out.println(devolver.getApodo());
+			s.close();
+			return devolver;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Error al buscar jugador");
+			return null;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Grupo> obtenerGruposJugador (Jugador jugador){
+		
+		Session s = this.getSession();
+		ArrayList<Grupo> devolver;
+		try{
+			
+			devolver = (ArrayList<Grupo>) s.createQuery("select g from Jugador j inner join j.grupos g where j.id =:id").setParameter("id", jugador.getId()).list();
+			s.close();
 			return devolver;
 		}
 		catch(Exception e){

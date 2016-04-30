@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-
+import DAO.JugadorDAO;
 import DTO.GrupoDTO;
 import DTO.JugadorDTO;
 import DTO.RankingDTO;
@@ -30,7 +30,7 @@ public class Jugador {
 	private String password;
 	@Column (columnDefinition = "tinyint")
 	private TipoCategoria categoria;
-	@ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany (cascade = CascadeType.ALL)
 	@JoinTable (name = "Grupo_Jugador",
 	joinColumns = {@JoinColumn (name = "id_jugador")},
 	inverseJoinColumns = {@JoinColumn (name = "id_grupo")})	
@@ -52,7 +52,24 @@ public class Jugador {
 	}
 
 	public JugadorDTO toDTO(){
-		return null;
+		
+		JugadorDTO dto = new JugadorDTO();
+		
+		dto.setId(this.id);
+		dto.setApodo(this.apodo);
+		dto.setCategoria(this.categoria);
+		ArrayList<GrupoDTO> gruposDto = new ArrayList<GrupoDTO>();
+		
+		for(int i=0; i<grupos.size();i++)
+		{
+			gruposDto.add(grupos.get(i).toDto());
+		}
+		
+		dto.setGrupos(gruposDto);
+		dto.setMail(this.mail);
+		dto.setPassword(this.password);
+		dto.setRanking(this.ranking.toDTO());
+		return dto;
 	}
 	
 	public int getId() {
@@ -108,19 +125,23 @@ public class Jugador {
 	}
 
 	public void setGrupos(ArrayList<Grupo> arrayList) {
+		
 		this.grupos = arrayList;
 	}
 
 	public boolean sosJugador(JugadorDTO jugador) {
-		return false;
+
+		return jugador.getId()==this.id;
 	}
 	
 	public boolean contraseñaCorrecta(String contraseña) {
-		return false;
+
+		return this.password==contraseña;
 	}
 	
-	public TipoCategoria cambiarCategoria() { ////////VER ENUMERATION
-		return null;
+	public void cambiarCategoria(TipoCategoria tipo) { ////////VER ENUMERATION
+		
+		categoria = tipo;
 	}
 	
 	public void actualizarRanking(int puntos, Partido partido) {
@@ -128,10 +149,32 @@ public class Jugador {
 	}
 	
 	public Grupo obtenerGrupo(GrupoDTO grupo) {
+		
+		
+		for(int i=0; i<grupos.size(); i++){
+			
+			if(grupos.get(i).getNombre().equals(grupo.getNombre()))
+					return grupos.get(i);
+		}
+		
+		/*No esta en memoria, levanto lo de la base de datos */
+		
+		grupos = JugadorDAO.getinstance().obtenerGruposJugador(this);
+		for(int i=0; i<grupos.size(); i++){
+			
+		if(grupos.get(i).getNombre().equals(grupo.getNombre()))
+					return grupos.get(i);
+		}
+		
 		return null;
+		
+		
 	}
 	
 	public RankingDTO obtenerRanking() {
-		return null;
+		
+		return this.ranking.toDTO();
 	}
+	
+	
 }

@@ -1,10 +1,15 @@
 package Bean;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
+import DTO.BazaDTO;
+import DTO.CartaDTO;
+import DTO.CartaJugadorDTO;
+import DTO.EnviteDTO;
 import DTO.ManoDTO;
 
 /**
@@ -18,13 +23,14 @@ import DTO.ManoDTO;
 public class Mano {
 	@Id
 	@Column (name = "id_mano", nullable = false)
+	@GeneratedValue
 	private int id;
 	@Column (name = "nro_mano")
 	private int numeroMano;
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_mano")
 	private List<Baza> bazas;
-	@OneToMany (cascade = CascadeType.ALL)
+	@OneToMany (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_mano")
 	private List<CartaJugador> cartasJugador;
 	@Transient
@@ -122,21 +128,53 @@ public class Mano {
 		this.mazo = mazo;
 	}
 
+	
+	/* DESARROLLAR */
+	
+	
 	public Jugador obtenerGanadorEnvido() {
 		return null;
 	}
-	
+	////////////////////////////////////
+	/* NO HIZO FALTA LO HICE DE AFUERA */
+	/////////////////////////////////
 	public void recalcularOrdenJuego() {
 	
 	}
 	
+	/////////////////*****
 	
+	/*    ver bien esto      */
+	
+	
+	////***************///
 	public void nuevaBaza(int numeroBaza, ArrayList<Jugador> ordenJuego) {
 	
+		
 	}
 	
 	public ManoDTO toDTO() {
 		
-		return null;
+		ManoDTO dto = new ManoDTO();
+		dto.setId(this.id);
+		dto.setNumeroMano(this.numeroMano);
+		if(enviteActual!=null){
+			dto.setEnviteActual((EnviteDTO) this.enviteActual.toDTO());
+		}
+		ArrayList<BazaDTO> bazasDto = new ArrayList<BazaDTO>();
+		
+		for(int i=0; i<bazas.size();i++){
+			bazasDto.add(bazas.get(i).toDTO());
+			
+		}
+		dto.setBazas(bazasDto);
+		ArrayList<CartaJugadorDTO> cartasDto = new ArrayList<CartaJugadorDTO>();
+		
+		for(int i=0; i<cartasJugador.size();i++)
+		{
+			cartasDto.add(cartasJugador.get(i).toDTO());
+		}
+		dto.setCartasJugador(cartasDto);
+		return dto;
 	}
 }
