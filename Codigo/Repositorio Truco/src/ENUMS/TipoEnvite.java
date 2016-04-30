@@ -7,6 +7,9 @@ public enum TipoEnvite {
 	FaltaEnvido,
 	Truco,
 	ReTruco,
-	ValeCuatro;
+	ValeCuatro,
+	Quiero,
+	NoQuiero,
+	IrAlMazo;
 
 }

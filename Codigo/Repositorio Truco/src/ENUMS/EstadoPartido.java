@@ -2,6 +2,9 @@ package ENUMS;
 
 public enum EstadoPartido {
 
-	Abierto,
-	Cerrado;
+	Pendiente,
+	Empezado,
+	Terminado,
+	Procesado;
+
 }
