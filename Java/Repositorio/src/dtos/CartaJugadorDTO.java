@@ -1,14 +1,16 @@
 package dtos;
 
+import java.io.Serializable;
 
-public class CartaJugadorDTO {
-	
-	
+public class CartaJugadorDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private int id;
 	private JugadorDTO jugador;
 	private CartaDTO carta;
 	private boolean tirada;
-	
+
 	public CartaJugadorDTO() {
 	}
 
@@ -44,6 +46,4 @@ public class CartaJugadorDTO {
 		this.tirada = tirada;
 	}
 
-	
-	
 }

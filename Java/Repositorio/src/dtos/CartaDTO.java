@@ -1,16 +1,18 @@
 package dtos;
 
-
+import java.io.Serializable;
 
 import enums.Palo;
 
-public class CartaDTO {
+public class CartaDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private int id;
 	private Palo palo;
 	private int numero;
 	private int posicionValor;
-	
+
 	public CartaDTO() {
 	}
 
@@ -45,7 +47,5 @@ public class CartaDTO {
 	public void setPosicionValor(int posicionValor) {
 		this.posicionValor = posicionValor;
 	}
-	
-	
-	
+
 }

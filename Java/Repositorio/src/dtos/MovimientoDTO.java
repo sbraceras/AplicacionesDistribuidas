@@ -1,18 +1,16 @@
 package dtos;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
+public class MovimientoDTO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 
-
-public class MovimientoDTO {
-
-	
-	
 	protected int id;
 	protected int numeroTurno;
 	protected Timestamp fechaHora;
-	
+
 	public MovimientoDTO() {
 	}
 
@@ -39,7 +37,5 @@ public class MovimientoDTO {
 	public void setFechaHora(Timestamp fechaHora) {
 		this.fechaHora = fechaHora;
 	}
-	
-	
-	
+
 }

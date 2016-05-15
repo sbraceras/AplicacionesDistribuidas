@@ -1,14 +1,15 @@
 package dtos;
 
+import java.io.Serializable;
 
+public class CartaTiradaDTO extends MovimientoDTO implements Serializable {
 
-public class CartaTiradaDTO extends MovimientoDTO {
+	private static final long serialVersionUID = 1L;
 
-	
 	private CartaJugadorDTO cartaJugador;
 
 	public CartaTiradaDTO() {
-		
+
 		super();
 	}
 
@@ -19,6 +20,5 @@ public class CartaTiradaDTO extends MovimientoDTO {
 	public void setCartaJugador(CartaJugadorDTO cartaJugador) {
 		this.cartaJugador = cartaJugador;
 	}
-	
-	
+
 }

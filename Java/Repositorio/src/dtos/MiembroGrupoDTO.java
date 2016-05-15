@@ -1,34 +1,29 @@
 package dtos;
 
+import java.io.Serializable;
+
 import enums.TipoMiembro;
 
-public class MiembroGrupoDTO {
-	
+public class MiembroGrupoDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private int id;
 	private JugadorDTO jugador;
 	private RankingDTO ranking;
 	private boolean activo;
 	private TipoMiembro tipoMiembro;
-	
-	
+
 	public MiembroGrupoDTO() {
 	}
 
-	
-	
-	
-	
 	public TipoMiembro getTipoMiembro() {
 		return tipoMiembro;
 	}
 
-
-
 	public void setTipoMiembro(TipoMiembro tipoMiembro) {
 		this.tipoMiembro = tipoMiembro;
 	}
-
-
 
 	public int getId() {
 		return id;
@@ -62,6 +57,4 @@ public class MiembroGrupoDTO {
 		this.activo = activo;
 	}
 
-	
-	
 }

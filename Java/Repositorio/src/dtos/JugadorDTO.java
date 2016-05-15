@@ -1,16 +1,15 @@
 package dtos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import enums.TipoCategoria;
 
+public class JugadorDTO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 
-
-public class JugadorDTO {
-
-	
 	private int id;
 	private String apodo;
 	private RankingDTO ranking;
@@ -18,7 +17,7 @@ public class JugadorDTO {
 	private String password;
 	private TipoCategoria categoria;
 	private List<GrupoDTO> grupos;
-	
+
 	public JugadorDTO() {
 	}
 
@@ -77,6 +76,5 @@ public class JugadorDTO {
 	public void setGrupos(List<GrupoDTO> grupos) {
 		this.grupos = grupos;
 	}
-	
-	
+
 }

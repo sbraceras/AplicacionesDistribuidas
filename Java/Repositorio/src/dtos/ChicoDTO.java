@@ -1,69 +1,68 @@
 package dtos;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ChicoDTO {
+public class ChicoDTO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 
-		private int id;
-		private List<ManoDTO> manos;
-		private List<PuntajeParejaDTO> puntajes;
-		private int puntajeMaximo;
-		private int numeroChico;
-		private boolean terminado;
-		
-		public ChicoDTO() {
-		}
+	private int id;
+	private List<ManoDTO> manos;
+	private List<PuntajeParejaDTO> puntajes;
+	private int puntajeMaximo;
+	private int numeroChico;
+	private boolean terminado;
 
-		public int getId() {
-			return id;
-		}
+	public ChicoDTO() {
+	}
 
-		public void setId(int id) {
-			this.id = id;
-		}
+	public int getId() {
+		return id;
+	}
 
-		public List<ManoDTO> getManos() {
-			return manos;
-		}
+	public void setId(int id) {
+		this.id = id;
+	}
 
-		public void setManos(List<ManoDTO> manos) {
-			this.manos = manos;
-		}
+	public List<ManoDTO> getManos() {
+		return manos;
+	}
 
-		public int getNumeroChico() {
-			return numeroChico;
-		}
+	public void setManos(List<ManoDTO> manos) {
+		this.manos = manos;
+	}
 
-		public void setNumeroChico(int numeroChico) {
-			this.numeroChico = numeroChico;
-		}
+	public int getNumeroChico() {
+		return numeroChico;
+	}
 
-		public List<PuntajeParejaDTO> getPuntajes() {
-			return puntajes;
-		}
+	public void setNumeroChico(int numeroChico) {
+		this.numeroChico = numeroChico;
+	}
 
-		public void setPuntajes(List<PuntajeParejaDTO> puntajes) {
-			this.puntajes = puntajes;
-		}
+	public List<PuntajeParejaDTO> getPuntajes() {
+		return puntajes;
+	}
 
-		public int getPuntajeMaximo() {
-			return puntajeMaximo;
-		}
+	public void setPuntajes(List<PuntajeParejaDTO> puntajes) {
+		this.puntajes = puntajes;
+	}
 
-		public void setPuntajeMaximo(int puntajeMaximo) {
-			this.puntajeMaximo = puntajeMaximo;
-		}
+	public int getPuntajeMaximo() {
+		return puntajeMaximo;
+	}
 
-		public boolean isTerminado() {
-			return terminado;
-		}
+	public void setPuntajeMaximo(int puntajeMaximo) {
+		this.puntajeMaximo = puntajeMaximo;
+	}
 
-		public void setTerminado(boolean terminado) {
-			this.terminado = terminado;
-		}
-		
-		
-		
-		
+	public boolean isTerminado() {
+		return terminado;
+	}
+
+	public void setTerminado(boolean terminado) {
+		this.terminado = terminado;
+	}
+
 }

@@ -1,14 +1,15 @@
 package dtos;
 
+import java.io.Serializable;
 
+public class PuntajeParejaDTO implements Serializable {
 
-public class PuntajeParejaDTO {
-	
-	
-	private int id;	
+	private static final long serialVersionUID = 1L;
+
+	private int id;
 	private ParejaDTO pareja;
 	private int puntaje;
-	
+
 	public PuntajeParejaDTO() {
 	}
 
@@ -36,6 +37,4 @@ public class PuntajeParejaDTO {
 		this.puntaje = puntaje;
 	}
 
-	
-	
 }
