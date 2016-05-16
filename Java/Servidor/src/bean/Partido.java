@@ -53,10 +53,10 @@ public class Partido {
 	public Partido() {
 	}
 
-	public Partido(ArrayList<Pareja> parejas, Timestamp fechaInicio, TipoPartido tipoPartido) {
+	public Partido(List<Pareja> parejas2, Timestamp fechaInicio, TipoPartido tipoPartido) {
 		
 		this.chicos = new ArrayList<Chico>();
-		this.parejas = parejas;
+		this.parejas = parejas2;
 		this.fechaInicio = fechaInicio;
 		this.tipoPartido = tipoPartido;
 		this.estadoPartido = EstadoPartido.Empezado;
