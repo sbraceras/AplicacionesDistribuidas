@@ -215,6 +215,9 @@ public class ServicioCentral {
 
 	}
 
+	
+	///
+
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	public void crearPartidaGrupo(ArrayList<ParejaDTO> parejas, GrupoDTO dto,
 			JugadorDTO administrador) {
@@ -225,7 +228,7 @@ public class ServicioCentral {
 			Jugador jugador = obtenerJugador(administrador);
 
 			if (jugador != null) {
-
+				
 				if (grupo.esAdministrador(jugador)) {
 					ArrayList<Pareja> ingresan = new ArrayList<Pareja>();
 
@@ -248,21 +251,7 @@ public class ServicioCentral {
 		}
 	}
 
-	/*
-	* HACER SEGUN DIAGRAMA DE SECUENCIAS *
-	public void jugarLibreIndividual(JugadorDTO jugador) {
-		Jugador jug = obtenerJugador(jugador);
-		if (jug != null) {
-			esperandoLibreInvidividual.add(jug);
-			if (esperandoLibreInvidividual.size() >= 4) {
-				armarParejasInvididual(jug.getCategoria());
-				// seguir //
-			}
-
-		}
-	}
-	*/
-	
+		
 	public PartidoDTO armarPartidoIndividual(){
 		
 		if (esperandoLibreInvidividual.size()>=4 && !esperandoLibreInvidividual.isEmpty()){
@@ -286,6 +275,7 @@ public class ServicioCentral {
 				parejas.add(pareja1);
 				parejas.add(pareja2);
 				
+				esperandoLibreInvidividual.remove(jugadoresPosibles);
 				partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 				return partido.toDTO();
 			}
@@ -337,6 +327,7 @@ public class ServicioCentral {
 					//invocar a armarPartido//
 					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+						esperandoLibreInvidividual.remove(jugadoresPosibles);
 						return partido.toDTO();
 					}
 				}
@@ -352,7 +343,6 @@ public class ServicioCentral {
 				
 				//Si encontre 4 jugadores entre categoria original y menor//
 				if (jugadoresPosibles.size()==4){
-					esperandoLibreInvidividual.remove(jugadoresPosibles);
 					//componer parejas//
 					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
 					Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
@@ -362,6 +352,7 @@ public class ServicioCentral {
 					//invocar a armarPartido//
 					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+						esperandoLibreInvidividual.remove(jugadoresPosibles);
 						return partido.toDTO();
 					}
 				}
@@ -468,6 +459,11 @@ public class ServicioCentral {
 			devolver.add(jug.get(i).toDTO());
 		}
 		return devolver;
+	}
+	
+	/* DESARROLLAR CON HQL */
+	public List<PartidoDTO> obtenerPartidosJugador(JugadorDTO jugador){
+		return null;
 	}
 
 	/* DESARROLLAR */
