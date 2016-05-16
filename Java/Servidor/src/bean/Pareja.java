@@ -18,12 +18,15 @@ public class Pareja {
 	@Column (name = "id_pareja", nullable = false)
 	@GeneratedValue
 	private int id;
+
 	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_jugador1")
 	private Jugador jugador1;
+
 	@ManyToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_jugador2")
 	private Jugador jugador2;
+
 	@Column (name = "nro_Pareja")
 	private int numeroPareja;
 	

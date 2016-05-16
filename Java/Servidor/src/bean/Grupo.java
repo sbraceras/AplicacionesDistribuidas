@@ -28,6 +28,7 @@ public class Grupo {
 	private int id;
 	@Column
 	private String nombre;
+
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_grupo")
 	private List<MiembroGrupo> miembros;
@@ -36,15 +37,13 @@ public class Grupo {
 	/* Las Parejas Activas no se persisten */
 	@Transient
 	private List<Pareja> parejasActivas;
-	
-	
+
 	@OneToMany (cascade = CascadeType.ALL)  /*fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_grupo")
 	private List<Partido> partidos;
 	
 	
 	public GrupoDTO toDto(){
-		
 		GrupoDTO dto = new GrupoDTO();
 		dto.setId(this.id);
 		dto.setNombre(this.nombre);
@@ -74,12 +73,10 @@ public class Grupo {
 	}
 	
 	public Grupo() {
-		
 		parejasActivas = new ArrayList<Pareja>();
 	}
 
 	public Grupo(String nombre, Jugador administrador) {
-		
 		this.nombre = nombre;
 		this.miembros = new ArrayList<MiembroGrupo>();
 		this.parejasActivas = new ArrayList<Pareja>();

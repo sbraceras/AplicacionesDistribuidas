@@ -19,11 +19,11 @@ import dtos.PartidoDTO;
 import dtos.RankingDTO;
 import enums.TipoCategoria;
 import enums.TipoPartido;
-
+import exceptions.JugadorException;
 
 /**
  * Es el controlador del negocio
-**/
+ **/
 public class ServicioCentral {
 
 	private static ServicioCentral instancia;
@@ -36,201 +36,212 @@ public class ServicioCentral {
 	private ArrayList<Pareja> esperandoLibreParejas;
 	private static ServicioCentral controlador;
 
-	public ServicioCentral() {
+	private ServicioCentral() {
 		this.jugadores = new ArrayList<Jugador>();
 		this.partidos = new ArrayList<Partido>();
 		this.grupos = new ArrayList<Grupo>();
 		this.sesiones = new ArrayList<Jugador>();
 		this.esperandoLibreInvidividual = new ArrayList<Jugador>();
 		this.esperandoLibreParejas = new ArrayList<Pareja>();
-		
-		/*Jugador jug = new Jugador("Gaston","Gaston", "123");
-		
-		JugadorDAO.getinstance().guardarJugador(jug);
-		
-		jug = null;
-		
-		JugadorDTO pepe = new JugadorDTO();
-		pepe.setId(1);
 
-		jug = JugadorDAO.getinstance().buscarJugador(pepe);
-		
-		Grupo juan = new Grupo("los totora", jug);
-		
-		GrupoDAO.getInstancia().guardarGrupo(juan);
-		juan=null;
-		GrupoDTO grupo = new GrupoDTO();
-		grupo.setId(1);
-		juan = GrupoDAO.getInstancia().buscarGrupo(grupo);
-		
-		System.out.println(juan.getNombre());*/
-		
-		
-				
+		/*
+		 * Jugador jug = new Jugador("Gaston","Gaston", "123");
+		 * 
+		 * JugadorDAO.getinstance().guardarJugador(jug);
+		 * 
+		 * jug = null;
+		 * 
+		 * JugadorDTO pepe = new JugadorDTO(); pepe.setId(1);
+		 * 
+		 * jug = JugadorDAO.getinstance().buscarJugador(pepe);
+		 * 
+		 * Grupo juan = new Grupo("los totora", jug);
+		 * 
+		 * GrupoDAO.getInstancia().guardarGrupo(juan); juan=null; GrupoDTO grupo
+		 * = new GrupoDTO(); grupo.setId(1); juan =
+		 * GrupoDAO.getInstancia().buscarGrupo(grupo);
+		 * 
+		 * System.out.println(juan.getNombre());
+		 */
+
 	}
 
 	public static ServicioCentral getInstance() {
-		if(controlador == null) {
+		if (controlador == null) {
 			controlador = new ServicioCentral();
 		}
 		return controlador;
 	}
 
-	public void registrarJugador(JugadorDTO jugador) {
-		Jugador validar = obtenerJugador(jugador);
-		if(validar == null){
-		    Jugador jug= new Jugador(jugador.getApodo(), jugador.getPassword(), jugador.getPassword());
-		    JugadorDAO.getinstance().guardarJugador(jug);
+	public void registrarJugador(JugadorDTO jugador) throws JugadorException {
+		Jugador jug = obtenerJugadorPorMailYApodo(jugador);
+
+		if (jug != null) {
+			if (jug.getMail().equalsIgnoreCase(jugador.getMail()))
+				throw new JugadorException("El correo electrónico ingresado ya está en uso");
+			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()))
+				throw new JugadorException("El apodo ingresado ya está en uso");
+		} else {
+			// Podemos registrar el Jugador! 
+			// Suponemos que la validación de la segunda password la hace la interfaz
+			jug = new Jugador(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
+
+			JugadorDAO.getinstance().guardarJugador(jug);
 			jugadores.add(jug);
 		}
 	}
-	
+
+	private Jugador obtenerJugadorPorMailYApodo(JugadorDTO jugador) {
+		for (Jugador jug: jugadores) {
+			if (jug.getMail().equalsIgnoreCase(jugador.getMail()) ||
+				jug.getApodo().equalsIgnoreCase(jugador.getApodo())) {
+				return jug;
+			}
+		}
+
+		// no lo encontro en memoria, lo busco en la BD
+		Jugador jug = JugadorDAO.getinstance().buscarJugadorPorMailYApodo(jugador);
+
+		if (jug != null)
+			jugadores.add(jug); // lo agrego a memoria
+
+		return jug;
+	}
+
 	private Jugador obtenerJugador(JugadorDTO jugador) {
-		
-		for (int i =0; i<jugadores.size(); i++){
-			if (jugadores.get(i).getId() == jugador.getId())
+		for (int i = 0; i < jugadores.size(); i++) {
+			if (jugadores.get(i).sosJugador(jugador))
 				return jugadores.get(i);
 		}
-		
-		/* Todavia no lo encontro lo busco en memoria */
-		
-		Jugador devolver = JugadorDAO.getinstance().buscarJugador(jugador);
-		
-		if(devolver !=null)
-			jugadores.add(devolver); // lo agrego a memoria
-		
-		return devolver;
+
+		// no lo encontro en memoria, lo busco en la BD
+		Jugador jug = JugadorDAO.getinstance().buscarJugador(jugador);
+
+		if (jug != null)
+			jugadores.add(jug); // lo agrego a memoria
+
+		return jug;
 	}
-	
+
 	public boolean existeGrupo(GrupoDTO dto) {
-		if(obtenerGrupo(dto)!=null)
+		if (obtenerGrupo(dto) != null)
 			return true;
 		return false;
 	}
-	
-	
-	public RankingDTO obtenerRankingGeneral(JugadorDTO jugador, ArrayList<RankingDTO> rank){
-		Jugador jug= obtenerJugador(jugador);
-		if (jug !=null){
+
+	public RankingDTO obtenerRankingGeneral(JugadorDTO jugador,
+			ArrayList<RankingDTO> rank) {
+		Jugador jug = obtenerJugador(jugador);
+		if (jug != null) {
 			RankingDTO devolver = new RankingDTO();
 			devolver = obtenerRanking(jug);
 			return devolver;
 		}
 		return null;
 	}
-	
-	public RankingDTO obtenerRanking(Jugador jug){
-				
+
+	public RankingDTO obtenerRanking(Jugador jug) {
 		return jug.getRanking().toDTO();
 	}
 
 	public void crearGrupo(GrupoDTO dto, JugadorDTO administrador) {
-		
-		if(!existeGrupo(dto))
-		{
+
+		if (!existeGrupo(dto)) {
 			Jugador jug = obtenerJugador(administrador);
-			if(jug!=null)
-			{
+			if (jug != null) {
 				Grupo grupo = new Grupo(dto.getNombre(), jug);
 				GrupoDAO.getInstancia().guardarGrupo(grupo);
 				grupos.add(grupo);
 			}
 		}
-		
+
 	}
 
 	public void agregarJugadorGrupo(ArrayList<JugadorDTO> agregar, GrupoDTO dto, JugadorDTO administrador) {
-	
 		Grupo grupo = obtenerGrupo(dto);
-		
-		if(grupo !=null){
-			
+
+		if (grupo != null) {
+
 			Jugador jugador = obtenerJugador(administrador);
-			
-			if(jugador !=null)
-			{
-				if(grupo.esAdministrador(jugador)){
-					
+
+			if (jugador != null) {
+				if (grupo.esAdministrador(jugador)) {
+
 					Jugador jug2;
-					
-					for(int i=0; i<agregar.size(); i++){
-						
-							jug2= obtenerJugador(agregar.get(i));
-							if(jug2!=null){
-								grupo.agregarMiembro(jug2);
-							}
-						
-					}
-					
-				}
-			}
-			
-		}
-		
-	}
 
-	
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
+					for (int i = 0; i < agregar.size(); i++) {
 
-	public void armarParejaGrupo(ArrayList<JugadorDTO> integrantes, GrupoDTO dto, JugadorDTO administrador) {
-	
-		
-		Grupo grupo = obtenerGrupo(dto);
-		
-		if(grupo!= null){
-			
-			Jugador jugador = obtenerJugador(administrador);
-			
-			if(jugador!=null){
-				
-				if(grupo.esAdministrador(jugador)){
-					
-				
-						ArrayList<Jugador> parejas = new ArrayList<Jugador>();
-						
-						for(int i=0; i<integrantes.size(); i++){
-							
-							parejas.add(obtenerJugador(integrantes.get(i)));							
+						jug2 = obtenerJugador(agregar.get(i));
+						if (jug2 != null) {
+							grupo.agregarMiembro(jug2);
 						}
-						
-						grupo.armarPareja(parejas);
-					
-					
+
+					}
+
 				}
-				
-				
 			}
-			
-			
+
 		}
-		
-		
+
 	}
 
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	public void crearPartidaGrupo(ArrayList<ParejaDTO> parejas, GrupoDTO dto, JugadorDTO administrador) {		
+
+	public void armarParejaGrupo(ArrayList<JugadorDTO> integrantes,
+			GrupoDTO dto, JugadorDTO administrador) {
+
 		Grupo grupo = obtenerGrupo(dto);
-		
-		if(grupo != null){
-			
+
+		if (grupo != null) {
+
 			Jugador jugador = obtenerJugador(administrador);
-			
-			if(jugador !=null){
-				
-				if(grupo.esAdministrador(jugador))
-				{
+
+			if (jugador != null) {
+
+				if (grupo.esAdministrador(jugador)) {
+
+					ArrayList<Jugador> parejas = new ArrayList<Jugador>();
+
+					for (int i = 0; i < integrantes.size(); i++) {
+
+						parejas.add(obtenerJugador(integrantes.get(i)));
+					}
+
+					grupo.armarPareja(parejas);
+
+				}
+
+			}
+
+		}
+
+	}
+
+	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
+	public void crearPartidaGrupo(ArrayList<ParejaDTO> parejas, GrupoDTO dto,
+			JugadorDTO administrador) {
+		Grupo grupo = obtenerGrupo(dto);
+
+		if (grupo != null) {
+
+			Jugador jugador = obtenerJugador(administrador);
+
+			if (jugador != null) {
+
+				if (grupo.esAdministrador(jugador)) {
 					ArrayList<Pareja> ingresan = new ArrayList<Pareja>();
-					
-					for(int i=0; i< parejas.size(); i++){
-						
-						if(grupo.tenesPareja(parejas.get(i)))
+
+					for (int i = 0; i < parejas.size(); i++) {
+
+						if (grupo.tenesPareja(parejas.get(i)))
 							ingresan.add(grupo.obtenerPareja(parejas.get(i)));
 					}
-					
-					if(ingresan.size()==2) /* tengo ambas parejas activas */
+
+					if (ingresan.size() == 2) /* tengo ambas parejas activas */
 					{
 						Date date = new Date();
-						Partido partido = new Partido(ingresan, (Timestamp) date, TipoPartido.Grupo);
+						Partido partido = new Partido(ingresan,
+								(Timestamp) date, TipoPartido.Grupo);
 						grupo.agregarPartido(partido);
 						partidos.add(partido);
 					}
@@ -238,187 +249,180 @@ public class ServicioCentral {
 			}
 		}
 	}
-	
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */	
+
+	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	public void jugarLibreIndividual(JugadorDTO jugador) {
 		Jugador jug = obtenerJugador(jugador);
-		if(jug!=null){
+		if (jug != null) {
 			esperandoLibreInvidividual.add(jug);
-			if(esperandoLibreInvidividual.size() >= 4){
+			if (esperandoLibreInvidividual.size() >= 4) {
 				armarParejasInvididual(jug.getCategoria());
-				//seguir
+				// seguir
 			}
-			
+
 		}
 	}
-	
+
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	private ArrayList<Pareja> armarParejasInvididual(TipoCategoria categoria) {
-	
+
 		return null;
 	}
+
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	private Partido armarPartido(ArrayList<Pareja> parejas, String tipoPartido) {
-		
+
 		return null;
-	
+
 	}
+
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	private Pareja obtenerParejaEnemiga(TipoCategoria categoria) {
-	
+
 		return null;
 	}
+
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	public void jugarLibreParejas(ParejaDTO pareja) {
-	
+
 	}
-	
-	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo, JugadorDTO administrador) {
-	
+
+	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo,
+			JugadorDTO administrador) {
+
 		Jugador aux = obtenerJugador(jugador);
 		Grupo grup;
 		Jugador administradorReal;
-		if(aux!=null)
-		{
+		if (aux != null) {
 			grup = obtenerGrupo(grupo);
-			if(grup!=null)
-			{
+			if (grup != null) {
 				administradorReal = obtenerJugador(administrador);
-				if(grup.esAdministrador(administradorReal))
-				{
+				if (grup.esAdministrador(administradorReal)) {
 					grup.eliminarMiembroGrupo(aux);
 				}
 			}
 		}
 	}
-	
+
 	public void iniciarSesion(JugadorDTO jugador) {
-	
+
 		Jugador real = obtenerJugador(jugador);
-		
-		if(real != null)
-		{
-			if(real.getMail().equals(jugador.getMail()))
-				if(real.getPassword().equals(jugador.getPassword()))
-				{
+
+		if (real != null) {
+			if (real.getMail().equals(jugador.getMail()))
+				if (real.getPassword().equals(jugador.getPassword())) {
 					System.out.println("LogIn Correcto");
 					sesiones.add(real);
-				}
-				else
+				} else
 					System.out.println("Contraseña Incorrecta");
 			else
 				System.out.println("Mail Incorrecto");
-		}
-		else
+		} else
 			System.out.println("El jugador no Existe");
 	}
-	
-	
+
 	public void cerrarSesion(JugadorDTO jugador) {
-		
-	
-		for(int i=0; i<sesiones.size(); i++){
-			
-			if(sesiones.get(i).sosJugador(jugador))
+
+		for (int i = 0; i < sesiones.size(); i++) {
+
+			if (sesiones.get(i).sosJugador(jugador))
 				sesiones.remove(i);
 		}
-	
+
 	}
-	
+
 	/* DESARROLLAR CON HQL */
 	public ArrayList<JugadorDTO> obtenerJugadores() {
-	
+
 		ArrayList<Jugador> jug = JugadorDAO.getinstance().obtenerJugadores();
-		
+
 		ArrayList<JugadorDTO> devolver = new ArrayList<JugadorDTO>();
-		
-		for(int i=0; i<jug.size(); i++){
-			
+
+		for (int i = 0; i < jug.size(); i++) {
+
 			devolver.add(jug.get(i).toDTO());
 		}
 		return devolver;
 	}
-	
+
 	/* DESARROLLAR */
-	public ArrayList<PartidoDTO> obtenerPartidos(Timestamp fechaDesde, Timestamp fechaHasta, TipoPartido modalidad, JugadorDTO jugador) {
-	
+	public ArrayList<PartidoDTO> obtenerPartidos(Timestamp fechaDesde,
+			Timestamp fechaHasta, TipoPartido modalidad, JugadorDTO jugador) {
+
 		return null;
-	}
-	
-	public PartidoDTO obtenerPartidoJugado(PartidoDTO partido) {
-	
-		for(int i=0; i<partidos.size(); i++)
-		{
-			if(partido.getId()==partidos.get(i).getId())
-				return partidos.get(i).toDTO();
-		}
-		
-		/* faltar partido dao*/
-		
-		return null;
-	}
-	
-	
-	/* DESARROLLAR */
-	public ChicoDTO obtenerChicoDTO(PartidoDTO partido, int chico) {
-	
-		return null;
-	}
-	/* DESARROLLAR */
-	public ArrayList<RankingDTO> obtenerRankingGeneral(JugadorDTO jugador) {
-	
-			return null;
 	}
 
-	
-	public ArrayList<RankingDTO> obtenerRankingGrupo(GrupoDTO grupo, JugadorDTO jugador) {
+	public PartidoDTO obtenerPartidoJugado(PartidoDTO partido) {
+
+		for (int i = 0; i < partidos.size(); i++) {
+			if (partido.getId() == partidos.get(i).getId())
+				return partidos.get(i).toDTO();
+		}
+
+		/* faltar partido dao */
+
+		return null;
+	}
+
+	/* DESARROLLAR */
+	public ChicoDTO obtenerChicoDTO(PartidoDTO partido, int chico) {
+
+		return null;
+	}
+
+	/* DESARROLLAR */
+	public ArrayList<RankingDTO> obtenerRankingGeneral(JugadorDTO jugador) {
+
+		return null;
+	}
+
+	public ArrayList<RankingDTO> obtenerRankingGrupo(GrupoDTO grupo,
+			JugadorDTO jugador) {
 		Grupo grup = obtenerGrupo(grupo);
-		if(grup!=null){
+		if (grup != null) {
 
 			return grup.obtenerRanking();
 		}
-		
+
 		return null;
 
 	}
+
 	/* DESARROLLAR */
 	public Pareja armarPareja(ArrayList<Jugador> jugadores) {
-	
-			return null;
-	}
-	
-	
-	public Grupo obtenerGrupo(GrupoDTO dto) {
-			
-			
-			for(int i=0;i<grupos.size();i++){
-				if(grupos.get(i).getNombre().equals(dto.getNombre()))
-					return grupos.get(i);
-			}
-			
-			/* No lo encontro en memoria */
-			
-			Grupo grupo = GrupoDAO.getInstancia().buscarGrupo(dto);
-			
-			if(grupo!=null)
-			{
-				grupos.add(grupo); /* lo agrego a memoria*/
-			}
-			
-			return grupo;
-	}
-	public ArrayList<GrupoDTO> ObtenerGrupos (){
 
+		return null;
+	}
+
+	public Grupo obtenerGrupo(GrupoDTO dto) {
+
+		for (int i = 0; i < grupos.size(); i++) {
+			if (grupos.get(i).getNombre().equals(dto.getNombre()))
+				return grupos.get(i);
+		}
+
+		/* No lo encontro en memoria */
+
+		Grupo grupo = GrupoDAO.getInstancia().buscarGrupo(dto);
+
+		if (grupo != null) {
+			grupos.add(grupo); /* lo agrego a memoria */
+		}
+
+		return grupo;
+	}
+
+	public ArrayList<GrupoDTO> ObtenerGrupos() {
 
 		List<Grupo> grup = GrupoDAO.getInstancia().obtenerGrupos();
-		
+
 		ArrayList<GrupoDTO> devolver = new ArrayList<GrupoDTO>();
-		
-		for(int i=0; i<grup.size(); i++){
+
+		for (int i = 0; i < grup.size(); i++) {
 			devolver.add(grup.get(i).toDto());
 		}
-		
+
 		return devolver;
 	}
-	
+
 }

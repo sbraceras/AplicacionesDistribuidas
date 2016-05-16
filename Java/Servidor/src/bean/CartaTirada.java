@@ -8,6 +8,7 @@ import dtos.CartaTiradaDTO;
 @Entity
 @DiscriminatorValue("ct")
 public class CartaTirada extends Movimiento {
+
 	@OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_cartaJugador")
 	private CartaJugador cartaJugador;

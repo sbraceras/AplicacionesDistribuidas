@@ -29,6 +29,7 @@ public class Partido {
 	@Column (name = "id_partido", nullable = false)
 	@GeneratedValue
 	private int id;
+
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_partido")
 	private List<Pareja> parejas;
@@ -43,6 +44,7 @@ public class Partido {
 	private TipoPartido tipoPartido;
 	@Column (columnDefinition = "int")
 	private EstadoPartido estadoPartido;
+	
 	@OneToMany (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_partido")
 	private List<Chico> chicos;
@@ -88,9 +90,6 @@ public class Partido {
 		
 		return dto;
 	}
-	
-	
-
 
 	public int getId() {
 		return id;
@@ -170,7 +169,6 @@ public class Partido {
 	}
 	
 	public boolean sosDelPeriodo(Date desde, Date hasta) {
-		
 		if(this.fechaInicio.equals(desde))
 			return true;
 		else
@@ -212,7 +210,6 @@ public class Partido {
 	
 	
 	public Chico obtenerChicoActivo() {
-		
 		Chico aux=null;
 		
 		for(int i=0; i<chicos.size();i++)
@@ -226,7 +223,6 @@ public class Partido {
 	
 		
 	public void actualizarRankingJugadores() {
-		
 		Pareja ganadora = parejas.get(parejaGanadora);  /* considero que primer pareja es 0 y la segunda 1 */
 		Pareja perdedora;
 		if(parejaGanadora ==0)

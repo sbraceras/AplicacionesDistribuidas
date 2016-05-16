@@ -8,8 +8,6 @@ import javax.persistence.*;
 import dtos.PartidoDTO;
 import dtos.RankingDTO;
 
-
-
 @Entity
 @Table (name = "Rankings")
 public class Ranking {
@@ -17,20 +15,18 @@ public class Ranking {
 	@Column (name = "id_ranking")
 	@GeneratedValue
 	private int id;
-	@ManyToMany (cascade = CascadeType.ALL)
-	@JoinTable (name = "Ranking_Partido", 
-	joinColumns ={@JoinColumn (name = "id_partido")},
-	inverseJoinColumns = {@JoinColumn (name = "id_ranking")})
+
+	@ManyToMany
+	@JoinTable (name = "Ranking_Partido", joinColumns = 
+		{@JoinColumn (name = "id_ranking")}, inverseJoinColumns = {@JoinColumn (name = "id_partido")})
 	private List<Partido> partidos;
+
 	@Column
 	private int puntos;
 	@Column (name = "cant_ganadas")
 	private int cantidadGanadas;
 	
-	
-	
 	public Ranking() {
-		
 		this.partidos = new ArrayList<Partido>();
 		this.puntos = 0;
 		this.cantidadGanadas = 0;
