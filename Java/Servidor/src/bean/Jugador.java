@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import daos.JugadorDAO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
@@ -22,7 +25,7 @@ public class Jugador {
 	@Column
 	private String apodo;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_ranking")
 	private Ranking ranking;
 
@@ -33,10 +36,11 @@ public class Jugador {
 	@Column(columnDefinition = "tinyint")
 	private TipoCategoria categoria;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL) //fetch = FetchType.EAGER)
 	@JoinTable(name = "Grupo_Jugador",
 		joinColumns = { @JoinColumn(name = "id_jugador") },
 		inverseJoinColumns = { @JoinColumn(name = "id_grupo") })
+//	@LazyCollection (LazyCollectionOption.FALSE)
 	private List<Grupo> grupos;
 
 	public Jugador() {
@@ -58,11 +62,11 @@ public class Jugador {
 		dto.setApodo(this.apodo);
 		dto.setCategoria(this.categoria);
 		ArrayList<GrupoDTO> gruposDto = new ArrayList<GrupoDTO>();
-
-		for (int i = 0; i < grupos.size(); i++) {
+		
+		for (int i = 0; i < this.grupos.size(); i++) {
 			gruposDto.add(grupos.get(i).toDto());
 		}
-
+		
 		dto.setGrupos(gruposDto);
 		dto.setMail(this.mail);
 		dto.setPassword(this.password);
@@ -163,6 +167,11 @@ public class Jugador {
 
 	public RankingDTO obtenerRanking() {
 		return this.ranking.toDTO();
+	}
+	
+	public void agregarGrupo(Grupo grupo){
+		
+		grupos.add(grupo);		
 	}
 
 }

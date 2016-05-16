@@ -57,7 +57,7 @@ public class JugadorDAO {
 		Session s = this.getSession();
 		try {
 			Jugador devolver = (Jugador) s.createQuery(
-					"select j from Jugador j inner join j.ranking where j.id =:id")
+					"select j from Jugador j inner join j.ranking  inner join j.grupos where j.id =:id")
 					.setParameter("id", jugador.getId()).uniqueResult();
 
 			s.close();
@@ -93,7 +93,7 @@ public class JugadorDAO {
 		try {
 			Jugador jug = (Jugador) s.createQuery(
 					"select j " +
-					"from Jugador j inner join j.ranking " +
+					"from Jugador j inner join j.ranking left join j.grupos " +
 					"where j.apodo = :apodo and j.password = :password")
 					.setParameter("apodo", jugador.getApodo())
 					.setParameter("password", jugador.getPassword())
@@ -104,9 +104,14 @@ public class JugadorDAO {
 			// OJO, la consulta anterior no es case sensitive, por lo tanto
 			// no tiene en cuenta las mayúsculas y minúsculas de la Password,
 			// valido entonces que sean exactamente iguales!
-			if (!jug.getPassword().equals(jugador.getPassword()))
-				jug = null;
-
+			
+			if(jug != null)
+			{
+				if (!jug.getPassword().equals(jugador.getPassword()))
+					jug = null;
+					
+			}
+			
 			return jug;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -140,7 +145,7 @@ public class JugadorDAO {
 		try {
 
 			jugadores = (ArrayList<Jugador>) s.createQuery(
-					"Select j from Jugador j inner join j.grupos").list();
+					"Select j from Jugador j left join j.grupos").list();
 			s.close();
 			return jugadores;
 		} catch (Exception e) {

@@ -55,6 +55,25 @@ public class GrupoDAO {
 		}
 	}
 	
+
+	public Grupo buscarGrupoPorNombre (GrupoDTO grupo){
+		
+		Session s = this.getSession();
+		Grupo devolver;
+		try{
+			
+			devolver = (Grupo) s.createQuery("Select g from Grupo g inner join g.miembros where g.nombre =:nombre").setParameter("nombre", grupo.getNombre()).uniqueResult();
+			s.close();
+			return devolver;
+		}
+		catch(Exception e){
+			
+			System.out.println("Error al obtener Grupo");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public void guardarGrupo (Grupo grupo){
 		
 		Transaction t =null;

@@ -147,6 +147,7 @@ public class ServicioCentral {
 			Jugador jug = obtenerJugador(administrador);
 			if (jug != null) {
 				Grupo grupo = new Grupo(dto.getNombre(), jug);
+				jug.agregarGrupo(grupo);
 				GrupoDAO.getInstancia().guardarGrupo(grupo);
 				grupos.add(grupo);
 			}
@@ -400,7 +401,7 @@ public class ServicioCentral {
 
 		/* No lo encontro en memoria */
 
-		Grupo grupo = GrupoDAO.getInstancia().buscarGrupo(dto);
+		Grupo grupo = GrupoDAO.getInstancia().buscarGrupoPorNombre(dto);
 
 		if (grupo != null) {
 			grupos.add(grupo); /* lo agrego a memoria */

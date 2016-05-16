@@ -1,7 +1,10 @@
 package server;
 
+import java.util.ArrayList;
+
 import controlador.ServicioCentral;
-import dtos.*;
+import dtos.GrupoDTO;
+import dtos.JugadorDTO;
 import exceptions.JugadorException;
 
 public class TestSegundaEntrega {
@@ -64,6 +67,20 @@ public class TestSegundaEntrega {
 		} catch (JugadorException e) {
 			System.err.println(e.getMessage());
 		}
+		
+		jugador.setId(14);
+		
+		GrupoDTO grupo = new GrupoDTO();
+		grupo.setNombre("UADE");
+				
+		ServicioCentral.getInstance().crearGrupo(grupo, jugador);
+		
+		
+		ArrayList<JugadorDTO> jugadores = ServicioCentral.getInstance().obtenerJugadores();
+		
+		
+		
+		ServicioCentral.getInstance().agregarJugadorGrupo(jugadores, grupo , jugador);
 
 	}
 
