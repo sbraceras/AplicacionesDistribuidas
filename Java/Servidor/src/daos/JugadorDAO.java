@@ -69,7 +69,7 @@ public class JugadorDAO {
 		}
 	}
 
-	public Jugador buscarJugadorPorMailYApodo(JugadorDTO jugador) {
+	public Jugador buscarJugadorPorApodoMail(JugadorDTO jugador) {
 		Session s = this.getSession();
 		try {
 			Jugador jug = (Jugador) s.createQuery(
@@ -81,6 +81,32 @@ public class JugadorDAO {
 					.uniqueResult();
 
 			s.close();
+			return jug;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public Jugador buscarJugadorPorApodoPassword(JugadorDTO jugador) {
+		Session s = this.getSession();
+		try {
+			Jugador jug = (Jugador) s.createQuery(
+					"select j " +
+					"from Jugador j inner join j.ranking " +
+					"where j.apodo = :apodo and j.password = :password")
+					.setParameter("apodo", jugador.getApodo())
+					.setParameter("password", jugador.getPassword())
+					.uniqueResult();
+
+			s.close();
+
+			// OJO, la consulta anterior no es case sensitive, por lo tanto
+			// no tiene en cuenta las mayúsculas y minúsculas de la Password,
+			// valido entonces que sean exactamente iguales!
+			if (!jug.getPassword().equals(jugador.getPassword()))
+				jug = null;
+
 			return jug;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,4 +149,5 @@ public class JugadorDAO {
 			return null;
 		}
 	}
+
 }

@@ -43,27 +43,6 @@ public class ServicioCentral {
 		this.sesiones = new ArrayList<Jugador>();
 		this.esperandoLibreInvidividual = new ArrayList<Jugador>();
 		this.esperandoLibreParejas = new ArrayList<Pareja>();
-
-		/*
-		 * Jugador jug = new Jugador("Gaston","Gaston", "123");
-		 * 
-		 * JugadorDAO.getinstance().guardarJugador(jug);
-		 * 
-		 * jug = null;
-		 * 
-		 * JugadorDTO pepe = new JugadorDTO(); pepe.setId(1);
-		 * 
-		 * jug = JugadorDAO.getinstance().buscarJugador(pepe);
-		 * 
-		 * Grupo juan = new Grupo("los totora", jug);
-		 * 
-		 * GrupoDAO.getInstancia().guardarGrupo(juan); juan=null; GrupoDTO grupo
-		 * = new GrupoDTO(); grupo.setId(1); juan =
-		 * GrupoDAO.getInstancia().buscarGrupo(grupo);
-		 * 
-		 * System.out.println(juan.getNombre());
-		 */
-
 	}
 
 	public static ServicioCentral getInstance() {
@@ -74,13 +53,13 @@ public class ServicioCentral {
 	}
 
 	public void registrarJugador(JugadorDTO jugador) throws JugadorException {
-		Jugador jug = obtenerJugadorPorMailYApodo(jugador);
+		Jugador jug = obtenerJugadorPorApodoMail(jugador);
 
 		if (jug != null) {
-			if (jug.getMail().equalsIgnoreCase(jugador.getMail()))
-				throw new JugadorException("El correo electrónico ingresado ya está en uso");
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()))
 				throw new JugadorException("El apodo ingresado ya está en uso");
+			if (jug.getMail().equalsIgnoreCase(jugador.getMail()))
+				throw new JugadorException("El correo electrónico ingresado ya está en uso");
 		} else {
 			// Podemos registrar el Jugador! 
 			// Suponemos que la validación de la segunda password la hace la interfaz
@@ -91,7 +70,25 @@ public class ServicioCentral {
 		}
 	}
 
-	private Jugador obtenerJugadorPorMailYApodo(JugadorDTO jugador) {
+	private Jugador obtenerJugadorPorApodoPassword(JugadorDTO jugador) {
+		for (Jugador jug: jugadores) {
+			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()) &&
+				// La Password la hacemos sensible a Mayúsculas
+				jug.getPassword().equals(jugador.getPassword())) {
+					return jug;
+			}
+		}
+
+		// no lo encontró en memoria, lo busco en la BD
+		Jugador jug = JugadorDAO.getinstance().buscarJugadorPorApodoPassword(jugador);
+
+		if (jug != null)
+			jugadores.add(jug); // lo subo a memoria
+
+		return jug;
+	}
+
+	private Jugador obtenerJugadorPorApodoMail(JugadorDTO jugador) {
 		for (Jugador jug: jugadores) {
 			if (jug.getMail().equalsIgnoreCase(jugador.getMail()) ||
 				jug.getApodo().equalsIgnoreCase(jugador.getApodo())) {
@@ -100,7 +97,7 @@ public class ServicioCentral {
 		}
 
 		// no lo encontro en memoria, lo busco en la BD
-		Jugador jug = JugadorDAO.getinstance().buscarJugadorPorMailYApodo(jugador);
+		Jugador jug = JugadorDAO.getinstance().buscarJugadorPorApodoMail(jugador);
 
 		if (jug != null)
 			jugadores.add(jug); // lo agrego a memoria
@@ -304,21 +301,21 @@ public class ServicioCentral {
 		}
 	}
 
-	public void iniciarSesion(JugadorDTO jugador) {
+	/* 
+	 * El jugador ingresa su apodo y su password, si es un jugador registrado 
+	 * y su password concuerda con la almacenada se le permite pasar al área 
+	 * de juego para elegir el tipo de partida a jugar.
+	 */
+	public void iniciarSesion(JugadorDTO jugador) throws JugadorException {
+		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
-		Jugador real = obtenerJugador(jugador);
-
-		if (real != null) {
-			if (real.getMail().equals(jugador.getMail()))
-				if (real.getPassword().equals(jugador.getPassword())) {
-					System.out.println("LogIn Correcto");
-					sesiones.add(real);
-				} else
-					System.out.println("Contraseña Incorrecta");
-			else
-				System.out.println("Mail Incorrecto");
-		} else
-			System.out.println("El jugador no Existe");
+		if (jug == null) {
+			throw new JugadorException("Inicio de sesión no válido. " +
+				"Por favor, verifique sus credenciales.");
+		} else {
+			System.out.println("LogIn Correcto");
+			sesiones.add(jug);
+		}
 	}
 
 	public void cerrarSesion(JugadorDTO jugador) {
