@@ -271,11 +271,23 @@ public class ServicioCentral {
 			String categoriaMedia = esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1).getCategoria().getTipoCategoria();
 			jugadoresPosibles.add(esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1));
 			for (Jugador j : esperandoLibreInvidividual){
-				if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMedia)){
+				if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMedia) && jugadoresPosibles.size()<4){
 					//Encontre un jugador distinto de la misma categoría. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
 					jugadoresPosibles.add(j);
 				}
 							
+			}
+			
+			//Si llegue a armar con la misma categoria//
+			if (jugadoresPosibles.size()==4){
+				Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
+				Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
+				List<Pareja> parejas = new ArrayList<Pareja>();
+				parejas.add(pareja1);
+				parejas.add(pareja2);
+				
+				partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+				return partido.toDTO();
 			}
 			
 			//Si no llegue a armar con la misma categoría//
@@ -323,8 +335,10 @@ public class ServicioCentral {
 					parejas.add(pareja1);
 					parejas.add(pareja2);
 					//invocar a armarPartido//
-					partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
-					return partido.toDTO();
+					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
+						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+						return partido.toDTO();
+					}
 				}
 				
 				//Voy a buscar en la menor, solamente si existe//
@@ -346,8 +360,10 @@ public class ServicioCentral {
 					parejas.add(pareja1);
 					parejas.add(pareja2);
 					//invocar a armarPartido//
-					partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
-					return partido.toDTO();
+					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
+						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+						return partido.toDTO();
+					}
 				}
 			}
 						
@@ -357,6 +373,19 @@ public class ServicioCentral {
 		
 	}
 	
+	
+	private boolean parejasCompatibles(List<Jugador> jugadoresPosibles, String categoriaMenor) {
+		int cantMenor = 0;
+		for (Jugador j : jugadoresPosibles){
+			if (j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMenor)){
+				cantMenor++;
+			}	
+		}
+		
+		if (cantMenor >= 2)
+			return true;
+		return false;
+	}
 	
 
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
