@@ -57,12 +57,12 @@ public class ServicioCentral {
 
 		if (jug != null) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()))
-				throw new JugadorException("El apodo ingresado ya está en uso");
+				throw new JugadorException("El apodo ingresado ya estï¿½ en uso");
 			if (jug.getMail().equalsIgnoreCase(jugador.getMail()))
-				throw new JugadorException("El correo electrónico ingresado ya está en uso");
+				throw new JugadorException("El correo electrï¿½nico ingresado ya estï¿½ en uso");
 		} else {
 			// Podemos registrar el Jugador! 
-			// Suponemos que la validación de la segunda password la hace la interfaz
+			// Suponemos que la validaciï¿½n de la segunda password la hace la interfaz
 			jug = new Jugador(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
 
 			JugadorDAO.getinstance().guardarJugador(jug);
@@ -73,13 +73,13 @@ public class ServicioCentral {
 	private Jugador obtenerJugadorPorApodoPassword(JugadorDTO jugador) {
 		for (Jugador jug: jugadores) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()) &&
-				// La Password la hacemos sensible a Mayúsculas
+				// La Password la hacemos sensible a Mayï¿½sculas
 				jug.getPassword().equals(jugador.getPassword())) {
 					return jug;
 			}
 		}
 
-		// no lo encontró en memoria, lo busco en la BD
+		// no lo encontrï¿½ en memoria, lo busco en la BD
 		Jugador jug = JugadorDAO.getinstance().buscarJugadorPorApodoPassword(jugador);
 
 		if (jug != null)
@@ -248,18 +248,116 @@ public class ServicioCentral {
 		}
 	}
 
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
+	/*
+	* HACER SEGUN DIAGRAMA DE SECUENCIAS *
 	public void jugarLibreIndividual(JugadorDTO jugador) {
 		Jugador jug = obtenerJugador(jugador);
 		if (jug != null) {
 			esperandoLibreInvidividual.add(jug);
 			if (esperandoLibreInvidividual.size() >= 4) {
 				armarParejasInvididual(jug.getCategoria());
-				// seguir
+				// seguir //
 			}
 
 		}
 	}
+	*/
+	
+	public PartidoDTO armarPartidoIndividual(){
+		
+		if (esperandoLibreInvidividual.size()>=4 && !esperandoLibreInvidividual.isEmpty()){
+			List<Jugador> jugadoresPosibles = new ArrayList<Jugador>();
+			Partido partido = null;
+			String categoriaMedia = esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1).getCategoria().getTipoCategoria();
+			jugadoresPosibles.add(esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1));
+			for (Jugador j : esperandoLibreInvidividual){
+				if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMedia)){
+					//Encontre un jugador distinto de la misma categorÃ­a. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
+					jugadoresPosibles.add(j);
+				}
+							
+			}
+			
+			//Si no llegue a armar con la misma categorÃ­a//
+			if (jugadoresPosibles.size()<4){
+                //Defino mayor y menor//
+				String categoriaMayor = null;
+				String categoriaMenor = null;
+				
+				if (categoriaMedia.equalsIgnoreCase("Novato")){
+					categoriaMayor = "Calificado";
+				}else if (categoriaMedia.equalsIgnoreCase("Calificado")){
+					categoriaMayor = "Experto";
+					categoriaMenor = "Novato";
+				}else if (categoriaMedia.equalsIgnoreCase("Experto")){
+					categoriaMayor = "Master";
+					categoriaMenor = "Calificado";
+				}else{
+					categoriaMenor = "Experto";
+				}
+				
+				//Busco en la mayor, solamente si existe una categorÃ­a mayor (si es experto no puedo buscar en una mayor).//
+				if (categoriaMayor != null){
+					for (Jugador j : esperandoLibreInvidividual){
+						if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMayor)){
+							//Encontre un jugador distinto en la categoria mayor. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
+							jugadoresPosibles.add(j);
+						}
+					}				
+				}
+				
+				//Si todavia no llego a los jugadores, voy a buscar en la menor. Para eso saco los elementos con categoria mayor de la lista de jugadoresPosibles.//
+				if (jugadoresPosibles.size()<4){
+					for (Jugador j : jugadoresPosibles){
+						if (j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMayor)){
+							jugadoresPosibles.remove(j);
+						}
+					}
+				}else{
+					//quitar sublista jugadoresPosibles de esperandoLibreIndividual//
+					esperandoLibreInvidividual.remove(jugadoresPosibles);
+					//componer parejas//
+					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
+					Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
+					List<Pareja> parejas = new ArrayList<Pareja>();
+					parejas.add(pareja1);
+					parejas.add(pareja2);
+					//invocar a armarPartido//
+					partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+					return partido.toDTO();
+				}
+				
+				//Voy a buscar en la menor, solamente si existe//
+				if (categoriaMenor != null){
+					for (Jugador j : esperandoLibreInvidividual){
+						if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMenor)){
+							jugadoresPosibles.add(j);
+						}
+					}
+				}
+				
+				//Si encontre 4 jugadores entre categoria original y menor//
+				if (jugadoresPosibles.size()==4){
+					esperandoLibreInvidividual.remove(jugadoresPosibles);
+					//componer parejas//
+					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
+					Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
+					List<Pareja> parejas = new ArrayList<Pareja>();
+					parejas.add(pareja1);
+					parejas.add(pareja2);
+					//invocar a armarPartido//
+					partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+					return partido.toDTO();
+				}
+			}
+						
+		}
+		
+		return null;
+		
+	}
+	
+	
 
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	private ArrayList<Pareja> armarParejasInvididual(TipoCategoria categoria) {
@@ -304,14 +402,14 @@ public class ServicioCentral {
 
 	/* 
 	 * El jugador ingresa su apodo y su password, si es un jugador registrado 
-	 * y su password concuerda con la almacenada se le permite pasar al área 
+	 * y su password concuerda con la almacenada se le permite pasar al ï¿½rea 
 	 * de juego para elegir el tipo de partida a jugar.
 	 */
 	public void iniciarSesion(JugadorDTO jugador) throws JugadorException {
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
 		if (jug == null) {
-			throw new JugadorException("Inicio de sesión no válido. " +
+			throw new JugadorException("Inicio de sesiï¿½n no vï¿½lido. " +
 				"Por favor, verifique sus credenciales.");
 		} else {
 			System.out.println("LogIn Correcto");
