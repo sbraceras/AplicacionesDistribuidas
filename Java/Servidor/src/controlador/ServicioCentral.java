@@ -216,6 +216,9 @@ public class ServicioCentral {
 
 	}
 
+	
+	///
+
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	public void crearPartidaGrupo(ArrayList<ParejaDTO> parejas, GrupoDTO dto,
 			JugadorDTO administrador) {
@@ -226,7 +229,7 @@ public class ServicioCentral {
 			Jugador jugador = obtenerJugador(administrador);
 
 			if (jugador != null) {
-
+				
 				if (grupo.esAdministrador(jugador)) {
 					ArrayList<Pareja> ingresan = new ArrayList<Pareja>();
 
@@ -249,20 +252,10 @@ public class ServicioCentral {
 		}
 	}
 
-	/*
-	* HACER SEGUN DIAGRAMA DE SECUENCIAS *
-	public void jugarLibreIndividual(JugadorDTO jugador) {
-		Jugador jug = obtenerJugador(jugador);
-		if (jug != null) {
-			esperandoLibreInvidividual.add(jug);
-			if (esperandoLibreInvidividual.size() >= 4) {
-				armarParejasInvididual(jug.getCategoria());
-				// seguir //
-			}
-
-		}
-	}
-	*/
+		
+	/* 
+	 * AGREGARLE LA PERSISTENCIA
+	 */
 	
 	public PartidoDTO armarPartidoIndividual(){
 		
@@ -272,11 +265,29 @@ public class ServicioCentral {
 			String categoriaMedia = esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1).getCategoria().getTipoCategoria();
 			jugadoresPosibles.add(esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1));
 			for (Jugador j : esperandoLibreInvidividual){
-				if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMedia)){
+				if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMedia) && jugadoresPosibles.size()<4){
 					//Encontre un jugador distinto de la misma categoría. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
 					jugadoresPosibles.add(j);
 				}
 							
+			}
+			
+			//Si llegue a armar con la misma categoria//
+			if (jugadoresPosibles.size()==4){
+				Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
+				Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
+				List<Pareja> parejas = new ArrayList<Pareja>();
+				parejas.add(pareja1);
+				parejas.add(pareja2);
+				
+				esperandoLibreInvidividual.remove(jugadoresPosibles);
+				
+				/*
+				 * AGREGAR PERSISTENCIA
+				 */
+				partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+				partidos.add(partido);
+				return partido.toDTO();
 			}
 			
 			//Si no llegue a armar con la misma categoría//
@@ -324,8 +335,17 @@ public class ServicioCentral {
 					parejas.add(pareja1);
 					parejas.add(pareja2);
 					//invocar a armarPartido//
-					partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
-					return partido.toDTO();
+					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
+						
+						/*
+						 * AGREGAR PERSISTENCIA
+						 */
+
+						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+						partidos.add(partido);
+						esperandoLibreInvidividual.remove(jugadoresPosibles);
+						return partido.toDTO();
+					}
 				}
 				
 				//Voy a buscar en la menor, solamente si existe//
@@ -339,7 +359,6 @@ public class ServicioCentral {
 				
 				//Si encontre 4 jugadores entre categoria original y menor//
 				if (jugadoresPosibles.size()==4){
-					esperandoLibreInvidividual.remove(jugadoresPosibles);
 					//componer parejas//
 					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
 					Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
@@ -347,8 +366,16 @@ public class ServicioCentral {
 					parejas.add(pareja1);
 					parejas.add(pareja2);
 					//invocar a armarPartido//
-					partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
-					return partido.toDTO();
+					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
+						
+						/*
+						 * AGREGAR PERSISTENCIA
+						 */
+						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+						partidos.add(partido);
+						esperandoLibreInvidividual.remove(jugadoresPosibles);
+						return partido.toDTO();
+					}
 				}
 			}
 						
@@ -358,14 +385,26 @@ public class ServicioCentral {
 		
 	}
 	
-	
-
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	private ArrayList<Pareja> armarParejasInvididual(TipoCategoria categoria) {
-
+	public PartidoDTO armarPartidoParejas(){
+		
+		List<Pareja> parejasPosibles = new ArrayList<Pareja>();
+		Partido partido = null;
+		parejasPosibles.add(esperandoLibreParejas.get(esperandoLibreParejas.size()-1));
+		TipoCategoria categoriaSuperior = parejasPosibles.get(0).obtenerCategoriaSuperior();
+		
+		for (Pareja p : esperandoLibreParejas){
+			if (p.obtenerCategoriaSuperior().equals(categoriaSuperior)){
+				//Encontre pareja, armo el partido//
+				parejasPosibles.add(p);
+				partido = new Partido(parejasPosibles, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreParejas);
+				return partido.toDTO();
+			}
+		}
+				
 		return null;
+	
 	}
-
+	
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	private Partido armarPartido(ArrayList<Pareja> parejas, String tipoPartido) {
 
@@ -380,10 +419,11 @@ public class ServicioCentral {
 	}
 
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	public void jugarLibreParejas(ParejaDTO pareja) {
+	public void jugarLibreParejas(ParejaDTO parejaDTO) {
 
+		return;
 	}
-
+	
 	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo,
 			JugadorDTO administrador) {
 
@@ -401,6 +441,21 @@ public class ServicioCentral {
 		}
 	}
 
+
+	private boolean parejasCompatibles(List<Jugador> jugadoresPosibles, String categoriaMenor) {
+		int cantMenor = 0;
+		for (Jugador j : jugadoresPosibles){
+			if (j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMenor)){
+				cantMenor++;
+			}	
+		}
+		
+		if (cantMenor >= 2)
+			return true;
+		return false;
+	}
+	
+	
 	/* 
 	 * El jugador ingresa su apodo y su password, si es un jugador registrado 
 	 * y su password concuerda con la almacenada se le permite pasar al �rea 
@@ -440,6 +495,11 @@ public class ServicioCentral {
 			devolver.add(jug.get(i).toDTO());
 		}
 		return devolver;
+	}
+	
+	/* DESARROLLAR CON HQL */
+	public List<PartidoDTO> obtenerPartidosJugador(JugadorDTO jugador){
+		return null;
 	}
 
 	/* DESARROLLAR */
