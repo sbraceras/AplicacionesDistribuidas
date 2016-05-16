@@ -134,8 +134,8 @@ public class Jugador {
 		return jugador.getId() == this.id;
 	}
 
-	public boolean contraseñaCorrecta(String contraseña) {
-		return this.password == contraseña;
+	public boolean contraseï¿½aCorrecta(String contraseï¿½a) {
+		return this.password == contraseï¿½a;
 	}
 
 	public void cambiarCategoria(TipoCategoria tipo) { // //////VER ENUMERATION

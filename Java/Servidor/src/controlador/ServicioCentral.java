@@ -252,6 +252,10 @@ public class ServicioCentral {
 	}
 
 		
+	/* 
+	 * AGREGARLE LA PERSISTENCIA
+	 */
+	
 	public PartidoDTO armarPartidoIndividual(){
 		
 		if (esperandoLibreInvidividual.size()>=4 && !esperandoLibreInvidividual.isEmpty()){
@@ -276,7 +280,12 @@ public class ServicioCentral {
 				parejas.add(pareja2);
 				
 				esperandoLibreInvidividual.remove(jugadoresPosibles);
+				
+				/*
+				 * AGREGAR PERSISTENCIA
+				 */
 				partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+				partidos.add(partido);
 				return partido.toDTO();
 			}
 			
@@ -326,7 +335,13 @@ public class ServicioCentral {
 					parejas.add(pareja2);
 					//invocar a armarPartido//
 					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
+						
+						/*
+						 * AGREGAR PERSISTENCIA
+						 */
+
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+						partidos.add(partido);
 						esperandoLibreInvidividual.remove(jugadoresPosibles);
 						return partido.toDTO();
 					}
@@ -351,7 +366,12 @@ public class ServicioCentral {
 					parejas.add(pareja2);
 					//invocar a armarPartido//
 					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
+						
+						/*
+						 * AGREGAR PERSISTENCIA
+						 */
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
+						partidos.add(partido);
 						esperandoLibreInvidividual.remove(jugadoresPosibles);
 						return partido.toDTO();
 					}
@@ -364,27 +384,26 @@ public class ServicioCentral {
 		
 	}
 	
-	
-	private boolean parejasCompatibles(List<Jugador> jugadoresPosibles, String categoriaMenor) {
-		int cantMenor = 0;
-		for (Jugador j : jugadoresPosibles){
-			if (j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMenor)){
-				cantMenor++;
-			}	
-		}
+	public PartidoDTO armarPartidoParejas(){
 		
-		if (cantMenor >= 2)
-			return true;
-		return false;
+		List<Pareja> parejasPosibles = new ArrayList<Pareja>();
+		Partido partido = null;
+		parejasPosibles.add(esperandoLibreParejas.get(esperandoLibreParejas.size()-1));
+		TipoCategoria categoriaSuperior = parejasPosibles.get(0).obtenerCategoriaSuperior();
+		
+		for (Pareja p : esperandoLibreParejas){
+			if (p.obtenerCategoriaSuperior().equals(categoriaSuperior)){
+				//Encontre pareja, armo el partido//
+				parejasPosibles.add(p);
+				partido = new Partido(parejasPosibles, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreParejas);
+				return partido.toDTO();
+			}
+		}
+				
+		return null;
+	
 	}
 	
-
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	private ArrayList<Pareja> armarParejasInvididual(TipoCategoria categoria) {
-
-		return null;
-	}
-
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	private Partido armarPartido(ArrayList<Pareja> parejas, String tipoPartido) {
 
@@ -399,10 +418,11 @@ public class ServicioCentral {
 	}
 
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	public void jugarLibreParejas(ParejaDTO pareja) {
+	public void jugarLibreParejas(ParejaDTO parejaDTO) {
 
+		return;
 	}
-
+	
 	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo,
 			JugadorDTO administrador) {
 
@@ -420,6 +440,21 @@ public class ServicioCentral {
 		}
 	}
 
+
+	private boolean parejasCompatibles(List<Jugador> jugadoresPosibles, String categoriaMenor) {
+		int cantMenor = 0;
+		for (Jugador j : jugadoresPosibles){
+			if (j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMenor)){
+				cantMenor++;
+			}	
+		}
+		
+		if (cantMenor >= 2)
+			return true;
+		return false;
+	}
+	
+	
 	/* 
 	 * El jugador ingresa su apodo y su password, si es un jugador registrado 
 	 * y su password concuerda con la almacenada se le permite pasar al �rea 
