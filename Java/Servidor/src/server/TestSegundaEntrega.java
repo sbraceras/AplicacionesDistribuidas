@@ -1,6 +1,8 @@
 package server;
 
+
 import java.util.ArrayList;
+import java.util.List;
 
 import controlador.ServicioCentral;
 import dtos.GrupoDTO;
@@ -75,13 +77,22 @@ public class TestSegundaEntrega {
 				
 		ServicioCentral.getInstance().crearGrupo(grupo, jugador);
 		
-		
 		ArrayList<JugadorDTO> jugadores = ServicioCentral.getInstance().obtenerJugadores();
 		
+		System.out.println("Obtuve: "  + jugadores.size() + " Jugadores");
 		
 		
-		ServicioCentral.getInstance().agregarJugadorGrupo(jugadores, grupo , jugador);
+		List<JugadorDTO> agregar = new ArrayList<JugadorDTO>();
+		
+		agregar.add(jugadores.get(1));
+		agregar.add(jugadores.get(2));
+		
+		
+		
+		ServicioCentral.getInstance().agregarJugadorGrupo(agregar, grupo , jugador);
 
+		
+		
 	}
 
 }

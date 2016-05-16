@@ -1,18 +1,16 @@
 package daos;
 
-import org.hibernate.Session;
-
-
-import hibernate.HibernateUtil;
-
 import java.util.List;
 
-import org.hibernate.*;
-
-import dtos.GrupoDTO;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import bean.Grupo;
+import bean.Jugador;
 import bean.Partido;
+import dtos.GrupoDTO;
+import hibernate.HibernateUtil;
 
 public class GrupoDAO {
 	
@@ -56,6 +54,8 @@ public class GrupoDAO {
 	}
 	
 
+	
+
 	public Grupo buscarGrupoPorNombre (GrupoDTO grupo){
 		
 		Session s = this.getSession();
@@ -81,7 +81,7 @@ public class GrupoDAO {
 		try{
 			
 			t= s.beginTransaction();
-			s.save(grupo);
+			s.saveOrUpdate(grupo);
 			System.out.println("Grupo Guardado con Exito");
 			s.flush();
 			t.commit();
@@ -95,6 +95,28 @@ public class GrupoDAO {
 		}
 	}
 	
+//	
+//	public void agregarMiembroGrupo (Grupo grupo){
+//		Transaction t =null;
+//		Session s = this.getSession();
+//		try{
+//			
+//			t= s.beginTransaction();
+//			s.update(grupo);
+//			System.out.println("Grupo Guardado con Exito");
+//			s.flush();
+//			t.commit();
+//			s.close();
+//			
+//			
+//		}
+//		catch(Exception e){
+//			e.printStackTrace();
+//			System.out.println("Error al guardar el Grupo");
+//		}
+//	}
+//	
+	
 	@SuppressWarnings("unchecked")
 	public List<Partido> buscarPartidos (Grupo grupo){
 		
@@ -102,7 +124,7 @@ public class GrupoDAO {
 		List<Partido> devolver;
 		try{
 			
-			devolver = s.createQuery("select p form Grupo g inner join g.partidos p where g.id=:id").setParameter("id", grupo.getId()).list();
+			devolver = s.createQuery("select p from Grupo g inner join g.partidos p where g.id = :id").setParameter("id", grupo.getId()).list();
 			return devolver;
 		}
 		catch(Exception e){

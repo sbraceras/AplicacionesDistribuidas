@@ -57,12 +57,12 @@ public class ServicioCentral {
 
 		if (jug != null) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()))
-				throw new JugadorException("El apodo ingresado ya estï¿½ en uso");
+				throw new JugadorException("El apodo ingresado ya está en uso");
 			if (jug.getMail().equalsIgnoreCase(jugador.getMail()))
-				throw new JugadorException("El correo electrï¿½nico ingresado ya estï¿½ en uso");
+				throw new JugadorException("El correo electrónico ingresado ya esta en uso");
 		} else {
 			// Podemos registrar el Jugador! 
-			// Suponemos que la validaciï¿½n de la segunda password la hace la interfaz
+			// Suponemos que la validación de la segunda password la hace la interfaz
 			jug = new Jugador(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
 
 			JugadorDAO.getinstance().guardarJugador(jug);
@@ -73,13 +73,13 @@ public class ServicioCentral {
 	private Jugador obtenerJugadorPorApodoPassword(JugadorDTO jugador) {
 		for (Jugador jug: jugadores) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()) &&
-				// La Password la hacemos sensible a Mayï¿½sculas
+				// La Password la hacemos sensible a Mayúsculas
 				jug.getPassword().equals(jugador.getPassword())) {
 					return jug;
 			}
 		}
 
-		// no lo encontrï¿½ en memoria, lo busco en la BD
+		// no lo encontró en memoria, lo busco en la BD
 		Jugador jug = JugadorDAO.getinstance().buscarJugadorPorApodoPassword(jugador);
 
 		if (jug != null)
@@ -108,7 +108,7 @@ public class ServicioCentral {
 	private Jugador obtenerJugador(JugadorDTO jugador) {
 		for (int i = 0; i < jugadores.size(); i++) {
 			if (jugadores.get(i).sosJugador(jugador))
-				return jugadores.get(i);
+				return jugadores. get(i);
 		}
 
 		// no lo encontro en memoria, lo busco en la BD
@@ -155,7 +155,7 @@ public class ServicioCentral {
 
 	}
 
-	public void agregarJugadorGrupo(ArrayList<JugadorDTO> agregar, GrupoDTO dto, JugadorDTO administrador) {
+	public void agregarJugadorGrupo(List<JugadorDTO> agregar, GrupoDTO dto, JugadorDTO administrador) {
 		Grupo grupo = obtenerGrupo(dto);
 
 		if (grupo != null) {
@@ -172,6 +172,7 @@ public class ServicioCentral {
 						jug2 = obtenerJugador(agregar.get(i));
 						if (jug2 != null) {
 							grupo.agregarMiembro(jug2);
+							jug2.agregarGrupo(grupo);
 						}
 
 					}
@@ -409,7 +410,7 @@ public class ServicioCentral {
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
 		if (jug == null) {
-			throw new JugadorException("Inicio de sesiï¿½n no vï¿½lido. " +
+			throw new JugadorException("Inicio de sesión no válido. " +
 				"Por favor, verifique sus credenciales.");
 		} else {
 			System.out.println("LogIn Correcto");

@@ -7,8 +7,10 @@ public class ParejaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private JugadorDTO jugador1;
-	private JugadorDTO jugador2;
+//	private JugadorDTO jugador1;
+//	private JugadorDTO jugador2;
+	private String jugador1;
+	private String jugador2;
 	private int numeroPareja;
 
 	public ParejaDTO() {
@@ -22,19 +24,19 @@ public class ParejaDTO implements Serializable {
 		this.id = id;
 	}
 
-	public JugadorDTO getJugador1() {
+	public String getJugador1() {
 		return jugador1;
 	}
 
-	public void setJugador1(JugadorDTO jugador1) {
+	public void setJugador1(String jugador1) {
 		this.jugador1 = jugador1;
 	}
 
-	public JugadorDTO getJugador2() {
+	public String getJugador2() {
 		return jugador2;
 	}
 
-	public void setJugador2(JugadorDTO jugador2) {
+	public void setJugador2(String jugador2) {
 		this.jugador2 = jugador2;
 	}
 

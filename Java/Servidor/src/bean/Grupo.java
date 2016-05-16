@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import daos.GrupoDAO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.MiembroGrupoDTO;
@@ -56,8 +57,7 @@ public class Grupo {
 		dto.setMiembros(miembrosDTO);
 		
 		ArrayList<PartidoDTO> partidosDTO = new ArrayList<PartidoDTO>();
-		for(int i=0; i<partidos.size();i++){
-			
+		for(int i=0; i < getPartidos().size();i++){
 			partidosDTO.add(partidos.get(i).toDTO());
 		}
 		dto.setPartidos(partidosDTO);
@@ -117,6 +117,7 @@ public class Grupo {
 	}
 
 	public List<Partido> getPartidos() {
+		partidos = GrupoDAO.getInstancia().buscarPartidos(this);
 		return partidos;
 	}
 
@@ -187,6 +188,7 @@ public class Grupo {
 	
 		MiembroGrupo miembro = new MiembroGrupo(jugador, TipoMiembro.Estandar);
 		miembros.add(miembro);
+		GrupoDAO.getInstancia().guardarGrupo(this);
 	}
 	
 	public MiembroGrupo obtenerAdministrador (){

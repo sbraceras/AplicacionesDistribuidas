@@ -3,10 +3,17 @@ package bean;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import daos.JugadorDAO;
 import dtos.GrupoDTO;
@@ -25,10 +32,14 @@ public class Jugador {
 	@Column
 	private String apodo;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 	@JoinColumn(name = "id_ranking")
+	//@LazyCollection (LazyCollectionOption.FALSE)
 	private Ranking ranking;
-
+	
+	
+	
+	
 	@Column(columnDefinition = "varchar(50)")
 	private String mail;
 	@Column(name = "clave", columnDefinition = "varchar(50)")
@@ -36,7 +47,7 @@ public class Jugador {
 	@Column(columnDefinition = "tinyint")
 	private TipoCategoria categoria;
 
-	@ManyToMany(cascade = CascadeType.ALL) //fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Grupo_Jugador",
 		joinColumns = { @JoinColumn(name = "id_jugador") },
 		inverseJoinColumns = { @JoinColumn(name = "id_grupo") })
@@ -62,8 +73,8 @@ public class Jugador {
 		dto.setApodo(this.apodo);
 		dto.setCategoria(this.categoria);
 		ArrayList<GrupoDTO> gruposDto = new ArrayList<GrupoDTO>();
-		
-		for (int i = 0; i < this.grupos.size(); i++) {
+
+		for (int i = 0; i < getGrupos().size(); i++) {
 			gruposDto.add(grupos.get(i).toDto());
 		}
 		
@@ -123,6 +134,7 @@ public class Jugador {
 	}
 
 	public List<Grupo> getGrupos() {
+		grupos = JugadorDAO.getinstance().obtenerGruposJugador(this);
 		return grupos;
 	}
 
@@ -169,9 +181,9 @@ public class Jugador {
 		return this.ranking.toDTO();
 	}
 	
-	public void agregarGrupo(Grupo grupo){
-		
-		grupos.add(grupo);		
+	public void agregarGrupo(Grupo grupo){ 
+		getGrupos().add(grupo);
+		JugadorDAO.getinstance().guardarJugador(this);
 	}
 
 }

@@ -9,7 +9,7 @@ public class MiembroGrupoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private JugadorDTO jugador;
+	private String jugador;
 	private RankingDTO ranking;
 	private boolean activo;
 	private TipoMiembro tipoMiembro;
@@ -33,11 +33,11 @@ public class MiembroGrupoDTO implements Serializable {
 		this.id = id;
 	}
 
-	public JugadorDTO getJugador() {
+	public String getJugador() {
 		return jugador;
 	}
 
-	public void setJugador(JugadorDTO jugador) {
+	public void setJugador(String jugador) {
 		this.jugador = jugador;
 	}
 

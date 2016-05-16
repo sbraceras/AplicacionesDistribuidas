@@ -43,7 +43,7 @@ public class JugadorDAO {
 
 		try {
 			t = s.beginTransaction();
-			s.save(jugador);
+			s.saveOrUpdate(jugador);
 			s.flush();
 			t.commit();
 			s.close();
@@ -57,7 +57,7 @@ public class JugadorDAO {
 		Session s = this.getSession();
 		try {
 			Jugador devolver = (Jugador) s.createQuery(
-					"select j from Jugador j inner join j.ranking  inner join j.grupos where j.id =:id")
+					"select j from Jugador j inner join j.ranking  left join j.grupos where j.id =:id")
 					.setParameter("id", jugador.getId()).uniqueResult();
 
 			s.close();

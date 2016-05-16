@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import daos.RankingDAO;
 import dtos.PartidoDTO;
 import dtos.RankingDTO;
 
@@ -16,11 +20,12 @@ public class Ranking {
 	@GeneratedValue
 	private int id;
 
-	@ManyToMany
+	@ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable (name = "Ranking_Partido", joinColumns = 
 		{@JoinColumn (name = "id_ranking")}, inverseJoinColumns = {@JoinColumn (name = "id_partido")})
+//	@LazyCollection (LazyCollectionOption.FALSE)
 	private List<Partido> partidos;
-
+	
 	@Column
 	private int puntos;
 	@Column (name = "cant_ganadas")
@@ -39,7 +44,8 @@ public class Ranking {
 		dto.setId(this.id);
 		dto.setPuntos(this.puntos);
 		ArrayList<PartidoDTO>partidosDto = new ArrayList<PartidoDTO>();
-		for(int i=0; i<partidos.size();i++)
+		
+		for(int i=0; i < getPartidos().size();i++)
 		{
 			partidosDto.add(partidos.get(i).toDTO());
 		}
@@ -56,6 +62,7 @@ public class Ranking {
 	}
 
 	public List<Partido> getPartidos() {
+		partidos = RankingDAO.getInstance().obtenerPartidosRanking(this);
 		return partidos;
 	}
 

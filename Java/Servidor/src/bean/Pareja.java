@@ -57,8 +57,8 @@ public class Pareja {
 		
 		ParejaDTO dto = new ParejaDTO();
 		dto.setId(this.id);
-		dto.setJugador1(this.jugador1.toDTO());
-		dto.setJugador2(this.jugador2.toDTO());
+		dto.setJugador1(this.jugador1.getApodo());
+		dto.setJugador2(this.jugador2.getApodo());
 		dto.setNumeroPareja(this.numeroPareja);
 		return dto;
 	}
@@ -106,18 +106,12 @@ public class Pareja {
 	}
 	
 	public boolean esPareja (ParejaDTO dto){
-		
-		
-		if(jugador1.getId()== dto.getJugador1().getId())
-		{
-			if(jugador2.getId() == dto.getJugador2().getId())
-				return true;
-		}
+		if (jugador1.getApodo().equals(dto.getJugador1()) && (jugador2.getApodo().equals(dto.getJugador2())))
+			return true;
 		else
-			if(jugador1.getId() == dto.getJugador2().getId())
-				if(jugador2.getId() == dto.getJugador1().getId())
-					return true;
+			if (jugador1.getApodo().equals(dto.getJugador2()) && (jugador2.getApodo().equals(dto.getJugador1())))
+				return true;
+
 		return false;
-		
 	}
 }
