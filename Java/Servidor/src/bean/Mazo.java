@@ -16,13 +16,8 @@ public class Mazo {
 	
 	
 	public Mazo() {
-	}
-
-	public Mazo(int id, ArrayList<Carta> cartas) {
-		
 		this.cartas = this.iniciarMazo();
 	}
-	
 
 	public ArrayList<Carta> getCartas() {
 		return cartas;
@@ -38,9 +33,10 @@ public class Mazo {
 		
 		Random rand = new Random();
 		
-		int posicion = rand.nextInt((39)+1);
+		int posicion = rand.nextInt(cartas.size());
 		
 		Carta carta = cartas.get(posicion);
+		carta.setId(posicion);
 		
 		cartas.remove(posicion);
 		
@@ -48,7 +44,6 @@ public class Mazo {
 	}
 	
 	public ArrayList<Carta> iniciarMazo() {
-	
 		ArrayList<Carta> mazo = new ArrayList<Carta>();
 		Carta carta;		
 		carta = new Carta(Palo.Espada, 1, 0);
@@ -133,7 +128,6 @@ public class Mazo {
 		mazo.add(carta);
 		
 		return mazo;
-		
 	}
 	
 	public MazoDTO toDto (){

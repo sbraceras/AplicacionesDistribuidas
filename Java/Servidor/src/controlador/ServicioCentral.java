@@ -11,6 +11,7 @@ import bean.Pareja;
 import bean.Partido;
 import daos.GrupoDAO;
 import daos.JugadorDAO;
+import daos.PartidoDAO;
 import dtos.ChicoDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
@@ -220,7 +221,7 @@ public class ServicioCentral {
 	///
 
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	public void crearPartidaGrupo(ArrayList<ParejaDTO> parejas, GrupoDTO dto,
+	public PartidoDTO crearPartidaGrupo(ArrayList<ParejaDTO> parejas, GrupoDTO dto,
 			JugadorDTO administrador) {
 		Grupo grupo = obtenerGrupo(dto);
 
@@ -246,10 +247,16 @@ public class ServicioCentral {
 								(Timestamp) date, TipoPartido.Grupo);
 						grupo.agregarPartido(partido);
 						partidos.add(partido);
+						
+						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
+						partido.setId(idPartido);
+						
+						return partido.toDTO();
 					}
 				}
 			}
 		}
+		return null;
 	}
 
 		
@@ -259,13 +266,13 @@ public class ServicioCentral {
 	
 	public PartidoDTO armarPartidoIndividual(){
 		
-		if (esperandoLibreInvidividual.size()>=4 && !esperandoLibreInvidividual.isEmpty()){
+		if (esperandoLibreInvidividual.size()>=4){
 			List<Jugador> jugadoresPosibles = new ArrayList<Jugador>();
 			Partido partido = null;
-			String categoriaMedia = esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1).getCategoria().getTipoCategoria();
+			String categoriaMedia = esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1).getCategoria().toString();
 			jugadoresPosibles.add(esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1));
 			for (Jugador j : esperandoLibreInvidividual){
-				if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMedia) && jugadoresPosibles.size()<4){
+				if (!jugadoresPosibles.contains(j) && j.getCategoria().toString().equalsIgnoreCase(categoriaMedia) && jugadoresPosibles.size()<4){
 					//Encontre un jugador distinto de la misma categorÃ­a. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
 					jugadoresPosibles.add(j);
 				}
@@ -280,13 +287,16 @@ public class ServicioCentral {
 				parejas.add(pareja1);
 				parejas.add(pareja2);
 				
-				esperandoLibreInvidividual.remove(jugadoresPosibles);
+				esperandoLibreInvidividual.remove(jugadoresPosibles.get(0));
+				esperandoLibreInvidividual.remove(jugadoresPosibles.get(1));
+				esperandoLibreInvidividual.remove(jugadoresPosibles.get(2));
+				esperandoLibreInvidividual.remove(jugadoresPosibles.get(3));
 				
-				/*
-				 * AGREGAR PERSISTENCIA
-				 */
 				partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 				partidos.add(partido);
+
+				int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
+				partido.setId(idPartido);
 				return partido.toDTO();
 			}
 			
@@ -311,7 +321,7 @@ public class ServicioCentral {
 				//Busco en la mayor, solamente si existe una categorÃ­a mayor (si es experto no puedo buscar en una mayor).//
 				if (categoriaMayor != null){
 					for (Jugador j : esperandoLibreInvidividual){
-						if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMayor)){
+						if (!jugadoresPosibles.contains(j) && j.getCategoria().toString().equalsIgnoreCase(categoriaMayor)){
 							//Encontre un jugador distinto en la categoria mayor. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
 							jugadoresPosibles.add(j);
 						}
@@ -321,13 +331,11 @@ public class ServicioCentral {
 				//Si todavia no llego a los jugadores, voy a buscar en la menor. Para eso saco los elementos con categoria mayor de la lista de jugadoresPosibles.//
 				if (jugadoresPosibles.size()<4){
 					for (Jugador j : jugadoresPosibles){
-						if (j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMayor)){
+						if (j.getCategoria().toString().equalsIgnoreCase(categoriaMayor)){
 							jugadoresPosibles.remove(j);
 						}
 					}
 				}else{
-					//quitar sublista jugadoresPosibles de esperandoLibreIndividual//
-					esperandoLibreInvidividual.remove(jugadoresPosibles);
 					//componer parejas//
 					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
 					Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
@@ -336,14 +344,16 @@ public class ServicioCentral {
 					parejas.add(pareja2);
 					//invocar a armarPartido//
 					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
-						
-						/*
-						 * AGREGAR PERSISTENCIA
-						 */
-
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 						partidos.add(partido);
-						esperandoLibreInvidividual.remove(jugadoresPosibles);
+
+						esperandoLibreInvidividual.remove(jugadoresPosibles.get(0));
+						esperandoLibreInvidividual.remove(jugadoresPosibles.get(1));
+						esperandoLibreInvidividual.remove(jugadoresPosibles.get(2));
+						esperandoLibreInvidividual.remove(jugadoresPosibles.get(3));
+
+						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
+						partido.setId(idPartido);
 						return partido.toDTO();
 					}
 				}
@@ -351,7 +361,7 @@ public class ServicioCentral {
 				//Voy a buscar en la menor, solamente si existe//
 				if (categoriaMenor != null){
 					for (Jugador j : esperandoLibreInvidividual){
-						if (!jugadoresPosibles.contains(j) && j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMenor)){
+						if (!jugadoresPosibles.contains(j) && j.getCategoria().toString().equalsIgnoreCase(categoriaMenor)){
 							jugadoresPosibles.add(j);
 						}
 					}
@@ -368,12 +378,16 @@ public class ServicioCentral {
 					//invocar a armarPartido//
 					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
 						
-						/*
-						 * AGREGAR PERSISTENCIA
-						 */
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 						partidos.add(partido);
-						esperandoLibreInvidividual.remove(jugadoresPosibles);
+
+						esperandoLibreInvidividual.remove(jugadoresPosibles.get(0));
+						esperandoLibreInvidividual.remove(jugadoresPosibles.get(1));
+						esperandoLibreInvidividual.remove(jugadoresPosibles.get(2));
+						esperandoLibreInvidividual.remove(jugadoresPosibles.get(3));
+
+						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
+						partido.setId(idPartido);
 						return partido.toDTO();
 					}
 				}
@@ -397,6 +411,8 @@ public class ServicioCentral {
 				//Encontre pareja, armo el partido//
 				parejasPosibles.add(p);
 				partido = new Partido(parejasPosibles, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreParejas);
+				int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
+				partido.setId(idPartido);
 				return partido.toDTO();
 			}
 		}
@@ -424,6 +440,23 @@ public class ServicioCentral {
 		return;
 	}
 	
+	public PartidoDTO jugarLibreIndividual(JugadorDTO jugador){
+		
+		
+		for(Jugador aux: sesiones)
+		{
+			if(aux.sosJugador(jugador)) {
+				esperandoLibreInvidividual.add(aux);
+				return armarPartidoIndividual();
+			}
+		}
+		
+		return null;
+		
+		
+	}
+	
+	
 	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo,
 			JugadorDTO administrador) {
 
@@ -445,7 +478,7 @@ public class ServicioCentral {
 	private boolean parejasCompatibles(List<Jugador> jugadoresPosibles, String categoriaMenor) {
 		int cantMenor = 0;
 		for (Jugador j : jugadoresPosibles){
-			if (j.getCategoria().getTipoCategoria().equalsIgnoreCase(categoriaMenor)){
+			if (j.getCategoria().toString().equalsIgnoreCase(categoriaMenor)){
 				cantMenor++;
 			}	
 		}
@@ -462,8 +495,17 @@ public class ServicioCentral {
 	 * de juego para elegir el tipo de partida a jugar.
 	 */
 	public void iniciarSesion(JugadorDTO jugador) throws JugadorException {
+	
+		for(Jugador jug: sesiones)
+		{
+			if(jug.getApodo().equals(jugador.getApodo()))
+				throw new JugadorException("Ya Ha Iniciado Session");
+		}
+		
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
-
+		
+	
+		
 		if (jug == null) {
 			throw new JugadorException("Inicio de sesión no válido. " +
 				"Por favor, verifique sus credenciales.");

@@ -146,8 +146,8 @@ public class Jugador {
 		return jugador.getId() == this.id;
 	}
 
-	public boolean contrase�aCorrecta(String contrase�a) {
-		return this.password == contrase�a;
+	public boolean contrasenaCorrecta(String contrasena) {
+		return this.password == contrasena;
 	}
 
 	public void cambiarCategoria(TipoCategoria tipo) { // //////VER ENUMERATION

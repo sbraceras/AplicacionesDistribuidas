@@ -44,7 +44,6 @@ public class Mano {
 	}
 
 	public Mano(int numeroMano, List<Jugador> ordenJuego) {
-		
 		this.numeroMano = numeroMano;
 		this.bazas = new ArrayList<Baza>();
 		this.enviteActual = null;

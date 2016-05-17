@@ -41,11 +41,18 @@ public class Chico {
 	public Chico() {
 	}
 
-	public Chico(int puntajeMaximo) {
-		
+	public Chico(int puntajeMaximo, List<Pareja> parejas) {
 		this.manos = new ArrayList<Mano>();
 		this.puntajes = new ArrayList<PuntajePareja>();
 		this.puntajeMaximo = puntajeMaximo;
+
+		List<Jugador> ordenInicial = new ArrayList<Jugador>();
+		ordenInicial.add(parejas.get(0).getJugador1());
+		ordenInicial.add(parejas.get(1).getJugador1());
+		ordenInicial.add(parejas.get(0).getJugador2());
+		ordenInicial.add(parejas.get(1).getJugador2());
+
+		this.manos.add(new Mano(0, ordenInicial));
 	}
 	
 
