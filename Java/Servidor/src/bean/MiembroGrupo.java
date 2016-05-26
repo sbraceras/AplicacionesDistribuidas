@@ -110,4 +110,19 @@ public class MiembroGrupo {
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
+	
+
+	public boolean tenesMiembro (Jugador jug){
+		
+		return jug.getId() == jugador.getId();
+		
+			
+		
+	}
+	
+	public void actualizarRanking (Partido part, int puntos){
+		
+		ranking.actualizar(part, puntos);
+		
+	}
 }

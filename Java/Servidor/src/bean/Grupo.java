@@ -254,4 +254,31 @@ public class Grupo {
 		
 	}
 
+
+	public boolean tenesPartido (Partido partido){
+		
+		for(Partido part: partidos){
+			
+			if(part.getId() == partido.getId())
+				return true;			
+		}
+		
+		return false;
+		
+	}
+	
+	
+	public void actualizarRanking (Jugador jugador, int puntos, Partido partido){
+		
+		
+		for(MiembroGrupo miembro: miembros){
+			
+			if(miembro.tenesMiembro(jugador) == true)
+				
+				miembro.actualizarRanking(partido, puntos);
+		}
+		
+	}
+	
+	
 }

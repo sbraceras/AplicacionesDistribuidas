@@ -191,4 +191,22 @@ public class Chico {
 		manos.add(nueva);
 	}
 	
+	
+
+	public Pareja obtenerParejaGanadora (){
+		
+		if(terminado == true){
+			
+			if(puntajes.get(0).getPuntaje() == puntajeMaximo)
+				
+				return puntajes.get(0).getPareja();
+			
+			else
+				return puntajes.get(1).getPareja();
+		}
+		
+		return null;
+		
+	}
+	
 }

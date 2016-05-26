@@ -150,12 +150,14 @@ public class Jugador {
 		return this.password == contrasena;
 	}
 
-	public void cambiarCategoria(TipoCategoria tipo) { // //////VER ENUMERATION
+	public void cambiarCategoria(TipoCategoria tipo) {
 		categoria = tipo;
 	}
 
 	public void actualizarRanking(int puntos, Partido partido) {
 
+		ranking.actualizar(partido, puntos);
+		
 	}
 
 	public Grupo obtenerGrupo(GrupoDTO grupo) {
@@ -184,6 +186,17 @@ public class Jugador {
 	public void agregarGrupo(Grupo grupo){ 
 		getGrupos().add(grupo);
 		JugadorDAO.getinstance().guardarJugador(this);
+	}
+
+	public void actualizarRankingMiembro(Partido partido, int puntos) {
+		
+		for(Grupo grupo: grupos){
+			
+			if(grupo.tenesPartido(partido) == true)
+				grupo.actualizarRanking(this, puntos, partido);
+			
+		}
+		
 	}
 
 }

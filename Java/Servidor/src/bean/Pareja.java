@@ -114,4 +114,17 @@ public class Pareja {
 
 		return false;
 	}
+	
+	public boolean esPareja (Pareja pareja){
+		
+		if (jugador1.getApodo().equals(pareja.getJugador1()) && (jugador2.getApodo().equals(pareja.getJugador2())))
+			return true;
+		else
+			if (jugador1.getApodo().equals(pareja.getJugador2()) && (jugador2.getApodo().equals(pareja.getJugador1())))
+				return true;
+
+		return false;
+	}
+	
+	
 }

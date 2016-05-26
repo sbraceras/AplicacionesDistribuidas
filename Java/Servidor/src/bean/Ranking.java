@@ -91,5 +91,17 @@ public class Ranking {
 		return puntos/partidos.size();
 	}
 	
+	public void actualizar(Partido part, int punt){
+		
+		partidos.add(part);
+		
+		if(punt > 0)
+			
+			cantidadGanadas++;
+		
+		puntos = puntos + punt;
+		
+	}
+	
 	
 }

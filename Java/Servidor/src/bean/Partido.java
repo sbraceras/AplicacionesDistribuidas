@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import daos.PartidoDAO;
 import dtos.ChicoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
@@ -14,6 +15,7 @@ import dtos.PartidoDTO;
 import enums.EstadoPartido;
 import enums.TipoCategoria;
 import enums.TipoPartido;
+import exceptions.PartidoException;
 
 
 /**
@@ -60,10 +62,10 @@ public class Partido {
 		this.tipoPartido = tipoPartido;
 		this.estadoPartido = EstadoPartido.Empezado;
 		this.fechaFin = null;
+		this.fechaInicio = (Timestamp) new Date();
 
 		this.chicos.add(new Chico(30, this.parejas));
 	}
-	
 	
 	public PartidoDTO toDTO (){
 		
@@ -222,7 +224,7 @@ public class Partido {
 	}
 	
 	
-		
+
 	public void actualizarRankingJugadores() {
 		Pareja ganadora = parejas.get(parejaGanadora);  /* considero que primer pareja es 0 y la segunda 1 */
 		Pareja perdedora;
@@ -237,7 +239,19 @@ public class Partido {
 		if (tipoPartido.equals(TipoPartido.Grupo)) {
 			ganadora.getJugador1().actualizarRanking(5, this);
 			ganadora.getJugador2().actualizarRanking(5, this);
+			
+			/*Actualizar Ranking de los MiembrosGrupo*/
+			
+			ganadora.getJugador1().actualizarRankingMiembro(this, 5);
+			ganadora.getJugador2().actualizarRankingMiembro(this, 5);
+			
+			perdedora.getJugador1().actualizarRankingMiembro(this, 0);
+			perdedora.getJugador2().actualizarRankingMiembro(this, 0);
+			
+			
+			
 		} else {
+			
 			TipoCategoria categoriaOponente = perdedora.obtenerCategoriaSuperior();
 			
 			if(ganadora.getJugador1().getCategoria().ordinal()<categoriaOponente.ordinal()) //el jugador 1 es inferior
@@ -245,16 +259,19 @@ public class Partido {
 			else
 				ganadora.getJugador1().actualizarRanking(10, this);
 			
-			if(ganadora.getJugador2().getCategoria().ordinal()<categoriaOponente.ordinal()) //el jugador 1 es inferior
+			if(ganadora.getJugador2().getCategoria().ordinal()<categoriaOponente.ordinal()) //el jugador 2 es inferior
 				ganadora.getJugador2().actualizarRanking(12, this);
 			else
 				ganadora.getJugador2().actualizarRanking(10, this);
 			
-			perdedora.getJugador1().actualizarRanking(0, this);
-			perdedora.getJugador2().actualizarRanking(0, this);
+			
 		}
+		
+		perdedora.getJugador1().actualizarRanking(0, this);
+		perdedora.getJugador2().actualizarRanking(0, this);
 	}
-
+	
+	
 	public boolean estasTerminado() {		
 		return (estadoPartido.equals(EstadoPartido.Terminado));
 	}
@@ -262,4 +279,63 @@ public class Partido {
 	public boolean sosPartido(PartidoDTO partido) {
 		return partido.getId()==this.id;
 	}
+	
+	
+	public void terminarPartido () throws PartidoException{
+		
+		int  chicosGanadosPareja1 =0;
+		int  chicosGanadosPareja2 =0;
+		
+		if(estadoPartido != EstadoPartido.Terminado){
+			
+			Pareja ganadoraChico;
+			for(Chico chico: chicos){
+				
+				ganadoraChico = chico.obtenerParejaGanadora();
+				if(ganadoraChico == null)
+				{
+					throw new PartidoException("No se termina el partido, hay chicos activos");
+				}
+				else{
+					
+				
+					if(parejas.get(0).esPareja(ganadoraChico))
+					
+						chicosGanadosPareja1++;
+					else
+						chicosGanadosPareja2++;
+				}
+			}
+			
+			if(chicosGanadosPareja1 == 2 || chicosGanadosPareja2 == 2)
+			{
+				fechaFin = (Timestamp) new Date();
+			
+				estadoPartido = EstadoPartido.Terminado;
+			
+			
+			
+				if(chicosGanadosPareja1 == 2){
+				
+					parejaGanadora = 1;
+				
+				}
+			
+				else
+					parejaGanadora = 2;
+			
+				actualizarRankingJugadores();
+
+				PartidoDAO.getInstance().guardarPartido(this);
+			}
+			else
+				throw new PartidoException("No se termino el partido, aun faltan chicos por jugar");
+			
+		}
+		
+		
+		
+	}
+	
+	
 }
