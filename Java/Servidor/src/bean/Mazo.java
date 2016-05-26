@@ -45,7 +45,8 @@ public class Mazo {
 	
 	public ArrayList<Carta> iniciarMazo() {
 		ArrayList<Carta> mazo = new ArrayList<Carta>();
-		Carta carta;		
+		Carta carta;
+
 		carta = new Carta(Palo.Espada, 1, 0);
 		mazo.add(carta);
 		carta = new Carta(Palo.Basto, 1, 1);

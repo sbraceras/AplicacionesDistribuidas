@@ -15,6 +15,7 @@ import enums.Palo;
 @Table (name = "Cartas")
 public class Carta {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "id_carta", nullable = false)
 	private int id;
 	@Column (columnDefinition = "tinyint")
@@ -31,13 +32,10 @@ public class Carta {
 		this.posicionValor = posicionValor;
 	}
 	
-	
-		
 	public Carta() {
 	}
 	
 	public CartaDTO toDTO(){
-		
 		CartaDTO dto = new CartaDTO();
 		dto.setId(this.id);
 		dto.setNumero(this.numero);
