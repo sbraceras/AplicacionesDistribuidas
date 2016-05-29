@@ -115,8 +115,63 @@ public class Baza {
 	public void setOrdenJuego(ArrayList<Jugador> ordenJuego) {
 		this.ordenJuego = ordenJuego;
 	}
+	
+	public Movimiento obtenerUltimoMovimiento (){
+		
+		return turnosBaza.get(turnosBaza.size());
+	}
 
+	public Jugador obtenerTurnoBaza() {
+		
+		int cantidadTiradas = obtenerCantidadCartasTiradas();
+		
+		return ordenJuego.get(cantidadTiradas-1); 
+		//si se tiraron 2 cartas le toca jugar al tercero, pero como es una colleccion
+		//hay que restarle 1
+		
+	}
+	
+	
+	public int obtenerCantidadCartasTiradas (){
+		
+		int cantidadTiradas = 0;
+		
+		for(Movimiento mov: turnosBaza){
+			
+			if(mov instanceof CartaTirada)
+				cantidadTiradas++;
+		}
+		
+		return cantidadTiradas;
+	}
 
+	
+	public void definirGanador(List <Pareja> parejas){
+		
+		CartaJugador ganadora = null;
+		
+		for(Movimiento mov: turnosBaza){
+			
+			if(mov instanceof CartaTirada)
+			{
+				if(ganadora == null)
+				{
+					ganadora = ((CartaTirada) mov).getCartaJugador();
+				}
+				else
+				{
+					if(ganadora.getCarta().getPosicionValor()> ((CartaTirada) mov).getCartaJugador().getCarta().getPosicionValor())
+						//significa que esta carta es mejor que la anterior
+						ganadora = ((CartaTirada) mov).getCartaJugador();
+				}
+			}
+				
+		}
+		
+		ganador = ganadora.getJugador();
+				
+		}
+	
 	
 	
 }

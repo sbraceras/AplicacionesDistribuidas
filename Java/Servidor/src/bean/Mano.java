@@ -5,10 +5,13 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.tuple.Tuplizer;
+
 import dtos.BazaDTO;
 import dtos.CartaJugadorDTO;
 import dtos.EnviteDTO;
 import dtos.ManoDTO;
+import enums.TipoEnvite;
 
 
 /**
@@ -174,4 +177,162 @@ public class Mano {
 		dto.setCartasJugador(cartasDto);
 		return dto;
 	}
+
+	public boolean tocaCartaMano() {
+		
+		Baza baza = bazas.get(bazas.size()); //obtengo la ultima baza
+		
+		if(baza.obtenerGanador() == null){ //la baza no tiene un ganador, osea sigue activa
+			
+			int cartasTiradas = 0;
+			
+			for(Movimiento mov: baza.getTurnosBaza())
+			{
+				if(mov instanceof CartaTirada)
+					cartasTiradas++;
+			}
+			
+			if(cartasTiradas < 4) //Todavia no tiraron todos sus cartas
+			{
+				Movimiento mov = baza.obtenerUltimoMovimiento();
+				if(mov instanceof CartaTirada)  //Lo ultimo que se tiro fue una carta, no hay que responder envite 
+					return true;
+				
+				return false;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		return false;
+		
+	}
+
+	public Jugador obteterTurnoJugadorMano() {
+		
+		return bazas.get(bazas.size()).obtenerTurnoBaza();
+		
+		
+	}
+	
+	public void cerrarBazaMano(List<Pareja> parejas){	
+	
+		Baza baza = bazas.get(bazas.size());
+	
+		if(baza.obtenerCantidadCartasTiradas() == 4) //hay que cerrar la baza
+		{
+			baza.definirGanador(parejas);
+		}
+	
+	}
+	
+	public boolean puedoEnvido(){
+		
+		if(bazas.size() == 1) //es la primer baza, se puede cantar envido
+		{
+			Baza baza = bazas.get(bazas.size());
+			
+			if(tocaCartaMano()) //no hay que responder un envite anterior
+			{
+				if(baza.obtenerCantidadCartasTiradas() >= 3) //los que pueden cantar son el tercero o 4
+				{
+					if(seCantoEnvido() == false)
+					{
+						return true;
+					}
+					return false;
+					
+				}
+			}
+			return false; //hay que responder un envite
+		}
+		
+		return false;
+		
+	}
+	
+	
+	public List<TipoEnvite> opcionesCanto(){
+		
+		List<TipoEnvite> respuestas = new ArrayList<TipoEnvite>();
+		
+		if(puedoEnvido() == true){
+			
+			respuestas.add(TipoEnvite.Envido);
+			respuestas.add(TipoEnvite.FaltaEnvido);
+			respuestas.add(TipoEnvite.RealEnvido);
+			respuestas.add(TipoEnvite.Truco);
+			respuestas.add(TipoEnvite.IrAlMazo);
+			
+			return respuestas;
+		}
+		else{ //no puede cantar envido pero va a verificar si puede cantar truco
+			
+			if(puedoTruco() == true)
+			{
+				respuestas.add(TipoEnvite.Truco);
+				respuestas.add(TipoEnvite.IrAlMazo);
+			}
+			
+			
+		}
+				
+		return null;
+		
+	}
+	
+	public boolean puedoTruco(){
+		
+		if(tocaCartaMano() == true) //no toca responder un envite
+		{
+			if(seCantoTruco() == false)
+				return true;
+			
+		}
+		return false;
+	}
+	
+	
+	public boolean seCantoEnvido(){
+		
+		Baza baza = bazas.get(0);
+		
+		for(Movimiento mov: baza.getTurnosBaza())
+		{
+			if(mov instanceof Envite)
+			{
+				Envite aux = (Envite) mov;
+				
+				if(aux.getTipoEnvite() == TipoEnvite.Envido || aux.getTipoEnvite() == TipoEnvite.FaltaEnvido || aux.getTipoEnvite() == TipoEnvite.RealEnvido)
+					return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	public boolean seCantoTruco(){
+		
+		
+		for(Baza baza : bazas)
+		{
+			for(Movimiento mov: baza.getTurnosBaza())
+			{
+				if(mov instanceof Envite)
+				{
+					Envite aux = (Envite) mov;
+				
+					if(aux.getTipoEnvite() == TipoEnvite.Truco)
+						return true;
+				}
+			}
+		}
+		return false;
+		
+	}
+	
+	
+	
 }

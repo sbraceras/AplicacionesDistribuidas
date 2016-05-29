@@ -32,7 +32,7 @@ public class CartaTirada extends Movimiento {
 		return dto;
 	}
 
-	public Object getCartaJugador() {
+	public CartaJugador getCartaJugador() {
 		return cartaJugador;
 	}
 

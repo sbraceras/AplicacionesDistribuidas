@@ -209,4 +209,26 @@ public class Chico {
 		
 	}
 	
+	public Jugador obtenerTurnoJugador(){
+		
+		if(tocaCarta() == true) //no hay que contestar envite, toca tirar carta
+		{
+			
+			Mano mano = manos.get(manos.size());
+			return mano.obteterTurnoJugadorMano(); //devuelve el jugador que le toca jugar
+			
+		}
+		return null;
+		
+		
+	}
+	
+	public boolean tocaCarta(){
+		
+		Mano mano = manos.get(manos.size()); // Obtengo la ultima mano
+		
+		return mano.tocaCartaMano();
+		
+	}
+	
 }
