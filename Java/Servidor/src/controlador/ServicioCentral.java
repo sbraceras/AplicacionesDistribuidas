@@ -417,22 +417,11 @@ public class ServicioCentral {
 		return partidosActivos;
 	}
 	
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	private Partido armarPartido(ArrayList<Pareja> parejas, String tipoPartido) {
 
-		return null;
-
-	}
-
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	private Pareja obtenerParejaEnemiga(TipoCategoria categoria) {
-
-		return null;
-	}
 
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	public void jugarLibreParejas(ParejaDTO parejaDTO) {
-
+		
 		return;
 	}
 	
@@ -539,11 +528,11 @@ public class ServicioCentral {
 		return null;
 	}
 
-	public PartidoDTO obtenerPartidoJugado(PartidoDTO partido) {
+	public Partido obtenerPartidoJugado(PartidoDTO partido) {
 
 		for (int i = 0; i < partidos.size(); i++) {
 			if (partido.getId() == partidos.get(i).getId())
-				return partidos.get(i).toDTO();
+				return partidos.get(i);
 		}
 
 		/* faltar partido dao */
@@ -551,9 +540,11 @@ public class ServicioCentral {
 		return null;
 	}
 
-	/* DESARROLLAR */
 	public ChicoDTO obtenerChicoDTO(PartidoDTO partido, int chico) {
-
+		
+		Partido p = obtenerPartidoJugado(partido);
+		if (p!=null)
+			return p.obtenerChicoActivo().toDto();
 		return null;
 	}
 
