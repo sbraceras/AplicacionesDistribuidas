@@ -26,7 +26,6 @@ public class Carta {
 	private int posicionValor;
 	
 	public Carta(Palo palo, int numero, int posicionValor) {
-		
 		this.palo = palo;
 		this.numero = numero;
 		this.posicionValor = posicionValor;
@@ -68,9 +67,5 @@ public class Carta {
 	public void setPosicionValor(int posicionValor) {
 		this.posicionValor = posicionValor;
 	}
-	
-	
-	
-	
-	
+
 }

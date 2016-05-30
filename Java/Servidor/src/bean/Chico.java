@@ -76,12 +76,8 @@ public class Chico {
 		dto.setNumeroChico(this.numeroChico);
 		dto.setTerminado(this.terminado);
 		return dto;
-		
-		
 	}
-	
-	
-	
+
 	public boolean isTerminado() {
 		return terminado;
 	}
@@ -209,26 +205,19 @@ public class Chico {
 		
 	}
 	
-	public Jugador obtenerTurnoJugador(){
-		
-		if(tocaCarta() == true) //no hay que contestar envite, toca tirar carta
-		{
-			
+	public Jugador obtenerTurnoJugador() {
+		if(tocaCarta() == true) { //no hay que contestar envite, toca tirar carta
 			Mano mano = manos.get(manos.size());
-			return mano.obteterTurnoJugadorMano(); //devuelve el jugador que le toca jugar
-			
+			return mano.obtenerTurnoJugadorMano(); //devuelve el jugador que le toca jugar
 		}
+
 		return null;
-		
-		
 	}
 	
-	public boolean tocaCarta(){
-		
-		Mano mano = manos.get(manos.size()); // Obtengo la ultima mano
-		
+	public boolean tocaCarta() {
+		Mano mano = manos.get(manos.size() - 1); // Obtengo la ultima mano
+
 		return mano.tocaCartaMano();
-		
 	}
 	
 }

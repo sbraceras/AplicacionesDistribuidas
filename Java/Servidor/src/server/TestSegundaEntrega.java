@@ -89,8 +89,7 @@ public class TestSegundaEntrega {
 
 		
 		// ************** Jugar Libre Individual ************** //
-		
-		
+
 		JugadorDTO jugador1 = new JugadorDTO();
 		JugadorDTO jugador2 = new JugadorDTO();
 		JugadorDTO jugador3 = new JugadorDTO();
@@ -98,25 +97,22 @@ public class TestSegundaEntrega {
 		
 		// hardcodeamos los id porque deberian venir desde la vista cargados
 		
-		jugador1.setApodo("sbraceras");
-		jugador1.setPassword("TaTObrA");
-		jugador1.setId(14);
-		
-		
-		jugador2.setApodo("cgodio");
-		jugador2.setPassword("12345");
-		jugador2.setId(1);
-		
-		jugador3.setApodo("GMasaro");
+		jugador1.setId(3);
+		jugador1.setApodo("cgodio");
+		jugador1.setPassword("12345");
+
+		jugador2.setId(4);
+		jugador2.setApodo("sbraceras");
+		jugador2.setPassword("TaTobrA");
+
+		jugador3.setId(5);
+		jugador3.setApodo("gmasaro");
 		jugador3.setPassword("banfieldcapo");
-		jugador3.setId(3);
 		
-		jugador4.setApodo("OZamudio");
+		jugador4.setId(6);
+		jugador4.setApodo("ozamudio");
 		jugador4.setPassword("yousomac");
-		jugador4.setId(4);
 
-
-		
 		try {
 			ServicioCentral.getInstance().iniciarSesion(jugador1);
 		} catch (JugadorException e) {

@@ -63,7 +63,7 @@ public class Partido {
 		this.tipoPartido = tipoPartido;
 		this.estadoPartido = EstadoPartido.Empezado;
 		this.fechaFin = null;
-		this.fechaInicio = (Timestamp) new Date();
+		this.fechaInicio = fechaInicio;
 
 		this.chicos.add(new Chico(30, this.parejas));
 	}
@@ -202,24 +202,19 @@ public class Partido {
 /*
 	
 	Desarrollarrrrrrrrrrrrrrrrrr
-	
-	////////////////
-	//////////////////
-	*/////
+
+*/
 	
 	public Jugador calcularResultadoEnvido() {
 		return null;
 	}
-	
-	
-	
+
 	public Chico obtenerChicoActivo() {
-		Chico aux=null;
-		
-		for(int i=0; i<chicos.size();i++)
-		{
-			if(chicos.get(i).isTerminado()==false)
-				aux= chicos.get(i);
+		Chico aux = null;
+
+		for (int i=0; i<chicos.size(); i++) {
+			if (chicos.get(i).isTerminado() == false)
+				aux = chicos.get(i);
 		}
 		return aux;
 	}
@@ -229,11 +224,9 @@ public class Partido {
 	public void actualizarRankingJugadores() {
 		Pareja ganadora = parejas.get(parejaGanadora);  /* considero que primer pareja es 0 y la segunda 1 */
 		Pareja perdedora;
-		if(parejaGanadora ==0)
-		{
+		if (parejaGanadora ==0) {
 			perdedora = parejas.get(1);
-		}
-		else
+		} else
 			perdedora = parejas.get(0);
 		
 		
@@ -248,11 +241,8 @@ public class Partido {
 			
 			perdedora.getJugador1().actualizarRankingMiembro(this, 0);
 			perdedora.getJugador2().actualizarRankingMiembro(this, 0);
-			
-			
-			
+
 		} else {
-			
 			TipoCategoria categoriaOponente = perdedora.obtenerCategoriaSuperior();
 			
 			if(ganadora.getJugador1().getCategoria().ordinal()<categoriaOponente.ordinal()) //el jugador 1 es inferior
@@ -264,8 +254,6 @@ public class Partido {
 				ganadora.getJugador2().actualizarRanking(12, this);
 			else
 				ganadora.getJugador2().actualizarRanking(10, this);
-			
-			
 		}
 		
 		perdedora.getJugador1().actualizarRanking(0, this);
@@ -283,77 +271,51 @@ public class Partido {
 	
 	
 	public void terminarPartido () throws PartidoException{
-		
 		int  chicosGanadosPareja1 =0;
 		int  chicosGanadosPareja2 =0;
 		
 		if(estadoPartido != EstadoPartido.Terminado){
-			
 			Pareja ganadoraChico;
 			for(Chico chico: chicos){
-				
 				ganadoraChico = chico.obtenerParejaGanadora();
-				if(ganadoraChico == null)
-				{
+				if(ganadoraChico == null) {
 					throw new PartidoException("No se termina el partido, hay chicos activos");
-				}
-				else{
-					
-				
+				} else {
 					if(parejas.get(0).esPareja(ganadoraChico))
-					
 						chicosGanadosPareja1++;
 					else
 						chicosGanadosPareja2++;
 				}
 			}
 			
-			if(chicosGanadosPareja1 == 2 || chicosGanadosPareja2 == 2)
-			{
+			if(chicosGanadosPareja1 == 2 || chicosGanadosPareja2 == 2) {
 				fechaFin = (Timestamp) new Date();
-			
 				estadoPartido = EstadoPartido.Terminado;
-			
-			
-			
-				if(chicosGanadosPareja1 == 2){
-				
+
+				if(chicosGanadosPareja1 == 2) {
 					parejaGanadora = 1;
-				
-				}
-			
-				else
+				} else
 					parejaGanadora = 2;
-			
+
 				actualizarRankingJugadores();
 
 				PartidoDAO.getInstance().guardarPartido(this);
-			}
-			else
+			} else
 				throw new PartidoException("No se termino el partido, aun faltan chicos por jugar");
-			
 		}
-		
-		
-		
 	}
 	
 	
 	public JugadorDTO turnoCartaJugador (){
-		
-	
-		if(estadoPartido != EstadoPartido.Terminado)
-		{
+		if(estadoPartido != EstadoPartido.Terminado) {
 			Chico chico = obtenerChicoActivo();
-			
+
 			if(chico.tocaCarta() == true){
-		
 				return chico.obtenerTurnoJugador().toDTO();
 			}
 		}
 		
 		return null;
-		
 	}
-	
+
 }

@@ -1,50 +1,51 @@
 package bean;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import daos.CartaDAO;
 import dtos.CartaDTO;
 import dtos.MazoDTO;
 
-import enums.Palo;
 
-
-/*No se persiste el mazo */
+/* No se persiste el mazo */
 public class Mazo {
-	
-	private ArrayList<Carta> cartas;
-	
-	
+
+	private List<Carta> cartas;
+
 	public Mazo() {
 		this.cartas = this.iniciarMazo();
 	}
 
-	public ArrayList<Carta> getCartas() {
+	public List<Carta> getCartas() {
 		return cartas;
 	}
 
-	public void setCartas(ArrayList<Carta> cartas) {
+	public void setCartas(List<Carta> cartas) {
 		this.cartas = cartas;
 	}
 
-	
-//ver si esta bien hecho el random
 	public Carta obtenerCarta() {
-		
 		Random rand = new Random();
-		
+
 		int posicion = rand.nextInt(cartas.size());
-		
+
 		Carta carta = cartas.get(posicion);
-		carta.setId(posicion);
-		
+
 		cartas.remove(posicion);
-		
+
 		return carta;
 	}
 	
-	public ArrayList<Carta> iniciarMazo() {
-		ArrayList<Carta> mazo = new ArrayList<Carta>();
+	public List<Carta> iniciarMazo() {
+		List<Carta> mazo = new ArrayList<Carta>();
+
+		mazo = CartaDAO.getInstancia().obtenerCartas();
+
+		return mazo;
+
+/*
 		Carta carta;
 
 		carta = new Carta(Palo.Espada, 1, 0);
@@ -127,15 +128,15 @@ public class Mazo {
 		mazo.add(carta);
 		carta = new Carta(Palo.Copa, 4, 13);
 		mazo.add(carta);
-		
-		return mazo;
+
+*/		
+
 	}
 	
-	public MazoDTO toDto (){
-		
+	public MazoDTO toDto() {
 		MazoDTO dto = new MazoDTO();
-		ArrayList<CartaDTO> cartasDto = new ArrayList<CartaDTO>();
-		
+		List<CartaDTO> cartasDto = new ArrayList<CartaDTO>();
+
 		for(int i=0; i<cartas.size();i++){
 			cartasDto.add(cartas.get(i).toDTO());
 		}

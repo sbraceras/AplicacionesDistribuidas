@@ -22,7 +22,7 @@ public class ServicioCentral {
 	private ArrayList<Partido> partidos;
 	private ArrayList<Grupo> grupos;
 	private ArrayList<Jugador> sesiones;
-	private ArrayList<Jugador> esperandoLibreInvidividual;
+	private ArrayList<Jugador> esperandoLibreIndividual;
 	private ArrayList<Pareja> esperandoLibreParejas;
 	private static ServicioCentral controlador;
 
@@ -31,7 +31,7 @@ public class ServicioCentral {
 		this.partidos = new ArrayList<Partido>();
 		this.grupos = new ArrayList<Grupo>();
 		this.sesiones = new ArrayList<Jugador>();
-		this.esperandoLibreInvidividual = new ArrayList<Jugador>();
+		this.esperandoLibreIndividual = new ArrayList<Jugador>();
 		this.esperandoLibreParejas = new ArrayList<Pareja>();
 	}
 
@@ -253,12 +253,12 @@ public class ServicioCentral {
 	
 	public PartidoDTO armarPartidoIndividual(){
 		
-		if (esperandoLibreInvidividual.size()>=4){
+		if (esperandoLibreIndividual.size()>=4){
 			List<Jugador> jugadoresPosibles = new ArrayList<Jugador>();
 			Partido partido = null;
-			String categoriaMedia = esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1).getCategoria().toString();
-			jugadoresPosibles.add(esperandoLibreInvidividual.get(esperandoLibreInvidividual.size()-1));
-			for (Jugador j : esperandoLibreInvidividual){
+			String categoriaMedia = esperandoLibreIndividual.get(esperandoLibreIndividual.size()-1).getCategoria().toString();
+			jugadoresPosibles.add(esperandoLibreIndividual.get(esperandoLibreIndividual.size()-1));
+			for (Jugador j : esperandoLibreIndividual){
 				if (!jugadoresPosibles.contains(j) && j.getCategoria().toString().equalsIgnoreCase(categoriaMedia) && jugadoresPosibles.size()<4){
 					//Encontre un jugador distinto de la misma categoría. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
 					jugadoresPosibles.add(j);
@@ -274,10 +274,10 @@ public class ServicioCentral {
 				parejas.add(pareja1);
 				parejas.add(pareja2);
 				
-				esperandoLibreInvidividual.remove(jugadoresPosibles.get(0));
-				esperandoLibreInvidividual.remove(jugadoresPosibles.get(1));
-				esperandoLibreInvidividual.remove(jugadoresPosibles.get(2));
-				esperandoLibreInvidividual.remove(jugadoresPosibles.get(3));
+				esperandoLibreIndividual.remove(jugadoresPosibles.get(0));
+				esperandoLibreIndividual.remove(jugadoresPosibles.get(1));
+				esperandoLibreIndividual.remove(jugadoresPosibles.get(2));
+				esperandoLibreIndividual.remove(jugadoresPosibles.get(3));
 				
 				partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 				partidos.add(partido);
@@ -307,7 +307,7 @@ public class ServicioCentral {
 				
 				//Busco en la mayor, solamente si existe una categoría mayor (si es experto no puedo buscar en una mayor).//
 				if (categoriaMayor != null){
-					for (Jugador j : esperandoLibreInvidividual){
+					for (Jugador j : esperandoLibreIndividual){
 						if (!jugadoresPosibles.contains(j) && j.getCategoria().toString().equalsIgnoreCase(categoriaMayor)){
 							//Encontre un jugador distinto en la categoria mayor. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
 							jugadoresPosibles.add(j);
@@ -329,15 +329,16 @@ public class ServicioCentral {
 					List<Pareja> parejas = new ArrayList<Pareja>();
 					parejas.add(pareja1);
 					parejas.add(pareja2);
+
 					//invocar a armarPartido//
 					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 						partidos.add(partido);
 
-						esperandoLibreInvidividual.remove(jugadoresPosibles.get(0));
-						esperandoLibreInvidividual.remove(jugadoresPosibles.get(1));
-						esperandoLibreInvidividual.remove(jugadoresPosibles.get(2));
-						esperandoLibreInvidividual.remove(jugadoresPosibles.get(3));
+						esperandoLibreIndividual.remove(jugadoresPosibles.get(0));
+						esperandoLibreIndividual.remove(jugadoresPosibles.get(1));
+						esperandoLibreIndividual.remove(jugadoresPosibles.get(2));
+						esperandoLibreIndividual.remove(jugadoresPosibles.get(3));
 
 						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
 						partido.setId(idPartido);
@@ -347,7 +348,7 @@ public class ServicioCentral {
 				
 				//Voy a buscar en la menor, solamente si existe//
 				if (categoriaMenor != null){
-					for (Jugador j : esperandoLibreInvidividual){
+					for (Jugador j : esperandoLibreIndividual){
 						if (!jugadoresPosibles.contains(j) && j.getCategoria().toString().equalsIgnoreCase(categoriaMenor)){
 							jugadoresPosibles.add(j);
 						}
@@ -362,16 +363,17 @@ public class ServicioCentral {
 					List<Pareja> parejas = new ArrayList<Pareja>();
 					parejas.add(pareja1);
 					parejas.add(pareja2);
+
 					//invocar a armarPartido//
 					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
 						
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 						partidos.add(partido);
 
-						esperandoLibreInvidividual.remove(jugadoresPosibles.get(0));
-						esperandoLibreInvidividual.remove(jugadoresPosibles.get(1));
-						esperandoLibreInvidividual.remove(jugadoresPosibles.get(2));
-						esperandoLibreInvidividual.remove(jugadoresPosibles.get(3));
+						esperandoLibreIndividual.remove(jugadoresPosibles.get(0));
+						esperandoLibreIndividual.remove(jugadoresPosibles.get(1));
+						esperandoLibreIndividual.remove(jugadoresPosibles.get(2));
+						esperandoLibreIndividual.remove(jugadoresPosibles.get(3));
 
 						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
 						partido.setId(idPartido);
@@ -431,7 +433,7 @@ public class ServicioCentral {
 		for(Jugador aux: sesiones)
 		{
 			if(aux.sosJugador(jugador)) {
-				esperandoLibreInvidividual.add(aux);
+				esperandoLibreIndividual.add(aux);
 				return armarPartidoIndividual();
 			}
 		}
@@ -473,7 +475,7 @@ public class ServicioCentral {
 	
 	/* 
 	 * El jugador ingresa su apodo y su password, si es un jugador registrado 
-	 * y su password concuerda con la almacenada se le permite pasar al �rea 
+	 * y su password concuerda con la almacenada se le permite pasar al area 
 	 * de juego para elegir el tipo de partida a jugar.
 	 */
 	public void iniciarSesion(JugadorDTO jugador) throws JugadorException {
@@ -606,7 +608,7 @@ public class ServicioCentral {
 	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) {
 		for (Partido p: this.partidos) {
 			if (p.sosPartido(partido)) {
-				p.nue
+//				p.
 			}
 		}
 	}

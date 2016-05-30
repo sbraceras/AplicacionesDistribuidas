@@ -184,8 +184,9 @@ public class Jugador {
 		return this.ranking.toDTO();
 	}
 	
-	public void agregarGrupo(Grupo grupo){ 
-		getGrupos().add(grupo);
+	public void agregarGrupo(Grupo grupo){
+		getGrupos();
+		grupos.add(grupo);
 		JugadorDAO.getinstance().guardarJugador(this);
 	}
 

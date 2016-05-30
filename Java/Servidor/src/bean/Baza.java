@@ -17,8 +17,9 @@ import dtos.MovimientoDTO;
 @Entity
 @Table (name = "Bazas")
 public class Baza {
-	
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "id_baza", nullable = false)
 	private int id;
 	
@@ -32,6 +33,7 @@ public class Baza {
 	@JoinColumn (name = "id_jugador")
 	private Jugador ganador;
 	
+	@Transient
 	/* No se persiste el orden de juego */
 	private ArrayList<Jugador> ordenJuego;
 	
@@ -117,18 +119,17 @@ public class Baza {
 	}
 	
 	public Movimiento obtenerUltimoMovimiento (){
-		
 		return turnosBaza.get(turnosBaza.size());
 	}
 
 	public Jugador obtenerTurnoBaza() {
-		
 		int cantidadTiradas = obtenerCantidadCartasTiradas();
 		
-		return ordenJuego.get(cantidadTiradas-1); 
+		return ordenJuego.get(cantidadTiradas); 
 		//si se tiraron 2 cartas le toca jugar al tercero, pero como es una colleccion
 		//hay que restarle 1
-		
+
+		// PRECISAMENTE, SI SE TIRARON DOS Y LE TOCA JUGAR AL TERCERO, NO HAY QUE RESTARLE 1, NO?
 	}
 	
 	

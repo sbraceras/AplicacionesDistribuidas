@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.hibernate.tuple.Tuplizer;
-
 import dtos.BazaDTO;
 import dtos.CartaJugadorDTO;
 import dtos.EnviteDTO;
@@ -179,53 +177,40 @@ public class Mano {
 	}
 
 	public boolean tocaCartaMano() {
-		
-		Baza baza = bazas.get(bazas.size()); //obtengo la ultima baza
-		
-		if(baza.obtenerGanador() == null){ //la baza no tiene un ganador, osea sigue activa
-			
+		Baza baza = bazas.get(bazas.size() - 1); //obtengo la ultima baza
+
+		if(baza.obtenerGanador() == null){ //la baza no tiene un ganador, o sea sigue activa
 			int cartasTiradas = 0;
 			
-			for(Movimiento mov: baza.getTurnosBaza())
-			{
+			for (Movimiento mov: baza.getTurnosBaza()) {
 				if(mov instanceof CartaTirada)
 					cartasTiradas++;
 			}
 			
-			if(cartasTiradas < 4) //Todavia no tiraron todos sus cartas
-			{
+			if (cartasTiradas < 4) { //Todavia no tiraron todos sus cartas
 				Movimiento mov = baza.obtenerUltimoMovimiento();
 				if(mov instanceof CartaTirada)  //Lo ultimo que se tiro fue una carta, no hay que responder envite 
 					return true;
 				
 				return false;
-			}
-			else
-			{
+			} else {
 				return false;
 			}
 		}
-		
+
 		return false;
-		
 	}
 
-	public Jugador obteterTurnoJugadorMano() {
-		
+	public Jugador obtenerTurnoJugadorMano() {
 		return bazas.get(bazas.size()).obtenerTurnoBaza();
-		
-		
 	}
 	
 	public void cerrarBazaMano(List<Pareja> parejas){	
-	
 		Baza baza = bazas.get(bazas.size());
-	
-		if(baza.obtenerCantidadCartasTiradas() == 4) //hay que cerrar la baza
-		{
+
+		if (baza.obtenerCantidadCartasTiradas() == 4) { //hay que cerrar la baza
 			baza.definirGanador(parejas);
 		}
-	
 	}
 	
 	public boolean puedoEnvido(){
