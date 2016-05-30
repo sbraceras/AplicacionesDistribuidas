@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 import daos.PartidoDAO;
 import dtos.ChicoDTO;
+import dtos.JugadorDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 
@@ -337,5 +338,22 @@ public class Partido {
 		
 	}
 	
+	
+	public JugadorDTO turnoCartaJugador (){
+		
+	
+		if(estadoPartido != EstadoPartido.Terminado)
+		{
+			Chico chico = obtenerChicoActivo();
+			
+			if(chico.tocaCarta() == true){
+		
+				return chico.obtenerTurnoJugador().toDTO();
+			}
+		}
+		
+		return null;
+		
+	}
 	
 }
