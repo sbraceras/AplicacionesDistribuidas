@@ -1,13 +1,5 @@
 package server;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.naming.PartialResultException;
-
-import bean.Jugador;
-import bean.Partido;
 import controlador.ServicioCentral;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
@@ -78,7 +70,7 @@ public class TestSegundaEntrega {
 		
 		// ************** Crear Grupo ************** //
 		
-		jugador.setId(14);
+		jugador.setId(4);
 		
 		GrupoDTO grupo = new GrupoDTO();
 		grupo.setNombre("UADE");

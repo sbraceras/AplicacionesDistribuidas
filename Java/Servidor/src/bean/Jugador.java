@@ -74,7 +74,8 @@ public class Jugador {
 		dto.setCategoria(this.categoria);
 		ArrayList<GrupoDTO> gruposDto = new ArrayList<GrupoDTO>();
 
-		for (int i = 0; i < getGrupos().size(); i++) {
+		getGrupos();
+		for (int i = 0; i < grupos.size(); i++) {
 			gruposDto.add(grupos.get(i).toDto());
 		}
 		

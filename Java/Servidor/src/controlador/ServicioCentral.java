@@ -5,22 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import bean.Grupo;
-import bean.Jugador;
-import bean.Pareja;
-import bean.Partido;
-import daos.GrupoDAO;
-import daos.JugadorDAO;
-import daos.PartidoDAO;
-import dtos.ChicoDTO;
-import dtos.GrupoDTO;
-import dtos.JugadorDTO;
-import dtos.ParejaDTO;
-import dtos.PartidoDTO;
-import dtos.RankingDTO;
-import enums.TipoCategoria;
-import enums.TipoPartido;
-import exceptions.JugadorException;
+import bean.*;
+import daos.*;
+import dtos.*;
+import enums.*;
+import exceptions.*;
 
 /**
  * Es el controlador del negocio
@@ -143,17 +132,15 @@ public class ServicioCentral {
 	}
 
 	public void crearGrupo(GrupoDTO dto, JugadorDTO administrador) {
-
 		if (!existeGrupo(dto)) {
 			Jugador jug = obtenerJugador(administrador);
 			if (jug != null) {
 				Grupo grupo = new Grupo(dto.getNombre(), jug);
 				jug.agregarGrupo(grupo);
-				GrupoDAO.getInstancia().guardarGrupo(grupo);
+//				GrupoDAO.getInstancia().guardarGrupo(grupo);    HACE FALTA ??? EL GRUPO SE ESTARIA GUARDANDO CON EL JUGADOR!
 				grupos.add(grupo);
 			}
 		}
-
 	}
 
 	public void agregarJugadorGrupo(List<JugadorDTO> agregar, GrupoDTO dto, JugadorDTO administrador) {
@@ -441,8 +428,6 @@ public class ServicioCentral {
 	}
 	
 	public PartidoDTO jugarLibreIndividual(JugadorDTO jugador){
-		
-		
 		for(Jugador aux: sesiones)
 		{
 			if(aux.sosJugador(jugador)) {
@@ -450,10 +435,7 @@ public class ServicioCentral {
 				return armarPartidoIndividual();
 			}
 		}
-		
 		return null;
-		
-		
 	}
 	
 	
@@ -496,16 +478,13 @@ public class ServicioCentral {
 	 */
 	public void iniciarSesion(JugadorDTO jugador) throws JugadorException {
 	
-		for(Jugador jug: sesiones)
-		{
-			if(jug.getApodo().equals(jugador.getApodo()))
-				throw new JugadorException("Ya Ha Iniciado Session");
+		for(Jugador jug: sesiones) {
+			if (jug.getApodo().equals(jugador.getApodo()))
+				throw new JugadorException("Ya ha iniciado sesion");
 		}
-		
+
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
-		
-	
-		
+
 		if (jug == null) {
 			throw new JugadorException("Inicio de sesión no válido. " +
 				"Por favor, verifique sus credenciales.");
@@ -611,7 +590,7 @@ public class ServicioCentral {
 		return grupo;
 	}
 
-	public ArrayList<GrupoDTO> ObtenerGrupos() {
+	public ArrayList<GrupoDTO> obtenerGrupos() {
 
 		List<Grupo> grup = GrupoDAO.getInstancia().obtenerGrupos();
 
@@ -622,6 +601,14 @@ public class ServicioCentral {
 		}
 
 		return devolver;
+	}
+
+	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) {
+		for (Partido p: this.partidos) {
+			if (p.sosPartido(partido)) {
+				p.nue
+			}
+		}
 	}
 
 }

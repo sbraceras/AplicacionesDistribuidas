@@ -15,6 +15,7 @@ import enums.TipoMiembro;
 @Entity
 @Table (name = "Miembros_Grupo")
 public class MiembroGrupo {
+
 	@Id
 	@Column (name = "id_miembro", nullable = false)
 	@GeneratedValue
@@ -29,16 +30,11 @@ public class MiembroGrupo {
 	private boolean activo;
 	@Column (columnDefinition = "int")
 	private TipoMiembro tipoMiembro;
-	
-	
-	
-	
+
 	public MiembroGrupo() {
 	}
 
-		
 	public MiembroGrupo(Jugador jugador, TipoMiembro tipo) {
-		
 		this.jugador = jugador;
 		this.ranking = new Ranking();
 		this.activo = true;
@@ -46,7 +42,6 @@ public class MiembroGrupo {
 	}
 	
 	public MiembroGrupoDTO toDTO(){
-		
 		MiembroGrupoDTO dto = new MiembroGrupoDTO();
 		
 		dto.setActivo(this.activo);
@@ -86,7 +81,6 @@ public class MiembroGrupo {
 		this.id = id;
 	}
 
-	
 	public Jugador getJugador() {
 		return jugador;
 	}
@@ -110,19 +104,12 @@ public class MiembroGrupo {
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
-	
 
 	public boolean tenesMiembro (Jugador jug){
-		
 		return jug.getId() == jugador.getId();
-		
-			
-		
 	}
 	
 	public void actualizarRanking (Partido part, int puntos){
-		
 		ranking.actualizar(part, puntos);
-		
 	}
 }
