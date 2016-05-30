@@ -117,13 +117,10 @@ public class Pareja {
 	
 	public boolean esPareja (Pareja pareja){
 		
-		if (jugador1.getApodo().equals(pareja.getJugador1()) && (jugador2.getApodo().equals(pareja.getJugador2())))
+		if (this.tenesJugador(pareja.getJugador1()) && this.tenesJugador(pareja.getJugador2()))
 			return true;
 		else
-			if (jugador1.getApodo().equals(pareja.getJugador2()) && (jugador2.getApodo().equals(pareja.getJugador1())))
-				return true;
-
-		return false;
+			return false;
 	}
 	
 	

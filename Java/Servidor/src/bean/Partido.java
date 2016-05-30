@@ -190,10 +190,8 @@ public class Partido {
 	public boolean participoJugador(Jugador jugador) {
 		
 		for(int i=0; i<parejas.size();i++){
-			
-			if(parejas.get(i).getJugador1().getApodo().equals(jugador.getApodo()))
-				return true;
-			if(parejas.get(i).getJugador2().getApodo().equals(jugador.getApodo()))
+		
+			if(parejas.get(i).tenesJugador(jugador))
 				return true;
 		}
 		return false;

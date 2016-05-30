@@ -47,12 +47,12 @@ public class ServicioCentral {
 
 		if (jug != null) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()))
-				throw new JugadorException("El apodo ingresado ya está en uso");
+				throw new JugadorException("El apodo ingresado ya estï¿½ en uso");
 			if (jug.getMail().equalsIgnoreCase(jugador.getMail()))
-				throw new JugadorException("El correo electrónico ingresado ya esta en uso");
+				throw new JugadorException("El correo electrï¿½nico ingresado ya esta en uso");
 		} else {
 			// Podemos registrar el Jugador! 
-			// Suponemos que la validación de la segunda password la hace la interfaz
+			// Suponemos que la validaciï¿½n de la segunda password la hace la interfaz
 			jug = new Jugador(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
 
 			JugadorDAO.getinstance().guardarJugador(jug);
@@ -63,13 +63,13 @@ public class ServicioCentral {
 	private Jugador obtenerJugadorPorApodoPassword(JugadorDTO jugador) {
 		for (Jugador jug: jugadores) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()) &&
-				// La Password la hacemos sensible a Mayúsculas
+				// La Password la hacemos sensible a Mayï¿½sculas
 				jug.getPassword().equals(jugador.getPassword())) {
 					return jug;
 			}
 		}
 
-		// no lo encontró en memoria, lo busco en la BD
+		// no lo encontrï¿½ en memoria, lo busco en la BD
 		Jugador jug = JugadorDAO.getinstance().buscarJugadorPorApodoPassword(jugador);
 
 		if (jug != null)
@@ -247,10 +247,7 @@ public class ServicioCentral {
 	}
 
 		
-	/* 
-	 * AGREGARLE LA PERSISTENCIA
-	 */
-	
+
 	public PartidoDTO armarPartidoIndividual(){
 		
 		if (esperandoLibreIndividual.size()>=4){
@@ -281,9 +278,8 @@ public class ServicioCentral {
 				
 				partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 				partidos.add(partido);
-
-				int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
-				partido.setId(idPartido);
+				
+				partido.setId(PartidoDAO.getInstance().guardarPartido(partido).intValue());
 				return partido.toDTO();
 			}
 			
@@ -340,8 +336,7 @@ public class ServicioCentral {
 						esperandoLibreIndividual.remove(jugadoresPosibles.get(2));
 						esperandoLibreIndividual.remove(jugadoresPosibles.get(3));
 
-						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
-						partido.setId(idPartido);
+						partido.setId(PartidoDAO.getInstance().guardarPartido(partido).intValue());
 						return partido.toDTO();
 					}
 				}
@@ -375,8 +370,7 @@ public class ServicioCentral {
 						esperandoLibreIndividual.remove(jugadoresPosibles.get(2));
 						esperandoLibreIndividual.remove(jugadoresPosibles.get(3));
 
-						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
-						partido.setId(idPartido);
+						partido.setId(PartidoDAO.getInstance().guardarPartido(partido).intValue());
 						return partido.toDTO();
 					}
 				}
@@ -400,14 +394,27 @@ public class ServicioCentral {
 				//Encontre pareja, armo el partido//
 				parejasPosibles.add(p);
 				partido = new Partido(parejasPosibles, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreParejas);
-				int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
-				partido.setId(idPartido);
+				
+				partido.setId(PartidoDAO.getInstance().guardarPartido(partido).intValue());
 				return partido.toDTO();
 			}
 		}
 				
 		return null;
 	
+	}
+	
+	public ArrayList<PartidoDTO> tengoPartido(JugadorDTO jugadorDTO){
+		
+		Jugador jug = obtenerJugador(jugadorDTO);
+		ArrayList<PartidoDTO> partidosActivos = new ArrayList<PartidoDTO>();
+		for (Partido p : partidos){
+			if (p.participoJugador(jug) && !p.estasTerminado()){
+				PartidoDTO partidoDTO = p.toDTO();
+				partidosActivos.add(partidoDTO);				
+			}
+		}
+		return partidosActivos;
 	}
 	
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
@@ -488,7 +495,7 @@ public class ServicioCentral {
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
 		if (jug == null) {
-			throw new JugadorException("Inicio de sesión no válido. " +
+			throw new JugadorException("Inicio de sesiï¿½n no vï¿½lido. " +
 				"Por favor, verifique sus credenciales.");
 		} else {
 			System.out.println("LogIn Correcto");
