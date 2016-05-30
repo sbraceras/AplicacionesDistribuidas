@@ -286,25 +286,14 @@ public class ServicioCentral {
 			//Si no llegue a armar con la misma categoría//
 			if (jugadoresPosibles.size()<4){
                 //Defino mayor y menor//
-				String categoriaMayor = null;
-				String categoriaMenor = null;
-				
-				if (categoriaMedia.equalsIgnoreCase("Novato")){
-					categoriaMayor = "Calificado";
-				}else if (categoriaMedia.equalsIgnoreCase("Calificado")){
-					categoriaMayor = "Experto";
-					categoriaMenor = "Novato";
-				}else if (categoriaMedia.equalsIgnoreCase("Experto")){
-					categoriaMayor = "Master";
-					categoriaMenor = "Calificado";
-				}else{
-					categoriaMenor = "Experto";
-				}
+				String categoriaMayor = TipoCategoria.obtenerTipoMayor(categoriaMedia);
+				String categoriaMenor = TipoCategoria.obtenerTipoMenor(categoriaMedia);
+							
 				
 				//Busco en la mayor, solamente si existe una categoría mayor (si es experto no puedo buscar en una mayor).//
 				if (categoriaMayor != null){
 					for (Jugador j : esperandoLibreIndividual){
-						if (!jugadoresPosibles.contains(j) && j.getCategoria().toString().equalsIgnoreCase(categoriaMayor)){
+						if (!jugadoresPosibles.contains(j) && j.getCategoria().toString().equalsIgnoreCase(categoriaMayor) && jugadoresPosibles.size()<4){
 							//Encontre un jugador distinto en la categoria mayor. No los saco de esperandoLibreIndividual hasta terminar el metodo.//
 							jugadoresPosibles.add(j);
 						}

@@ -2,10 +2,10 @@ package enums;
 
 public enum TipoCategoria {
 
-	Novato,
-	Calificado,
-	Experto,
-	Master;
+	Novato ("Novato"),
+	Calificado ("Calificado"),
+	Experto ("Experto"),
+	Master ("Master");
 
 	private String tipoCat;
 
@@ -25,6 +25,31 @@ public enum TipoCategoria {
 		for (TipoCategoria e : values()) {
 			if (e.tipoCat.equalsIgnoreCase(tipoCat))
 				return e;
+		}
+		return null;
+	}
+
+	public static String obtenerTipoMayor(String categoriaMedia) {
+		// TODO Auto-generated method stub
+				
+		if (categoriaMedia.equalsIgnoreCase("Novato")){
+			return TipoCategoria.Calificado.toString();
+		}else if (categoriaMedia.equalsIgnoreCase("Calificado")){
+			return TipoCategoria.Experto.toString();
+		}else if (categoriaMedia.equalsIgnoreCase("Experto")){
+			return TipoCategoria.Master.toString();
+		}
+		return null;
+	}
+
+	public static String obtenerTipoMenor(String categoriaMedia) {
+		// TODO Auto-generated method stub
+		if (categoriaMedia.equalsIgnoreCase("Calificado")){
+			return TipoCategoria.Novato.toString();
+		}else if (categoriaMedia.equalsIgnoreCase("Experto")){
+			return TipoCategoria.Calificado.toString();
+		}else if (categoriaMedia.equalsIgnoreCase("Master")){
+			return TipoCategoria.Experto.toString();
 		}
 		return null;
 	}
