@@ -172,7 +172,6 @@ public class ServicioCentral {
 
 	}
 
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 
 	public void armarParejaGrupo(ArrayList<JugadorDTO> integrantes,
 			GrupoDTO dto, JugadorDTO administrador) {
@@ -308,15 +307,15 @@ public class ServicioCentral {
 						}
 					}
 				}else{
-					//componer parejas//
+					//Si llegué con categoria original y mayor, compongo las parejas//
 					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
 					Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
 					List<Pareja> parejas = new ArrayList<Pareja>();
 					parejas.add(pareja1);
 					parejas.add(pareja2);
 
-					//invocar a armarPartido//
-					if (parejasCompatibles(jugadoresPosibles, categoriaMenor)){
+					//invocar a armarPartido, solamente si tengo al menos 2 de la categoria original//
+					if (parejasCompatibles(jugadoresPosibles, categoriaMedia)){
 						partido = new Partido(parejas, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreIndividual);
 						partidos.add(partido);
 
@@ -393,6 +392,7 @@ public class ServicioCentral {
 	
 	}
 	
+	/* ver con DAO */
 	public ArrayList<PartidoDTO> tengoPartido(JugadorDTO jugadorDTO){
 		
 		Jugador jug = obtenerJugador(jugadorDTO);
@@ -407,13 +407,6 @@ public class ServicioCentral {
 	}
 	
 
-
-	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	public void jugarLibreParejas(ParejaDTO parejaDTO) {
-		
-		return;
-	}
-	
 	public PartidoDTO jugarLibreIndividual(JugadorDTO jugador){
 		for(Jugador aux: sesiones)
 		{
