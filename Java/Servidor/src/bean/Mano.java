@@ -51,11 +51,20 @@ public class Mano {
 		this.mazo = new Mazo();
 		this.cartasJugador = new ArrayList<CartaJugador>();
 		this.ordenJuego = ordenJuego;
+
+		repartirCartas(ordenJuego);
+
+		this.bazas.add(new Baza(1));
+	}
+
+	private void repartirCartas(List<Jugador> ordenJuego) {
 		int numeroJugador = 0;
-		while(cartasJugador.size() < 12){
+
+		while(cartasJugador.size() < 12) {
 			if(numeroJugador > 3)
 				numeroJugador = 0;
-			CartaJugador carta= new CartaJugador(ordenJuego.get(numeroJugador), mazo.obtenerCarta(), false);
+
+			CartaJugador carta = new CartaJugador(ordenJuego.get(numeroJugador), mazo.obtenerCarta(), false);
 			numeroJugador++;
 			cartasJugador.add(carta);
 		}

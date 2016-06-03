@@ -38,10 +38,9 @@ public class Baza {
 	private ArrayList<Jugador> ordenJuego;
 	
 	
-	public Baza(int id, int numeroBaza) {
-		this.id = id;
-		this.turnosBaza = new ArrayList<Movimiento>();
+	public Baza(int numeroBaza) {
 		this.numeroBaza = numeroBaza;
+		this.turnosBaza = new ArrayList<Movimiento>();
 		this.ordenJuego = new ArrayList<Jugador>();
 	}
 
