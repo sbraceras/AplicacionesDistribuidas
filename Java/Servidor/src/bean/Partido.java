@@ -4,18 +4,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.*;
 
 import daos.PartidoDAO;
-import dtos.ChicoDTO;
-import dtos.JugadorDTO;
-import dtos.ParejaDTO;
-import dtos.PartidoDTO;
-
-import enums.EstadoPartido;
-import enums.TipoCategoria;
-import enums.TipoPartido;
+import dtos.*;
+import enums.*;
 import exceptions.PartidoException;
 
 
@@ -188,23 +181,12 @@ public class Partido {
 	}
 	
 	public boolean participoJugador(Jugador jugador) {
-		
 		for(int i=0; i<parejas.size();i++){
 		
 			if(parejas.get(i).tenesJugador(jugador))
 				return true;
 		}
 		return false;
-	}
-	
-/*
-	
-	Desarrollarrrrrrrrrrrrrrrrrr
-
-*/
-	
-	public Jugador calcularResultadoEnvido() {
-		return null;
 	}
 
 	public Chico obtenerChicoActivo() {
@@ -216,8 +198,6 @@ public class Partido {
 		}
 		return aux;
 	}
-	
-	
 
 	public void actualizarRankingJugadores() {
 		Pareja ganadora = parejas.get(parejaGanadora);  /* considero que primer pareja es 0 y la segunda 1 */
@@ -257,17 +237,15 @@ public class Partido {
 		perdedora.getJugador1().actualizarRanking(0, this);
 		perdedora.getJugador2().actualizarRanking(0, this);
 	}
-	
-	
+
 	public boolean estasTerminado() {		
 		return (estadoPartido.equals(EstadoPartido.Terminado));
 	}
 
 	public boolean sosPartido(PartidoDTO partido) {
-		return partido.getId()==this.id;
+		return partido.getId() == this.id;
 	}
-	
-	
+
 	public void terminarPartido () throws PartidoException{
 		int  chicosGanadosPareja1 =0;
 		int  chicosGanadosPareja2 =0;
@@ -302,8 +280,7 @@ public class Partido {
 				throw new PartidoException("No se termino el partido, aun faltan chicos por jugar");
 		}
 	}
-	
-	
+
 	public JugadorDTO turnoCartaJugador (){
 		if(estadoPartido != EstadoPartido.Terminado) {
 			Chico chico = obtenerChicoActivo();
@@ -314,6 +291,18 @@ public class Partido {
 		}
 		
 		return null;
+	}
+
+	public void nuevoMovimiento(Jugador jugador, Movimiento movimiento) {
+		if (!this.estasTerminado()) {
+			// deberia haber un Chico activo! 
+			Chico chico = obtenerChicoActivo();
+			chico.agregarMovimiento(jugador, movimiento);
+		}
+	}
+
+	public List<TipoEnvite> obtenerEnvitesPosibles() {
+		return obtenerChicoActivo().obtenerUltimaMano().obtenerEnvitesPosibles();
 	}
 
 }

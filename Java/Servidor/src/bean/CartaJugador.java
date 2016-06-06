@@ -4,11 +4,6 @@ import javax.persistence.*;
 
 import dtos.CartaJugadorDTO;
 
-
-
-
-
-
 @Entity
 @Table (name = "CartasJugador")
 public class CartaJugador {

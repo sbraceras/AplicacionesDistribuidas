@@ -31,8 +31,6 @@ public class Pareja {
 	private int numeroPareja;
 	
 	public TipoCategoria obtenerCategoriaSuperior() {
-	
-				
 		if(jugador1.getCategoria()==jugador2.getCategoria())
 			return jugador1.getCategoria();
 		else{
@@ -47,14 +45,11 @@ public class Pareja {
 	}
 
 	public Pareja(Jugador jugador1, Jugador jugador2) {
-	
 		this.jugador1 = jugador1;
 		this.jugador2 = jugador2;
-		
 	}
 	
-	public ParejaDTO toDTO (){
-		
+	public ParejaDTO toDTO() {
 		ParejaDTO dto = new ParejaDTO();
 		dto.setId(this.id);
 		dto.setJugador1(this.jugador1.getApodo());
@@ -115,13 +110,11 @@ public class Pareja {
 		return false;
 	}
 	
-	public boolean esPareja (Pareja pareja){
-		
+	public boolean esPareja (Pareja pareja) {
 		if (this.tenesJugador(pareja.getJugador1()) && this.tenesJugador(pareja.getJugador2()))
 			return true;
 		else
 			return false;
 	}
-	
-	
+
 }

@@ -144,7 +144,7 @@ public class Jugador {
 	}
 
 	public boolean sosJugador(JugadorDTO jugador) {
-		return jugador.getId() == this.id;
+		return (this.id == jugador.getId());
 	}
 
 	public boolean contrasenaCorrecta(String contrasena) {

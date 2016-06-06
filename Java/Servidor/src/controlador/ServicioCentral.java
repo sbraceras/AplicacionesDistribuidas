@@ -16,7 +16,7 @@ import exceptions.*;
  **/
 public class ServicioCentral {
 
-	private static ServicioCentral instancia;
+	private static ServicioCentral controlador;
 
 	private ArrayList<Jugador> jugadores;
 	private ArrayList<Partido> partidos;
@@ -24,7 +24,6 @@ public class ServicioCentral {
 	private ArrayList<Jugador> sesiones;
 	private ArrayList<Jugador> esperandoLibreIndividual;
 	private ArrayList<Pareja> esperandoLibreParejas;
-	private static ServicioCentral controlador;
 
 	private ServicioCentral() {
 		this.jugadores = new ArrayList<Jugador>();
@@ -52,7 +51,7 @@ public class ServicioCentral {
 				throw new JugadorException("El correo electr�nico ingresado ya esta en uso");
 		} else {
 			// Podemos registrar el Jugador! 
-			// Suponemos que la validaci�n de la segunda password la hace la interfaz
+			// Suponemos que la validacion de la segunda password la hace la interfaz
 			jug = new Jugador(jugador.getApodo(), jugador.getMail(), jugador.getPassword());
 
 			JugadorDAO.getinstance().guardarJugador(jug);
@@ -69,7 +68,7 @@ public class ServicioCentral {
 			}
 		}
 
-		// no lo encontr� en memoria, lo busco en la BD
+		// no lo encontro en memoria, lo busco en la BD
 		Jugador jug = JugadorDAO.getinstance().buscarJugadorPorApodoPassword(jugador);
 
 		if (jug != null)
@@ -203,9 +202,6 @@ public class ServicioCentral {
 
 	}
 
-	
-	///
-
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
 	public PartidoDTO crearPartidaGrupo(ArrayList<ParejaDTO> parejas, GrupoDTO dto,
 			JugadorDTO administrador) {
@@ -244,8 +240,6 @@ public class ServicioCentral {
 		}
 		return null;
 	}
-
-		
 
 	public PartidoDTO armarPartidoIndividual(){
 		
@@ -510,23 +504,12 @@ public class ServicioCentral {
 		return null;
 	}
 
-	public Partido obtenerPartidoJugado(PartidoDTO partido) {
-
-		for (int i = 0; i < partidos.size(); i++) {
-			if (partido.getId() == partidos.get(i).getId())
-				return partidos.get(i);
-		}
-
-		/* faltar partido dao */
-
-		return null;
-	}
-
 	public ChicoDTO obtenerChicoDTO(PartidoDTO partido, int chico) {
-		
-		Partido p = obtenerPartidoJugado(partido);
-		if (p!=null)
+		Partido p = obtenerPartido(partido);
+
+		if (p != null)
 			return p.obtenerChicoActivo().toDto();
+
 		return null;
 	}
 
@@ -550,12 +533,10 @@ public class ServicioCentral {
 
 	/* DESARROLLAR */
 	public Pareja armarPareja(ArrayList<Jugador> jugadores) {
-
 		return null;
 	}
 
 	public Grupo obtenerGrupo(GrupoDTO dto) {
-
 		for (int i = 0; i < grupos.size(); i++) {
 			if (grupos.get(i).getNombre().equals(dto.getNombre()))
 				return grupos.get(i);
@@ -573,7 +554,6 @@ public class ServicioCentral {
 	}
 
 	public ArrayList<GrupoDTO> obtenerGrupos() {
-
 		List<Grupo> grup = GrupoDAO.getInstancia().obtenerGrupos();
 
 		ArrayList<GrupoDTO> devolver = new ArrayList<GrupoDTO>();
@@ -585,11 +565,87 @@ public class ServicioCentral {
 		return devolver;
 	}
 
-	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) {
-		for (Partido p: this.partidos) {
-			if (p.sosPartido(partido)) {
-//				p.
-			}
+	private boolean estaLogueado(JugadorDTO jugador) {
+		for (Jugador jug: sesiones) {
+			if (jug.sosJugador(jugador))
+				return true;
+		}
+		return false;		
+	}
+
+	public List<TipoEnvite> obtenerEnvitesDisponibles(PartidoDTO partido, JugadorDTO jugador) throws ControladorException {
+		Partido part = obtenerPartido(partido);
+
+		if (part != null) {
+			if (estaLogueado(jugador)) {
+				// obtengo la mano activa
+				Mano mano = part.obtenerChicoActivo().obtenerUltimaMano();
+				// verifico si el jugador que le toca jugar es el que envio la peticion!
+				if (mano.getJugadorActual().sosJugador(jugador)) {
+					return part.obtenerEnvitesPosibles();
+				} else
+					throw new ControladorException("No le toca jugar a dicho jugador");
+			} else
+				throw new ControladorException("El jugador no ha iniciado sesion");
+		} else
+			throw new ControladorException("No existe el partido");
+	}
+	
+	private Partido obtenerPartido(PartidoDTO partido) {
+		for(Partido p: partidos) {
+			if(p.sosPartido(partido))
+				return p;
+		}
+
+		/* falta dao */
+
+		// no lo encontro en memoria, lo busco en la BD
+		Partido p = PartidoDAO.getInstance().buscarPartido(partido);
+
+		if (p != null)
+			partidos.add(p);
+
+		return p;
+	}
+
+	private Movimiento crearMovimientoFromDTO(Jugador jugador, MovimientoDTO movimiento) {
+		if (movimiento instanceof CartaTiradaDTO) {
+			Carta carta = new Carta();
+			carta.setId(((CartaTiradaDTO) movimiento).getCartaJugador().getCarta().getId());
+			carta.setPalo(((CartaTiradaDTO) movimiento).getCartaJugador().getCarta().getPalo());
+			carta.setNumero(((CartaTiradaDTO) movimiento).getCartaJugador().getCarta().getNumero());
+			carta.setPosicionValor(((CartaTiradaDTO) movimiento).getCartaJugador().getCarta().getPosicionValor());
+
+			CartaJugador cartaJugador = new CartaJugador(jugador, carta, true);
+
+			CartaTirada cartaTirada = new CartaTirada(cartaJugador);
+			cartaTirada.setFechaHora(movimiento.getFechaHora());
+
+			return cartaTirada;
+		} else if (movimiento instanceof EnviteDTO) {
+			Envite envite = new Envite(((EnviteDTO) movimiento).getTipoEnvite());
+			envite.setJugador(jugador);
+			envite.setFechaHora(movimiento.getFechaHora());
+
+			return envite;
+		}
+
+		return null;
+	}
+
+	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) throws ControladorException {
+		Partido part = obtenerPartido(partido);
+		if (part == null)
+			throw new ControladorException("No existe el partido");
+
+		if (estaLogueado(jugador)) {
+			// fabrico los objetos a partir de los DTOs
+			Jugador jug = obtenerJugador(jugador);
+			Movimiento mov = crearMovimientoFromDTO(jug, movimiento);
+
+			part.nuevoMovimiento(jug, mov);
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
 		}
 	}
 

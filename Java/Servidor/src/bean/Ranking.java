@@ -5,9 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import daos.RankingDAO;
 import dtos.PartidoDTO;
 import dtos.RankingDTO;
@@ -21,11 +18,11 @@ public class Ranking {
 	private int id;
 
 	@ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable (name = "Ranking_Partido", joinColumns = 
-		{@JoinColumn (name = "id_ranking")}, inverseJoinColumns = {@JoinColumn (name = "id_partido")})
-//	@LazyCollection (LazyCollectionOption.FALSE)
+	@JoinTable (name = "Ranking_Partido",
+				joinColumns = {@JoinColumn (name = "id_ranking")},
+				inverseJoinColumns = {@JoinColumn (name = "id_partido")})
 	private List<Partido> partidos;
-	
+
 	@Column
 	private int puntos;
 	@Column (name = "cant_ganadas")

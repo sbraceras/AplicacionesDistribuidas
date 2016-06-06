@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import dtos.PartidoDTO;
+
 import bean.Partido;
 import hibernate.HibernateUtil;
 
@@ -38,6 +40,10 @@ public class PartidoDAO {
 			e.printStackTrace();
 			System.out.println("Error al guardar Partido");
 		}
+		return null;
+	}
+
+	public Partido buscarPartido(PartidoDTO partido) {
 		return null;
 	}
 

@@ -2,19 +2,13 @@ package bean;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.*;
 
-import dtos.ChicoDTO;
-import dtos.ManoDTO;
-import dtos.ParejaDTO;
-import dtos.PuntajeParejaDTO;
-
+import dtos.*;
 
 /**
- * Chico es la partida corta de 15 puntos
+ * El Chico es cada una de las 3 Partidas cortas de 30 puntos
 **/
-
 
 @Entity
 @Table (name = "Chicos")
@@ -46,18 +40,19 @@ public class Chico {
 		this.puntajes = new ArrayList<PuntajePareja>();
 		this.puntajeMaximo = puntajeMaximo;
 
+		this.puntajes.add(new PuntajePareja(parejas.get(0), 0));
+		this.puntajes.add(new PuntajePareja(parejas.get(1), 0));
+
 		List<Jugador> ordenInicial = new ArrayList<Jugador>();
 		ordenInicial.add(parejas.get(0).getJugador1());
 		ordenInicial.add(parejas.get(1).getJugador1());
 		ordenInicial.add(parejas.get(0).getJugador2());
 		ordenInicial.add(parejas.get(1).getJugador2());
 
-		this.manos.add(new Mano(0, ordenInicial));
+		this.manos.add(new Mano(1, ordenInicial, puntajes));
 	}
-	
 
 	public ChicoDTO toDto (){
-		
 		ChicoDTO dto = new ChicoDTO();
 		dto.setId(this.id);
 		dto.setPuntajeMaximo(this.puntajeMaximo);
@@ -122,10 +117,6 @@ public class Chico {
 		return puntajes;
 	}
 
-	public void setPuntajes(ArrayList<PuntajePareja> puntajes) {
-		this.puntajes = puntajes;
-	}
-
 	public int getPuntajeMaximo() {
 		return puntajeMaximo;
 	}
@@ -135,89 +126,73 @@ public class Chico {
 	}
 
 	public Mano obtenerUltimaMano() {
-		
-		Mano mano = null;
-		for(int i=0; i<manos.size(); i++)
-		{
-			if(mano==null)
-			{
-				mano = manos.get(i);
-			}
-			else
-			{
-				if(mano.getNumeroMano()<manos.get(i).getNumeroMano())
-				{
-					mano = manos.get(i);
-				}
-			}
-		}
-		return mano;
+//		Mano mano = null;
+//
+//		for(int i=0; i<manos.size(); i++) {
+//			if(mano == null) {
+//				mano = manos.get(i);
+//			}
+//			else {
+//				if(mano.getNumeroMano()<manos.get(i).getNumeroMano()) {
+//					mano = manos.get(i);
+//				}
+//			}
+//		}
+//
+//		return mano;
+
+		return manos.get(manos.size() - 1);
 	}
-	
+
 	public void actualizarPuntajePareja(int puntaje, ParejaDTO pareja) {
-	
-				
 		for(int i=0; i<puntajes.size(); i++){
 			if(puntajes.get(i).getPareja().getNumeroPareja()==pareja.getNumeroPareja())
 				puntajes.get(i).setPuntaje(puntaje);
 		}
 	}
-	
-	public void nuevaMano() {
-	
-		
-		Mano anterior =obtenerUltimaMano();
-		
-		//Recalculo orden juego
-		
-		List<Jugador> ordenAnterior = anterior.getOrdenJuego();
-		
-		List<Jugador> ordenNuevo = new ArrayList<Jugador>();
-		
-		//obtengo el Ultimo
-		Jugador jug = ordenAnterior.get(ordenAnterior.size()-1);
-		ordenNuevo.add(jug);
-		//obtengo el resto
-		for(int i=0; i<ordenAnterior.size()-1; i++)
-		{
-			ordenNuevo.add(ordenAnterior.get(i));
-		}
-		
-		Mano nueva = new Mano(anterior.getNumeroMano()+1, ordenNuevo);
-		manos.add(nueva);
-	}
-	
-	
 
-	public Pareja obtenerParejaGanadora (){
-		
-		if(terminado == true){
-			
-			if(puntajes.get(0).getPuntaje() == puntajeMaximo)
-				
+	public void nuevaMano() {
+		Mano ultimaMano = obtenerUltimaMano();
+
+		List<Jugador> ordenJuego = ultimaMano.getOrdenJuego();
+
+		// Recalculo orden juego. El jugador que estaba primero lo pongo al final de la lista		
+		Jugador jug = ordenJuego.get(0);
+		ordenJuego.remove(jug);
+		ordenJuego.add(jug);
+
+		Mano nuevaMano = new Mano(ultimaMano.getNumeroMano() + 1, ordenJuego, puntajes);
+		manos.add(nuevaMano);
+	}
+
+	public Pareja obtenerParejaGanadora() {
+		if (terminado) {
+			if(puntajes.get(0).getPuntaje() >= puntajeMaximo)
 				return puntajes.get(0).getPareja();
-			
 			else
 				return puntajes.get(1).getPareja();
 		}
-		
-		return null;
-		
+
+		return null;		
 	}
 	
 	public Jugador obtenerTurnoJugador() {
-		if(tocaCarta() == true) { //no hay que contestar envite, toca tirar carta
-			Mano mano = manos.get(manos.size());
-			return mano.obtenerTurnoJugadorMano(); //devuelve el jugador que le toca jugar
+		if(tocaCarta() == true) { // no hay que contestar envite, toca tirar carta
+			Mano mano = obtenerUltimaMano();
+			return mano.obtenerTurnoJugadorMano(); // devuelve el jugador que le toca jugar
 		}
 
 		return null;
 	}
 	
 	public boolean tocaCarta() {
-		Mano mano = manos.get(manos.size() - 1); // Obtengo la ultima mano
+		Mano mano = obtenerUltimaMano(); // obtengo la ultima mano
 
 		return mano.tocaCartaMano();
 	}
-	
+
+	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) {
+		obtenerUltimaMano().agregarMovimiento(jugador, movimiento);
+	}
+
 }

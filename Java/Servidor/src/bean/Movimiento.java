@@ -12,21 +12,20 @@ import dtos.MovimientoDTO;
 @Table(name ="Movimientos")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo",discriminatorType=DiscriminatorType.STRING)
-
 public class Movimiento {
-	
+
 	@Id
 	@Column (name = "id_movimiento", nullable = false)
 	@GeneratedValue
 	protected int id;
+
 	@Column (name = "nro_turno")
 	protected int numeroTurno;
+
 	@Column (name = "fecha_hora")
 	protected Timestamp fechaHora;
-	
-	
-	public MovimientoDTO toDTO(){
 
+	public MovimientoDTO toDTO() {
 		MovimientoDTO dto = new MovimientoDTO();
 		
 		dto.setFechaHora(this.fechaHora);
@@ -53,4 +52,5 @@ public class Movimiento {
 	public void setFechaHora(Timestamp fechaHora) {
 		this.fechaHora = fechaHora;
 	}
+
 }

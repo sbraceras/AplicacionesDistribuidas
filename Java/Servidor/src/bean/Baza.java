@@ -11,7 +11,8 @@ import dtos.MovimientoDTO;
 
 
 /**
- * La baza es cuando uno arroja 1 carta de las 3 que posee
+ * La Baza es cada una de las 3 'rondas' que conforman la Mano.
+ * En cada Baza, cada jugador arroja 1 sola carta. 
 **/
 
 @Entity
@@ -29,32 +30,36 @@ public class Baza {
 	
 	@Column (name = "nro_baza")
 	private int numeroBaza;
+
 	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_jugador")
 	private Jugador ganador;
 	
 	@Transient
 	/* No se persiste el orden de juego */
-	private ArrayList<Jugador> ordenJuego;
-	
-	
-	public Baza(int numeroBaza) {
+	private List<Jugador> ordenJuego;
+
+	@Transient
+	private int cantidadCartasTiradas;
+
+
+	public Baza(int numeroBaza, List<Jugador> ordenJuego) {
 		this.numeroBaza = numeroBaza;
 		this.turnosBaza = new ArrayList<Movimiento>();
-		this.ordenJuego = new ArrayList<Jugador>();
+		this.ordenJuego = ordenJuego;
+		this.cantidadCartasTiradas = 0;
 	}
 
 	public Baza() {
+		
 	}
-	
-	
-	////* HACER BIEN */////
-	public Jugador obtenerGanador() {
-		return null;
-	}
-	
-	public BazaDTO toDTO() {
 
+	public Jugador obtenerGanador() {
+		definirGanador();
+		return ganador;
+	}
+
+	public BazaDTO toDTO() {
 		BazaDTO dto = new BazaDTO();
 		dto.setId(this.id);
 		dto.setNumeroBaza(this.numeroBaza);
@@ -69,8 +74,7 @@ public class Baza {
 		
 		MovimientoDTO mov;
 		ArrayList<MovimientoDTO> movimientos = new ArrayList<MovimientoDTO>();
-		for(int i=0; i<turnosBaza.size(); i++)
-		{
+		for(int i=0; i<turnosBaza.size(); i++) {
 			mov = turnosBaza.get(i).toDTO();
 			movimientos.add(mov);
 		}
@@ -109,70 +113,84 @@ public class Baza {
 		this.ganador = ganador;
 	}
 
-	public ArrayList<Jugador> getOrdenJuego() {
+	public List<Jugador> getOrdenJuego() {
 		return ordenJuego;
 	}
 
-	public void setOrdenJuego(ArrayList<Jugador> ordenJuego) {
+	public void setOrdenJuego(List<Jugador> ordenJuego) {
 		this.ordenJuego = ordenJuego;
 	}
 	
 	public Movimiento obtenerUltimoMovimiento (){
-		return turnosBaza.get(turnosBaza.size());
+		return turnosBaza.get(turnosBaza.size() - 1);
 	}
 
 	public Jugador obtenerTurnoBaza() {
-		int cantidadTiradas = obtenerCantidadCartasTiradas();
-		
-		return ordenJuego.get(cantidadTiradas); 
-		//si se tiraron 2 cartas le toca jugar al tercero, pero como es una colleccion
-		//hay que restarle 1
-
-		// PRECISAMENTE, SI SE TIRARON DOS Y LE TOCA JUGAR AL TERCERO, NO HAY QUE RESTARLE 1, NO?
+		return ordenJuego.get(cantidadCartasTiradas); 
 	}
-	
-	
-	public int obtenerCantidadCartasTiradas (){
-		
+
+	// devuelve el jugador que debe contestar el envite
+	public Jugador obtenerTurnoContestar() {
+		Movimiento aux = obtenerUltimoMovimiento(); // se sabe que es un envite
+
+		if (((Envite) aux).getJugador().getId() == ordenJuego.get(2).getId()) {
+			// el ultimo movimiento lo hizo el pie de la primer pareja,
+			// por lo tanto debe contestar el pie de la segunda pareja.
+			return ordenJuego.get(3);
+		}
+		// sino el ultimo canto lo hizo el pie de la segunda pareja,
+		// por lo tanto debe contestar el pie de la primer pareja.
+		return ordenJuego.get(2);
+	}
+
+/*
+
+	public int obtenerCantidadCartasTiradas () {
 		int cantidadTiradas = 0;
-		
-		for(Movimiento mov: turnosBaza){
-			
+
+		for(Movimiento mov: turnosBaza) {
 			if(mov instanceof CartaTirada)
 				cantidadTiradas++;
 		}
-		
 		return cantidadTiradas;
 	}
 
-	
-	public void definirGanador(List <Pareja> parejas){
-		
+*/
+
+	public void definirGanador() {
 		CartaJugador ganadora = null;
-		
-		for(Movimiento mov: turnosBaza){
-			
-			if(mov instanceof CartaTirada)
-			{
-				if(ganadora == null)
-				{
+
+		for(Movimiento mov: turnosBaza) {
+			if(mov instanceof CartaTirada) {
+				if(ganadora == null) {
 					ganadora = ((CartaTirada) mov).getCartaJugador();
-				}
-				else
-				{
-					if(ganadora.getCarta().getPosicionValor()> ((CartaTirada) mov).getCartaJugador().getCarta().getPosicionValor())
-						//significa que esta carta es mejor que la anterior
+				} else {
+					if (ganadora.getCarta().getPosicionValor() >
+					((CartaTirada) mov).getCartaJugador().getCarta().getPosicionValor())
+						// significa que esta carta es mejor que la anterior
 						ganadora = ((CartaTirada) mov).getCartaJugador();
 				}
 			}
-				
 		}
-		
 		ganador = ganadora.getJugador();
-				
+	}
+
+	public int getCantidadCartasTiradas() {
+		return cantidadCartasTiradas;
+	}
+
+	public Jugador getGanador() {
+		return ganador;
+	}
+
+	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) {
+		turnosBaza.add(movimiento);
+
+		if (movimiento instanceof CartaTirada) {
+			cantidadCartasTiradas++;
+		} else if (movimiento instanceof Envite) {
+			
 		}
-	
-	
-	
-	
+	}
+
 }
