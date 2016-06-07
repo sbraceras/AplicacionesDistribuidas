@@ -294,12 +294,18 @@ public class ServicioCentral {
 				}
 				
 				//Si todavia no llego a los jugadores, voy a buscar en la menor. Para eso saco los elementos con categoria mayor de la lista de jugadoresPosibles.//
+				
+				List<Jugador> jugadoresBorrar = new ArrayList<Jugador>();
 				if (jugadoresPosibles.size()<4){
 					for (Jugador j : jugadoresPosibles){
 						if (j.getCategoria().toString().equalsIgnoreCase(categoriaMayor)){
-							jugadoresPosibles.remove(j);
+//							jugadoresPosibles.remove(j);
+							jugadoresBorrar.add(j);
 						}
 					}
+					if(jugadoresBorrar.size()>0)
+						jugadoresPosibles.remove(jugadoresBorrar);
+					
 				}else{
 					//Si llegué con categoria original y mayor, compongo las parejas//
 					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
@@ -634,11 +640,11 @@ public class ServicioCentral {
 	}
 
 	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) throws ControladorException {
-		Partido part = obtenerPartido(partido);
-		if (part == null)
-			throw new ControladorException("No existe el partido");
-
 		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+
 			// fabrico los objetos a partir de los DTOs
 			Jugador jug = obtenerJugador(jugador);
 			Movimiento mov = crearMovimientoFromDTO(jug, movimiento);
@@ -648,5 +654,38 @@ public class ServicioCentral {
 			throw new ControladorException("El jugador no ha iniciado sesion");
 		}
 	}
+
+	public JugadorDTO obtenerJugadorActual(PartidoDTO partido, JugadorDTO jugador) throws ControladorException {
+		
+		if(estaLogueado(jugador)){
+			
+			Partido part = obtenerPartido(partido);
+		
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+			
+			return part.obtenerChicoActivo().obtenerTurnoJugador().toDTO();
+						
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
+
+		
+	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws ControladorException{
+		
+		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+
+			return part.obtenerChicoActivo().obtenerUltimaMano().obtenerCartasJugador(jugador);
+
+			
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
+	
 
 }

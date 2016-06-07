@@ -20,8 +20,8 @@ import dtos.MovimientoDTO;
 public class Baza {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "id_baza", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -30,6 +30,9 @@ public class Baza {
 	
 	@Column (name = "nro_baza")
 	private int numeroBaza;
+	
+	@Transient
+	private Mano mano; //se utiliza para reemplazar los observers	
 
 	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_jugador")
@@ -43,8 +46,9 @@ public class Baza {
 	private int cantidadCartasTiradas;
 
 
-	public Baza(int numeroBaza, List<Jugador> ordenJuego) {
+	public Baza(Mano mano, int numeroBaza, List<Jugador> ordenJuego) {
 		this.numeroBaza = numeroBaza;
+		this.mano = mano;
 		this.turnosBaza = new ArrayList<Movimiento>();
 		this.ordenJuego = ordenJuego;
 		this.cantidadCartasTiradas = 0;
@@ -79,8 +83,7 @@ public class Baza {
 			movimientos.add(mov);
 		}
 		dto.setTurnosBaza(movimientos);
-		
-		dto.setGanador(this.ganador.toDTO());
+		dto.setGanador(this.ganador == null ? null : this.ganador.toDTO());
 		
 		return dto;
 	}

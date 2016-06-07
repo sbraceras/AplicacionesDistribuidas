@@ -58,7 +58,7 @@ public class Partido {
 		this.fechaFin = null;
 		this.fechaInicio = fechaInicio;
 
-		this.chicos.add(new Chico(30, this.parejas));
+		this.chicos.add(new Chico(this, 30, this.parejas));
 	}
 	
 	public PartidoDTO toDTO (){

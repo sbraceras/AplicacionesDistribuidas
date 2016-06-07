@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+import org.hibernate.engine.Cascade;
+
 import dtos.*;
 
 /**
@@ -18,6 +20,10 @@ public class Chico {
 	@Column (name = "id_chico", nullable = false)
 	@GeneratedValue
 	private int id;
+	@Column (name = "nro_chico")
+	private int numeroChico;
+	@Transient
+	private Partido partido; //se utiliza para reemplazar los observers
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_chico")
 	private List<Mano> manos;
@@ -26,20 +32,21 @@ public class Chico {
 	private List<PuntajePareja> puntajes;
 	@Column (name = "puntaje_maximo")
 	private int puntajeMaximo;
-	@Column (name = "nro_chico")
-	private int numeroChico;
+	
 	@Column (columnDefinition = "bit")
 	private boolean terminado;
+	
 	
 	
 	public Chico() {
 	}
 
-	public Chico(int puntajeMaximo, List<Pareja> parejas) {
+	public Chico(Partido partido, int puntajeMaximo, List<Pareja> parejas) {
 		this.manos = new ArrayList<Mano>();
 		this.puntajes = new ArrayList<PuntajePareja>();
 		this.puntajeMaximo = puntajeMaximo;
-
+		this.partido = partido;
+		
 		this.puntajes.add(new PuntajePareja(parejas.get(0), 0));
 		this.puntajes.add(new PuntajePareja(parejas.get(1), 0));
 
@@ -49,7 +56,7 @@ public class Chico {
 		ordenInicial.add(parejas.get(0).getJugador2());
 		ordenInicial.add(parejas.get(1).getJugador2());
 
-		this.manos.add(new Mano(1, ordenInicial, puntajes));
+		this.manos.add(new Mano(this, 1, ordenInicial, puntajes));
 	}
 
 	public ChicoDTO toDto (){
@@ -161,7 +168,7 @@ public class Chico {
 		ordenJuego.remove(jug);
 		ordenJuego.add(jug);
 
-		Mano nuevaMano = new Mano(ultimaMano.getNumeroMano() + 1, ordenJuego, puntajes);
+		Mano nuevaMano = new Mano(this, ultimaMano.getNumeroMano() + 1, ordenJuego, puntajes);
 		manos.add(nuevaMano);
 	}
 
@@ -177,12 +184,14 @@ public class Chico {
 	}
 	
 	public Jugador obtenerTurnoJugador() {
-		if(tocaCarta() == true) { // no hay que contestar envite, toca tirar carta
-			Mano mano = obtenerUltimaMano();
-			return mano.obtenerTurnoJugadorMano(); // devuelve el jugador que le toca jugar
-		}
-
-		return null;
+		
+		return obtenerUltimaMano().getJugadorActual();
+//		if(tocaCarta() == true) { // no hay que contestar envite, toca tirar carta
+//			Mano mano = obtenerUltimaMano();
+//			return mano.obtenerTurnoJugadorMano(); // devuelve el jugador que le toca jugar
+//		}
+//
+//		return null;
 	}
 	
 	public boolean tocaCarta() {
@@ -194,5 +203,6 @@ public class Chico {
 	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) {
 		obtenerUltimaMano().agregarMovimiento(jugador, movimiento);
 	}
-
+	
+	
 }

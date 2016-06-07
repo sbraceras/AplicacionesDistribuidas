@@ -22,6 +22,8 @@ public class Mano {
 	private int id;
 	@Column (name = "nro_mano")
 	private int numeroMano;
+	@Transient
+	private Chico chico; //se utiliza para reemplazar los observers	
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_mano")
 	private List<Baza> bazas;
@@ -49,20 +51,23 @@ public class Mano {
 		
 	}
 
-	public Mano(int numeroMano, List<Jugador> ordenJuego, List<PuntajePareja> puntajes) {
+	public Mano(Chico chico, int numeroMano, List<Jugador> ordenJuego, List<PuntajePareja> puntajes) {
 		this.numeroMano = numeroMano;
+		this.chico = chico;
 		this.bazas = new ArrayList<Baza>();
 		this.cartasJugador = new ArrayList<CartaJugador>();
 		this.enviteActual = null;
 		this.jugadorActual = ordenJuego.get(0);
 		this.mazo = new Mazo();
 		this.puntajes = puntajes;
-//		this.ordenJuego = ordenJuego;
-		System.arraycopy(ordenJuego, 0, this.ordenJuego, 0, ordenJuego.size());
+
+		this.ordenJuego = ordenJuego;
+//		this.ordenJuego = new ArrayList<Jugador>();
+//		System.arraycopy(ordenJuego, 0, this.ordenJuego, 0, ordenJuego.size());
 
 		repartirCartas(ordenJuego);
 
-		this.bazas.add(new Baza(1, ordenJuego));
+		this.bazas.add(new Baza(this, 1, ordenJuego));
 	}
 
 	private void repartirCartas(List<Jugador> ordenJuego) {
@@ -81,6 +86,8 @@ public class Mano {
 	public List<Jugador> getOrdenJuego() {
 		return ordenJuego;
 	}
+	
+	
 
 	public void setOrdenJuego(List<Jugador> ordenJuego) {
 		this.ordenJuego = ordenJuego;
@@ -439,8 +446,15 @@ public class Mano {
 
 	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) {
 		Baza ultimaBaza = obtenerUltimaBaza();
+		if(movimiento instanceof CartaTirada)
+		{
+			CartaJugador carta = obtenerCartaJugador((CartaTirada) movimiento);
+			((CartaTirada) movimiento).setCartaJugador(carta);
+			carta.setTirada(true);
+		}
 		ultimaBaza.agregarMovimiento(jugador, movimiento);
-
+			
+		
 		if (movimiento instanceof Envite) {
 			Envite envite = (Envite) movimiento;
 
@@ -481,6 +495,7 @@ public class Mano {
 			}
 			enviteActual = (Envite) movimiento;
 		} else if (movimiento instanceof CartaTirada) {
+			
 			if (ultimaBaza.getCantidadCartasTiradas() == 4) {
 				// se arrojo la ultima carta de la ronda! hay que cerrar la baza
 				jugadorActual = ultimaBaza.obtenerGanador();
@@ -492,6 +507,29 @@ public class Mano {
 
 	private void actualizarPuntajePareja(Pareja pareja, int puntaje) {
 		
+	}
+	
+	public List<CartaJugadorDTO> obtenerCartasJugador (JugadorDTO jugador){
+		
+		List<CartaJugadorDTO> devolver = new ArrayList<CartaJugadorDTO>();
+		for(CartaJugador cartaJugador: cartasJugador){
+			
+			if(cartaJugador.getJugador().sosJugador(jugador)){
+				devolver.add(cartaJugador.toDTO());
+			}
+				
+		}
+		return devolver;
+	}
+	
+	public CartaJugador obtenerCartaJugador (CartaTirada carta){
+		
+		for(CartaJugador aux : cartasJugador){
+			
+			if(aux.getCarta().getId()==(carta.getCartaJugador().getCarta().getId()))
+				return aux;
+		}
+		return null;
 	}
 
 }
