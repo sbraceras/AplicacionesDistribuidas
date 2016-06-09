@@ -151,9 +151,9 @@ public class Chico {
 		return manos.get(manos.size() - 1);
 	}
 
-	public void actualizarPuntajePareja(int puntaje, ParejaDTO pareja) {
+	public void actualizarPuntajePareja(int puntaje, Pareja pareja) {
 		for(int i=0; i<puntajes.size(); i++){
-			if(puntajes.get(i).getPareja().getNumeroPareja()==pareja.getNumeroPareja())
+			if(puntajes.get(i).getPareja().getNumeroPareja() == pareja.getNumeroPareja())
 				puntajes.get(i).setPuntaje(puntaje);
 		}
 	}

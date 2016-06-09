@@ -47,10 +47,10 @@ public class Baza {
 
 
 	public Baza(Mano mano, int numeroBaza, List<Jugador> ordenJuego) {
-		this.numeroBaza = numeroBaza;
 		this.mano = mano;
-		this.turnosBaza = new ArrayList<Movimiento>();
+		this.numeroBaza = numeroBaza;
 		this.ordenJuego = ordenJuego;
+		this.turnosBaza = new ArrayList<Movimiento>();
 		this.cantidadCartasTiradas = 0;
 	}
 

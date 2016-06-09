@@ -42,9 +42,13 @@ public class Mano {
 	@Transient
 	private List<PuntajePareja> puntajes;
 	@Transient
-	private byte envidoPareja1;
+	private byte envidoJugador1;
 	@Transient
-	private byte envidoPareja2;
+	private byte envidoJugador2;
+	@Transient
+	private byte envidoJugador3;
+	@Transient
+	private byte envidoJugador4;
 
 
 	public Mano() {
@@ -52,14 +56,14 @@ public class Mano {
 	}
 
 	public Mano(Chico chico, int numeroMano, List<Jugador> ordenJuego, List<PuntajePareja> puntajes) {
-		this.numeroMano = numeroMano;
 		this.chico = chico;
+		this.numeroMano = numeroMano;
+		this.puntajes = puntajes;
 		this.bazas = new ArrayList<Baza>();
 		this.cartasJugador = new ArrayList<CartaJugador>();
 		this.enviteActual = null;
 		this.jugadorActual = ordenJuego.get(0);
 		this.mazo = new Mazo();
-		this.puntajes = puntajes;
 
 		this.ordenJuego = ordenJuego;
 //		this.ordenJuego = new ArrayList<Jugador>();
@@ -149,23 +153,79 @@ public class Mano {
 		this.mazo = mazo;
 	}
 
+	private byte obtenerPuntajeTruco(boolean querido) {
+		// CONTINUARA...
+		return 0;
+	}
+
+	private byte obtenerPuntajeEnvido(boolean querido) {
+		// recorremos todos los movimientos de la primer Baza (solo aqui se puede cantar Envido)
+		// y analizamos cual es el puntaje acumulado del Envido!
+		List<Movimiento> movimientos = bazas.get(0).getTurnosBaza();
+		String cadenaDeEnvidos = "";
+
+		for (Movimiento mov: movimientos) {
+			if (mov instanceof Envite) {
+				Envite envite = (Envite) mov;
+
+				if (envite.sosAlgunEnvido())
+					cadenaDeEnvidos = envite.getTipoEnvite().name();
+			}
+		}
+
+		if (cadenaDeEnvidos.isEmpty())
+			return 0;
+		else {
+			if (querido)
+				cadenaDeEnvidos.concat(TipoEnvite.Quiero.name());
+			else
+				cadenaDeEnvidos.concat(TipoEnvite.NoQuiero.name());
+
+			return Envite.obtenerPuntajeEnvido(cadenaDeEnvidos);
+		}
+	}
+
 	public Pareja obtenerGanadorEnvido() {
+		// debemos obtener el Envido de TODOS los Jugadores ya que, segun las reglas,
+		// el jugador que es 'mano' debe comenzar a decir su Envido, luego el Jugador
+		// a su derecha, y asi, hasta el ultimo pie.
+		envidoJugador1 = obtenerEnvidoJugador(ordenJuego.get(0));
+		envidoJugador2 = obtenerEnvidoJugador(ordenJuego.get(1));
+		envidoJugador3 = obtenerEnvidoJugador(ordenJuego.get(2));
+		envidoJugador4 = obtenerEnvidoJugador(ordenJuego.get(3));
+
+		// obtenemos el Envido mas alto de cada Pareja
+		byte envidoPareja1 = envidoJugador1 > envidoJugador3 ? envidoJugador1 : envidoJugador3;
+		byte envidoPareja2 = envidoJugador2 > envidoJugador4 ? envidoJugador2 : envidoJugador4;
+
 		if (envidoPareja1 > envidoPareja2) {
-			return null;
+			return obtenerParejaJugador(ordenJuego.get(0));
 		} else if (envidoPareja1 < envidoPareja2) {
-			return null;
+			return obtenerParejaJugador(ordenJuego.get(1));
 		} else if (envidoPareja1 == envidoPareja2) {
-			return obtenerParejaMano();
+			// obtengo la Pareja a la que pertenece el jugador que es 'mano' - ordenJuego.get(0) -
+			return obtenerParejaJugador(ordenJuego.get(0));
 		}
 		return null;
 	}
 
-	private Pareja obtenerParejaMano() {
-		// analizo a que Pareja pertenece el jugador que es 'mano' - ordenJuego.get(0) -
-		if (puntajes.get(0).getPareja().tenesJugador(ordenJuego.get(0))) {
+	private byte obtenerEnvidoJugador(Jugador jugador) {
+		//********  HACER !!!  ********//
+		return 0;
+	}
+
+	private Pareja obtenerParejaJugador(Jugador jugador) {
+		if (puntajes.get(0).getPareja().tenesJugador(jugador)) {
 			return puntajes.get(0).getPareja();
 		}
 		return puntajes.get(1).getPareja();
+	}
+
+	private Pareja obtenerParejaEnemiga(Jugador jugador) {
+		if (puntajes.get(0).getPareja().tenesJugador(jugador)) {
+			return puntajes.get(1).getPareja();
+		}
+		return puntajes.get(0).getPareja();
 	}
 
 	////////////////////////////////////
@@ -432,12 +492,20 @@ public class Mano {
 		this.jugadorActual = jugadorActual;
 	}
 
-	public byte getEnvidoPareja1() {
-		return envidoPareja1;
+	public byte getEnvidoJugador1() {
+		return envidoJugador1;
 	}
 
-	public byte getEnvidoPareja2() {
-		return envidoPareja2;
+	public byte getEnvidoJugador2() {
+		return envidoJugador2;
+	}
+
+	public byte getEnvidoJugador3() {
+		return envidoJugador3;
+	}
+
+	public byte getEnvidoJugador4() {
+		return envidoJugador4;
 	}
 
 	private Baza obtenerUltimaBaza() {
@@ -446,87 +514,95 @@ public class Mano {
 
 	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) {
 		Baza ultimaBaza = obtenerUltimaBaza();
-		if(movimiento instanceof CartaTirada)
-		{
-			CartaJugador carta = obtenerCartaJugador((CartaTirada) movimiento);
-			((CartaTirada) movimiento).setCartaJugador(carta);
-			carta.setTirada(true);
-		}
-		ultimaBaza.agregarMovimiento(jugador, movimiento);
-			
-		
-		if (movimiento instanceof Envite) {
-			Envite envite = (Envite) movimiento;
 
-			if (envite.getTipoEnvite().equals(TipoEnvite.Quiero)) {
-				// primero, verifico si el Envite es un 'Quiero' de alguno de todos los Envidos
-				if (enviteActual.sosAlgunEnvido()) {
-					byte puntajeEnvido = 0;
+		if (movimiento instanceof CartaTirada) {
+			CartaTirada cartaTirada = (CartaTirada) movimiento;
 
-					if (enviteActual.getTipoEnvite().equals(TipoEnvite.Envido))
-						puntajeEnvido = 2;
-					else if (enviteActual.getTipoEnvite().equals(TipoEnvite.EnvidoEnvido))
-						puntajeEnvido = 4;
-					else if (enviteActual.getTipoEnvite().equals(TipoEnvite.RealEnvido))
-						puntajeEnvido = 3;
-					else if (enviteActual.getTipoEnvite().equals(TipoEnvite.FaltaEnvido))
-						puntajeEnvido = 30;
+			// obtengo la CartaJugador en estado persistente!
+			CartaJugador cartaJugador = obtenerCartaJugador(cartaTirada);
+			cartaJugador.setTirada(true);
+			cartaTirada.setNumeroTurno(99);
+			cartaTirada.setCartaJugador(cartaJugador);
 
-					// VER BIEN ESTO!!!
-					// quizas sea mejor recorrer todos los movimientos y analizar cual es el puntaje
-					// correspondiente al Envido ganado!
+			ultimaBaza.agregarMovimiento(jugador, cartaTirada);
 
-
-					// debemos analizar quien gana el Envido!
-					Pareja ganadorEnvido = obtenerGanadorEnvido();
-					// OJO, quizas el que gano el Envido ya alcanzo los 30 puntos y gana el Chico!
-					actualizarPuntajePareja(ganadorEnvido, puntajeEnvido);
-				} else
-				// ahora, verifico si el Envite es un 'Quiero' de alguno de todos los Trucos
-				if (enviteActual.sosAlgunTruco()) {
-
-//					(enviteActual.getTipoEnvite().equals(TipoEnvite.Truco))		||
-//					(enviteActual.getTipoEnvite().equals(TipoEnvite.ReTruco))	||
-//					(enviteActual.getTipoEnvite().equals(TipoEnvite.ValeCuatro))
-
-				}
-			} else if (envite.getTipoEnvite().equals(TipoEnvite.NoQuiero)) {
-				// 
-			}
-			enviteActual = (Envite) movimiento;
-		} else if (movimiento instanceof CartaTirada) {
-			
 			if (ultimaBaza.getCantidadCartasTiradas() == 4) {
 				// se arrojo la ultima carta de la ronda! hay que cerrar la baza
 				jugadorActual = ultimaBaza.obtenerGanador();
 			} else {
 				jugadorActual = ordenJuego.get(ultimaBaza.getCantidadCartasTiradas());
 			}
+		} else if (movimiento instanceof Envite) {
+			Envite envite = (Envite) movimiento;
+
+			ultimaBaza.agregarMovimiento(jugador, envite);
+
+			if (envite.getTipoEnvite().equals(TipoEnvite.Quiero)) {
+				// primero, verifico si el Envite es un 'Quiero' de alguno de todos los Envidos
+				if (enviteActual.sosAlgunEnvido()) {
+					// debemos calcular el puntaje que corresponde a la cadena de Envidos...
+					byte puntajeEnvido = obtenerPuntajeEnvido(true);
+					// debemos analizar quien gana el Envido!
+					Pareja ganadorEnvido = obtenerGanadorEnvido();
+					// OJO, quizas el que gano el Envido ya alcanzo los 30 puntos y gana el Chico!
+					chico.actualizarPuntajePareja(puntajeEnvido, ganadorEnvido);
+				} else
+				// ahora, verifico si el Envite es un 'Quiero' de alguno de todos los Trucos
+				if (enviteActual.sosAlgunTruco()) {
+					// quisieron algun Truco, ¿que hacemos? NADA
+				}
+			} else if (envite.getTipoEnvite().equals(TipoEnvite.NoQuiero)) {
+				// primero, verifico si el Envite es un 'NoQuiero' de alguno de todos los Envidos
+				if (enviteActual.sosAlgunEnvido()) {
+					// debemos calcular el puntaje que corresponde a la cadena de Envidos...
+					byte puntajeEnvido = obtenerPuntajeEnvido(false);
+					// los puntos del Envido se los lleva la Pareja contraria del Jugador que dijo NoQuiero 
+					Pareja ganadorEnvido = obtenerParejaEnemiga(envite.getJugador());
+					// OJO, quizas el que gano el Envido ya alcanzo los 30 puntos y gana el Chico!
+
+					// CERRAR BAZA? CERRAR MANO?
+					chico.actualizarPuntajePareja(puntajeEnvido, ganadorEnvido);
+				} else
+				// ahora, verifico si el Envite es un 'NoQuiero' de alguno de todos los Trucos
+				if (enviteActual.sosAlgunTruco()) {
+					// NO quisieron algun Truco, por lo tanto cerramos la Mano
+					// debemos calcular el puntaje que corresponde a la cadena de Trucos...
+					byte puntajeTruco = obtenerPuntajeTruco(false);
+					// los puntos del Truco se los lleva la Pareja contraria del Jugador que dijo NoQuiero 
+					Pareja ganadorTruco = obtenerParejaEnemiga(envite.getJugador());
+					// OJO, quizas el que gano el Truco ya alcanzo los 30 puntos y gana el Chico!
+
+					// CERRAR BAZA Y LUEGO LA MANO!
+					chico.actualizarPuntajePareja(puntajeTruco, ganadorTruco);
+				}
+			} else if (envite.getTipoEnvite().equals(TipoEnvite.IrAlMazo)) {
+				// ANALIZAR...
+			} else {
+				// canto algo! pasamos el turno al siguiente
+				if (ultimaBaza.getNumeroBaza() == 1) {					
+					jugadorActual = (ordenJuego.indexOf(envite.getJugador()) == 3) ? ordenJuego.get(2) : ordenJuego.get(3);
+				} else {
+					// ANALIZAR...
+				}
+			}
+			enviteActual = envite;
 		}
 	}
 
-	private void actualizarPuntajePareja(Pareja pareja, int puntaje) {
-		
-	}
-	
-	public List<CartaJugadorDTO> obtenerCartasJugador (JugadorDTO jugador){
-		
+	public List<CartaJugadorDTO> obtenerCartasJugador(JugadorDTO jugador) {
 		List<CartaJugadorDTO> devolver = new ArrayList<CartaJugadorDTO>();
-		for(CartaJugador cartaJugador: cartasJugador){
-			
-			if(cartaJugador.getJugador().sosJugador(jugador)){
+
+		for(CartaJugador cartaJugador: cartasJugador) {
+			if(cartaJugador.getJugador().sosJugador(jugador)) {
 				devolver.add(cartaJugador.toDTO());
 			}
-				
 		}
 		return devolver;
 	}
-	
-	public CartaJugador obtenerCartaJugador (CartaTirada carta){
-		
-		for(CartaJugador aux : cartasJugador){
-			
-			if(aux.getCarta().getId()==(carta.getCartaJugador().getCarta().getId()))
+
+	public CartaJugador obtenerCartaJugador(CartaTirada carta) {
+		for(CartaJugador aux : cartasJugador) {
+			if (aux.getCarta().getId() == (carta.getCartaJugador().getCarta().getId()))
 				return aux;
 		}
 		return null;

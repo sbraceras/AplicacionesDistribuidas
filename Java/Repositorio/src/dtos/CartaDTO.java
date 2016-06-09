@@ -48,4 +48,9 @@ public class CartaDTO implements Serializable {
 		this.posicionValor = posicionValor;
 	}
 
+	@Override
+	public String toString() {
+		return numero + " de " + palo.name();
+	}
+
 }
