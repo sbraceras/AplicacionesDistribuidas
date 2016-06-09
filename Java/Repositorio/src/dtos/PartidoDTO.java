@@ -13,7 +13,7 @@ public class PartidoDTO implements Serializable {
 
 	private int id;
 	private List<ParejaDTO> parejas;
-	private int parejaGanadora;
+	private ParejaDTO parejaGanadora;
 	private Timestamp fechaInicio;
 	private Timestamp fechaFin;
 	private TipoPartido tipoPartido;
@@ -39,11 +39,11 @@ public class PartidoDTO implements Serializable {
 		this.parejas = parejas;
 	}
 
-	public int getParejaGanadora() {
+	public ParejaDTO getParejaGanadora() {
 		return parejaGanadora;
 	}
 
-	public void setParejaGanadora(int parejaGanadora) {
+	public void setParejaGanadora(ParejaDTO parejaGanadora) {
 		this.parejaGanadora = parejaGanadora;
 	}
 

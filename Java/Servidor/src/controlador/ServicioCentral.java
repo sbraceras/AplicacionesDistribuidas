@@ -456,7 +456,7 @@ public class ServicioCentral {
 	 * y su password concuerda con la almacenada se le permite pasar al area 
 	 * de juego para elegir el tipo de partida a jugar.
 	 */
-	public void iniciarSesion(JugadorDTO jugador) throws JugadorException {
+	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws JugadorException {
 	
 		for(Jugador jug: sesiones) {
 			if (jug.getApodo().equals(jugador.getApodo()))
@@ -466,11 +466,16 @@ public class ServicioCentral {
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
 		if (jug == null) {
-			throw new JugadorException("Inicio de sesi�n no v�lido. " +
+			throw new JugadorException("Inicio de sesion no valido. " +
 				"Por favor, verifique sus credenciales.");
 		} else {
 			System.out.println("LogIn Correcto");
 			sesiones.add(jug);
+			JugadorDTO j = new JugadorDTO();
+			j.setApodo(jug.getApodo());
+			j.setMail(jug.getMail());
+			j.setId(jug.getId());
+			return j;
 		}
 	}
 

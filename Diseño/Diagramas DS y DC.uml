@@ -4509,10 +4509,11 @@
 <XPD:ATTR name="#CallActions" type="integer">1</XPD:ATTR>
 <XPD:REF name="CallActions[0]">gEH8fG/6+UCBUsBZxe6EFQAA</XPD:REF>
 </XPD:OBJ>
-<XPD:ATTR name="#TypedFeatures" type="integer">3</XPD:ATTR>
+<XPD:ATTR name="#TypedFeatures" type="integer">4</XPD:ATTR>
 <XPD:REF name="TypedFeatures[0]">7V3MPOlbgUOBtV2yFCfakwAA</XPD:REF>
 <XPD:REF name="TypedFeatures[1]">JBPw0Ve5H0+vlFeAoyWVMgAA</XPD:REF>
 <XPD:REF name="TypedFeatures[2]">rxqNKMxLskqDxvjYl1X0NwAA</XPD:REF>
+<XPD:REF name="TypedFeatures[3]">XMk8C2P5A0+CmoOPVCskDgAA</XPD:REF>
 <XPD:ATTR name="#TypedParameters" type="integer">10</XPD:ATTR>
 <XPD:REF name="TypedParameters[0]">hbsBcluV2k6Npp3GBOssVQAA</XPD:REF>
 <XPD:REF name="TypedParameters[1]">fF6Fv4wYB0KZWtpETiBU2AAA</XPD:REF>
@@ -4637,7 +4638,7 @@
 </XPD:OBJ>
 <XPD:ATTR name="#TypedFeatures" type="integer">2</XPD:ATTR>
 <XPD:REF name="TypedFeatures[0]">bhErLx4YaUSVAGCaOoHqmwAA</XPD:REF>
-<XPD:REF name="TypedFeatures[1]">XMk8C2P5A0+CmoOPVCskDgAA</XPD:REF>
+<XPD:REF name="TypedFeatures[1]">ZAE/Tev1YUqAyEFvC53tfwAA</XPD:REF>
 <XPD:ATTR name="#TypedParameters" type="integer">5</XPD:ATTR>
 <XPD:REF name="TypedParameters[0]">f/JlUNXhIEqKtnKOIGSBxwAA</XPD:REF>
 <XPD:REF name="TypedParameters[1]">vr0MXN2C3UqjP5WQUt7aggAA</XPD:REF>
@@ -5214,8 +5215,8 @@ Identifica quien es el que comienza la mano
 <XPD:OBJ name="Attributes[4]" type="UMLAttribute" guid="XMk8C2P5A0+CmoOPVCskDgAA">
 <XPD:ATTR name="Name" type="string">ganador</XPD:ATTR>
 <XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
-<XPD:ATTR name="TypeExpression" type="string">Pareja</XPD:ATTR>
-<XPD:REF name="Type_">H9vCKljKE0izx4odZWSIKQAA</XPD:REF>
+<XPD:ATTR name="TypeExpression" type="string">Jugador</XPD:ATTR>
+<XPD:REF name="Type_">HFFjwfvR/k6MIcoQKiLmQgAA</XPD:REF>
 <XPD:REF name="Owner">vtxwvQ5DB0eKMoKfuN16CwAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="Attributes[5]" type="UMLAttribute" guid="rq1kDWCkFUS3FXDz6aCu0gAA">
@@ -5419,7 +5420,8 @@ Va a ser el controladorDelJuego, es decir, quien va a jugar, que cosas se cantar
 <XPD:OBJ name="Attributes[3]" type="UMLAttribute" guid="ZAE/Tev1YUqAyEFvC53tfwAA">
 <XPD:ATTR name="Name" type="string">parejaGanadora</XPD:ATTR>
 <XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
-<XPD:ATTR name="TypeExpression" type="string">int</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">Pareja</XPD:ATTR>
+<XPD:REF name="Type_">H9vCKljKE0izx4odZWSIKQAA</XPD:REF>
 <XPD:REF name="Owner">BP6Xgk4JQkiVe60nKbhUygAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="Attributes[4]" type="UMLAttribute" guid="dmIBOhMkFE2K4JHb9YL6CwAA">

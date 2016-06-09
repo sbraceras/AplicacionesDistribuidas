@@ -7,6 +7,7 @@ import javax.persistence.*;
 import org.hibernate.engine.Cascade;
 
 import dtos.*;
+import exceptions.PartidoException;
 
 /**
  * El Chico es cada una de las 3 Partidas cortas de 30 puntos
@@ -41,11 +42,12 @@ public class Chico {
 	public Chico() {
 	}
 
-	public Chico(Partido partido, int puntajeMaximo, List<Pareja> parejas) {
+	public Chico(Partido partido,int numeroChico, int puntajeMaximo, List<Pareja> parejas) {
+		this.numeroChico = numeroChico;
+		this.partido = partido;
 		this.manos = new ArrayList<Mano>();
 		this.puntajes = new ArrayList<PuntajePareja>();
 		this.puntajeMaximo = puntajeMaximo;
-		this.partido = partido;
 		
 		this.puntajes.add(new PuntajePareja(parejas.get(0), 0));
 		this.puntajes.add(new PuntajePareja(parejas.get(1), 0));
@@ -151,11 +153,20 @@ public class Chico {
 		return manos.get(manos.size() - 1);
 	}
 
-	public void actualizarPuntajePareja(int puntaje, Pareja pareja) {
+	public void actualizarPuntajePareja(int puntaje, Pareja pareja) throws PartidoException {
 		for(int i=0; i<puntajes.size(); i++){
-			if(puntajes.get(i).getPareja().getNumeroPareja() == pareja.getNumeroPareja())
-				puntajes.get(i).setPuntaje(puntaje);
+			if(puntajes.get(i).getPareja().getNumeroPareja() == pareja.getNumeroPareja()){
+				
+				if(puntajes.get(i).getPuntaje()+puntaje >= 30){
+					puntajes.get(i).setPuntaje(30);
+					terminado= true;
+					partido.cerrarChico();
+				}
+				else
+					puntajes.get(i).setPuntaje(puntaje);
+			}
 		}
+		
 	}
 
 	public void nuevaMano() {

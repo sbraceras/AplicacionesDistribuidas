@@ -2,12 +2,9 @@ package bean;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.*;
-
-import dtos.BazaDTO;
-import dtos.JugadorDTO;
-import dtos.MovimientoDTO;
+import dtos.*;
+import exceptions.*;
 
 
 /**
@@ -58,10 +55,7 @@ public class Baza {
 		
 	}
 
-	public Jugador obtenerGanador() {
-		definirGanador();
-		return ganador;
-	}
+	
 
 	public BazaDTO toDTO() {
 		BazaDTO dto = new BazaDTO();
@@ -160,22 +154,45 @@ public class Baza {
 
 */
 
-	public void definirGanador() {
-		CartaJugador ganadora = null;
-
+	public void definirGanador() throws BazaException {
+		CartaJugador cartaJugador1 = null;
+		CartaJugador cartaJugador2 = null;
+		CartaJugador cartaJugador3 = null;
+		CartaJugador cartaJugador4 = null;
+		int cantidadCartas=0;
+		CartaTirada cartaTirada;
 		for(Movimiento mov: turnosBaza) {
 			if(mov instanceof CartaTirada) {
-				if(ganadora == null) {
-					ganadora = ((CartaTirada) mov).getCartaJugador();
-				} else {
-					if (ganadora.getCarta().getPosicionValor() >
-					((CartaTirada) mov).getCartaJugador().getCarta().getPosicionValor())
-						// significa que esta carta es mejor que la anterior
-						ganadora = ((CartaTirada) mov).getCartaJugador();
-				}
+				cartaTirada = (CartaTirada) mov;
+				
+				if(cantidadCartas == 0)
+					cartaJugador1 = cartaTirada.getCartaJugador();
+				if(cantidadCartas == 1)
+					cartaJugador2 = cartaTirada.getCartaJugador();
+				if(cantidadCartas == 2)
+					cartaJugador3 = cartaTirada.getCartaJugador();
+				if(cantidadCartas == 3)
+					cartaJugador4 = cartaTirada.getCartaJugador();
+				
+				cantidadCartas++;				
 			}
 		}
-		ganador = ganadora.getJugador();
+		if (cantidadCartas == 4){
+			CartaJugador jugadorConCartaMayorPareja1 = cartaJugador1.getCarta().getPosicionValor() < cartaJugador3.getCarta().getPosicionValor() ? cartaJugador1 : cartaJugador3;
+			CartaJugador jugadorConCartaMayorPareja2 = cartaJugador2.getCarta().getPosicionValor() < cartaJugador4.getCarta().getPosicionValor() ? cartaJugador2 : cartaJugador4;
+
+			if(jugadorConCartaMayorPareja1.getCarta().getPosicionValor() < jugadorConCartaMayorPareja2.getCarta().getPosicionValor())
+				ganador= jugadorConCartaMayorPareja1.getJugador();
+			else
+				if(jugadorConCartaMayorPareja1.getCarta().getPosicionValor() > jugadorConCartaMayorPareja2.getCarta().getPosicionValor())
+					ganador = jugadorConCartaMayorPareja2.getJugador();
+				else 
+					//Hay un empate
+					ganador = null; 
+		}
+		else
+			throw new BazaException("No se puede definir un ganador, no se han lanzado las 4 cartas");
+				
 	}
 
 	public int getCantidadCartasTiradas() {
@@ -194,6 +211,11 @@ public class Baza {
 		} else if (movimiento instanceof Envite) {
 			
 		}
+	}
+
+	public Jugador cerrarBaza() throws BazaException {
+		definirGanador();
+		return ganador;
 	}
 
 }

@@ -108,39 +108,39 @@ public class TestSegundaEntrega {
 		
 		// hardcodeamos los id porque deberian venir desde la vista cargados
 		
-		jugador1.setId(3);
+//		jugador1.setId(1);
 		jugador1.setApodo("cgodio");
 		jugador1.setPassword("12345");
 
-		jugador2.setId(4);
+//		jugador2.setId(4);
 		jugador2.setApodo("sbraceras");
 		jugador2.setPassword("TaTobrA");
 
-		jugador3.setId(5);
-		jugador3.setApodo("gmasaro");
+//		jugador3.setId(3);
+		jugador3.setApodo("gmasaro");	
 		jugador3.setPassword("banfieldcapo");
 		
-		jugador4.setId(6);
+//		jugador4.setId(15);
 		jugador4.setApodo("ozamudio");
 		jugador4.setPassword("yousomac");
 
 		try {
-			ServicioCentral.getInstance().iniciarSesion(jugador1);
+			jugador1 = ServicioCentral.getInstance().iniciarSesion(jugador1);
 		} catch (JugadorException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			ServicioCentral.getInstance().iniciarSesion(jugador2);
+			jugador2 = ServicioCentral.getInstance().iniciarSesion(jugador2);
 		} catch (JugadorException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			ServicioCentral.getInstance().iniciarSesion(jugador3);
+			jugador3 = ServicioCentral.getInstance().iniciarSesion(jugador3);
 		} catch (JugadorException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			ServicioCentral.getInstance().iniciarSesion(jugador4);
+			jugador4= ServicioCentral.getInstance().iniciarSesion(jugador4);
 		} catch (JugadorException e) {
 			System.err.println(e.getMessage());
 		}	

@@ -50,6 +50,9 @@ public class Mano {
 	@Transient
 	private byte envidoJugador4;
 
+	@Transient
+	private byte puntajeTruco;
+
 
 	public Mano() {
 		
@@ -62,6 +65,7 @@ public class Mano {
 		this.bazas = new ArrayList<Baza>();
 		this.cartasJugador = new ArrayList<CartaJugador>();
 		this.enviteActual = null;
+		this.puntajeTruco = 1; // es el puntaje minimo que se va a ganar con el Truco
 		this.jugadorActual = ordenJuego.get(0);
 		this.mazo = new Mazo();
 
@@ -141,6 +145,10 @@ public class Mano {
 		return enviteActual;
 	}
 
+	public byte getPuntajeTruco() {
+		return puntajeTruco;
+	}
+
 	public void setEnviteActual(Envite enviteActual) {
 		this.enviteActual = enviteActual;
 	}
@@ -151,11 +159,6 @@ public class Mano {
 
 	public void setMazo(Mazo mazo) {
 		this.mazo = mazo;
-	}
-
-	private byte obtenerPuntajeTruco(boolean querido) {
-		// CONTINUARA...
-		return 0;
 	}
 
 	private byte obtenerPuntajeEnvido(boolean querido) {
@@ -169,7 +172,7 @@ public class Mano {
 				Envite envite = (Envite) mov;
 
 				if (envite.sosAlgunEnvido())
-					cadenaDeEnvidos = envite.getTipoEnvite().name();
+					cadenaDeEnvidos.concat(envite.getTipoEnvite().name());
 			}
 		}
 
@@ -214,7 +217,7 @@ public class Mano {
 		return 0;
 	}
 
-	private Pareja obtenerParejaJugador(Jugador jugador) {
+	public Pareja obtenerParejaJugador(Jugador jugador) {
 		if (puntajes.get(0).getPareja().tenesJugador(jugador)) {
 			return puntajes.get(0).getPareja();
 		}
@@ -363,7 +366,11 @@ public class Mano {
 			} else {
 				// el juego esta en la segunda o tercer baza y no se canto nada aun!
 				respuestas.add(TipoEnvite.Truco);
-				respuestas.add(TipoEnvite.IrAlMazo);
+				
+				if ((obtenerUltimaBaza().getCantidadCartasTiradas() == 2) ||
+					(obtenerUltimaBaza().getCantidadCartasTiradas() == 3)) {
+					respuestas.add(TipoEnvite.IrAlMazo);
+				}
 			}
 		} else {
 			switch (enviteActual.getTipoEnvite()) {
@@ -373,7 +380,6 @@ public class Mano {
 					respuestas.add(TipoEnvite.FaltaEnvido);
 					respuestas.add(TipoEnvite.Quiero);
 					respuestas.add(TipoEnvite.NoQuiero);
-					respuestas.add(TipoEnvite.IrAlMazo);
 					break;
 				}
 				case EnvidoEnvido : {
@@ -381,24 +387,22 @@ public class Mano {
 					respuestas.add(TipoEnvite.FaltaEnvido);
 					respuestas.add(TipoEnvite.Quiero);
 					respuestas.add(TipoEnvite.NoQuiero);
-					respuestas.add(TipoEnvite.IrAlMazo);
 					break;
 				}
 				case RealEnvido : {
 					respuestas.add(TipoEnvite.FaltaEnvido);
 					respuestas.add(TipoEnvite.Quiero);
 					respuestas.add(TipoEnvite.NoQuiero);
-					respuestas.add(TipoEnvite.IrAlMazo);
 					break;
 				}
 				case FaltaEnvido : {
 					respuestas.add(TipoEnvite.Quiero);
 					respuestas.add(TipoEnvite.NoQuiero);
-					respuestas.add(TipoEnvite.IrAlMazo);
 					break;
 				}
 				case Truco : {
 					if (puedoEnvido()) {
+						// el Envido esta primero!
 						respuestas.add(TipoEnvite.Envido);
 						respuestas.add(TipoEnvite.RealEnvido);
 						respuestas.add(TipoEnvite.FaltaEnvido);
@@ -406,20 +410,17 @@ public class Mano {
 					respuestas.add(TipoEnvite.ReTruco);
 					respuestas.add(TipoEnvite.Quiero);
 					respuestas.add(TipoEnvite.NoQuiero);
-					respuestas.add(TipoEnvite.IrAlMazo);
 					break;
 				}
 				case ReTruco : {
 					respuestas.add(TipoEnvite.ValeCuatro);
 					respuestas.add(TipoEnvite.Quiero);
 					respuestas.add(TipoEnvite.NoQuiero);
-					respuestas.add(TipoEnvite.IrAlMazo);
 					break;
 				}
 				case ValeCuatro : {
 					respuestas.add(TipoEnvite.Quiero);
 					respuestas.add(TipoEnvite.NoQuiero);
-					respuestas.add(TipoEnvite.IrAlMazo);
 					break;
 				}
 				case IrAlMazo :
@@ -430,6 +431,11 @@ public class Mano {
 					break;
 				default :
 					break;
+			}
+
+			if ((obtenerUltimaBaza().getCantidadCartasTiradas() == 2) ||
+				(obtenerUltimaBaza().getCantidadCartasTiradas() == 3)) {
+				respuestas.add(TipoEnvite.IrAlMazo);
 			}
 		}
 
@@ -521,14 +527,46 @@ public class Mano {
 			// obtengo la CartaJugador en estado persistente!
 			CartaJugador cartaJugador = obtenerCartaJugador(cartaTirada);
 			cartaJugador.setTirada(true);
-			cartaTirada.setNumeroTurno(99);
+			cartaTirada.setNumeroTurno(ultimaBaza.getTurnosBaza().size() + 1);
 			cartaTirada.setCartaJugador(cartaJugador);
 
 			ultimaBaza.agregarMovimiento(jugador, cartaTirada);
 
 			if (ultimaBaza.getCantidadCartasTiradas() == 4) {
 				// se arrojo la ultima carta de la ronda! hay que cerrar la baza
-				jugadorActual = ultimaBaza.obtenerGanador();
+				jugadorActual = ultimaBaza.cerrarBaza();
+				
+				if(jugadorActual == null)
+				{
+					//se produjo un empate en la baza
+					if(ultimaBaza.getNumeroBaza() == 1)
+					{
+						bazas.add(new Baza(this, 2, this.ordenJuego));
+						//juega el jugador mano
+						jugadorActual = ordenJuego.get(0);
+					}
+					else
+						if(ultimaBaza.getNumeroBaza() == 2) {
+							//se produjo un empate en la segunda baza
+							if(bazas.get(0).getGanador()== null){ //tambien se empato la primera
+								bazas.add(new Baza(this, 3, this.ordenJuego));
+								//juega el jugador mano
+								jugadorActual = ordenJuego.get(0);
+							}
+							else {
+								//hubo un ganador en la primera
+								//se tiene que terminar la mano
+								chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(bazas.get(0).getGanador()));
+							}
+						}
+				}
+				
+				
+				
+				//terminar
+				
+				
+				
 			} else {
 				jugadorActual = ordenJuego.get(ultimaBaza.getCantidadCartasTiradas());
 			}
@@ -537,19 +575,27 @@ public class Mano {
 
 			ultimaBaza.agregarMovimiento(jugador, envite);
 
-			if (envite.getTipoEnvite().equals(TipoEnvite.Quiero)) {
+			if ((envite.getTipoEnvite().equals(TipoEnvite.Quiero))	||
+				(envite.getTipoEnvite().equals(TipoEnvite.ReTruco))	||
+				(envite.getTipoEnvite().equals(TipoEnvite.ValeCuatro))) {
+
 				// primero, verifico si el Envite es un 'Quiero' de alguno de todos los Envidos
 				if (enviteActual.sosAlgunEnvido()) {
 					// debemos calcular el puntaje que corresponde a la cadena de Envidos...
 					byte puntajeEnvido = obtenerPuntajeEnvido(true);
 					// debemos analizar quien gana el Envido!
 					Pareja ganadorEnvido = obtenerGanadorEnvido();
+					// Salvamos el caso de la falta envido
+					if(puntajeEnvido == 100){
+						puntajeEnvido = calcularPuntajeFaltaEnvido(ganadorEnvido);
+					}
 					// OJO, quizas el que gano el Envido ya alcanzo los 30 puntos y gana el Chico!
 					chico.actualizarPuntajePareja(puntajeEnvido, ganadorEnvido);
 				} else
 				// ahora, verifico si el Envite es un 'Quiero' de alguno de todos los Trucos
 				if (enviteActual.sosAlgunTruco()) {
-					// quisieron algun Truco, ¿que hacemos? NADA
+					// quisieron algun Truco...
+					puntajeTruco++;
 				}
 			} else if (envite.getTipoEnvite().equals(TipoEnvite.NoQuiero)) {
 				// primero, verifico si el Envite es un 'NoQuiero' de alguno de todos los Envidos
@@ -566,8 +612,7 @@ public class Mano {
 				// ahora, verifico si el Envite es un 'NoQuiero' de alguno de todos los Trucos
 				if (enviteActual.sosAlgunTruco()) {
 					// NO quisieron algun Truco, por lo tanto cerramos la Mano
-					// debemos calcular el puntaje que corresponde a la cadena de Trucos...
-					byte puntajeTruco = obtenerPuntajeTruco(false);
+					
 					// los puntos del Truco se los lleva la Pareja contraria del Jugador que dijo NoQuiero 
 					Pareja ganadorTruco = obtenerParejaEnemiga(envite.getJugador());
 					// OJO, quizas el que gano el Truco ya alcanzo los 30 puntos y gana el Chico!
@@ -582,7 +627,7 @@ public class Mano {
 				if (ultimaBaza.getNumeroBaza() == 1) {					
 					jugadorActual = (ordenJuego.indexOf(envite.getJugador()) == 3) ? ordenJuego.get(2) : ordenJuego.get(3);
 				} else {
-					// ANALIZAR...
+					// Como es la segunda o tercer baza, ya fue analizado retruco y vale cuatro que son las dos unicas opciones
 				}
 			}
 			enviteActual = envite;
