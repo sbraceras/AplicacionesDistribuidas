@@ -587,15 +587,28 @@ public class Mano {
 					Pareja ganadorEnvido = obtenerGanadorEnvido();
 					// Salvamos el caso de la falta envido
 					if(puntajeEnvido == 100){
+						
+						//HACERRRRRRRRR*///
 						puntajeEnvido = calcularPuntajeFaltaEnvido(ganadorEnvido);
 					}
 					// OJO, quizas el que gano el Envido ya alcanzo los 30 puntos y gana el Chico!
 					chico.actualizarPuntajePareja(puntajeEnvido, ganadorEnvido);
+					
+					/* PREGUNTO SI NO TERMINO EL CHICO */
+					if(!chico.isTerminado()){
+						jugadorActual = obtenerUltimaBaza().getOrdenJuego().get(obtenerUltimaBaza().getCantidadCartasTiradas()-1);					
+					}
+					
+					
 				} else
-				// ahora, verifico si el Envite es un 'Quiero' de alguno de todos los Trucos
+				// ahora, verifico si el Envite es un 'Quiero', o Retruco o Valecuatro de alguno de todos los Trucos
 				if (enviteActual.sosAlgunTruco()) {
 					// quisieron algun Truco...
 					puntajeTruco++;
+					
+					/* esto lo agregamos nosotros */
+					jugadorActual = (ordenJuego.indexOf(envite.getJugador()) == 3) ? ordenJuego.get(2) : ordenJuego.get(3);
+					
 				}
 			} else if (envite.getTipoEnvite().equals(TipoEnvite.NoQuiero)) {
 				// primero, verifico si el Envite es un 'NoQuiero' de alguno de todos los Envidos
@@ -608,6 +621,8 @@ public class Mano {
 
 					// CERRAR BAZA? CERRAR MANO?
 					chico.actualizarPuntajePareja(puntajeEnvido, ganadorEnvido);
+					
+					
 				} else
 				// ahora, verifico si el Envite es un 'NoQuiero' de alguno de todos los Trucos
 				if (enviteActual.sosAlgunTruco()) {
@@ -619,6 +634,8 @@ public class Mano {
 
 					// CERRAR BAZA Y LUEGO LA MANO!
 					chico.actualizarPuntajePareja(puntajeTruco, ganadorTruco);
+					
+					
 				}
 			} else if (envite.getTipoEnvite().equals(TipoEnvite.IrAlMazo)) {
 				// ANALIZAR...
