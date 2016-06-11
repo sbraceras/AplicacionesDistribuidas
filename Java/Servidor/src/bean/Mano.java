@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import dtos.*;
 import enums.TipoEnvite;
+import exceptions.PartidoException;
 
 
 /**
@@ -518,7 +519,7 @@ public class Mano {
 		return bazas.get(bazas.size() - 1);
 	}
 
-	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) {
+	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException {
 		Baza ultimaBaza = obtenerUltimaBaza();
 
 		if (movimiento instanceof CartaTirada) {
@@ -650,6 +651,28 @@ public class Mano {
 			enviteActual = envite;
 		}
 	}
+	
+	private byte calcularPuntajeFaltaEnvido(Pareja ganadorEnvido) {
+		//Falta envido: equivale al número de tantos necesarios para que el bando que va por
+		//delante gane el chico o el juego. Algunos jugadores apuestan a que el bando ganador
+		//lo será también de la partida, aunque vaya por detrás en el tanteo.
+		
+		PuntajePareja puntajeMax = null;
+		
+		// Obtengo el puntaje del que va por delante 
+		for(PuntajePareja puntaje: puntajes){
+			if((puntajeMax == null) || (puntajeMax.getPuntaje() > puntajeMax.getPuntaje()))
+			{
+				puntajeMax = puntaje;
+			}
+		}
+		
+		// Ahora devuelvo el verdadero puntaje de la falta envido 
+		
+		return (byte) (chico.getPuntajeMaximo()-puntajeMax.getPuntaje());
+	}
+
+	
 
 	public List<CartaJugadorDTO> obtenerCartasJugador(JugadorDTO jugador) {
 		List<CartaJugadorDTO> devolver = new ArrayList<CartaJugadorDTO>();
