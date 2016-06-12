@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import dtos.*;
 import enums.TipoEnvite;
+import exceptions.BazaException;
 import exceptions.PartidoException;
 
 
@@ -519,7 +520,7 @@ public class Mano {
 		return bazas.get(bazas.size() - 1);
 	}
 
-	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException {
+	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException {
 		Baza ultimaBaza = obtenerUltimaBaza();
 
 		if (movimiento instanceof CartaTirada) {
@@ -691,6 +692,59 @@ public class Mano {
 				return aux;
 		}
 		return null;
+	}
+
+	public void levantar(Chico chico) {
+		
+		this.chico = chico;		
+		Mano aux = chico.obtenerUltimaMano();
+		
+		/* Es La Mano Actual debo Actualizar sus Datos */
+		
+		if(aux.getNumeroMano() == numeroMano){
+			
+			
+			Mano anteUltima = chico.obtenerAnteUltimaMano();
+			
+			/* ES LA ULTIMA MANO, NO HAY ANTEULTIMA */
+			
+			if(anteUltima == null){
+				
+				/* LE DOY EL ORDEN INICIAL DE JUEGO */
+				ordenJuego = new ArrayList<Jugador>();
+				ordenJuego.addAll(chico.getOrdenInicial());
+				
+			}
+			else{
+				
+			
+				List<Jugador> ordenViejo = anteUltima.getOrdenJuego();
+				ordenJuego = new ArrayList<Jugador>();
+			
+				/* Obtengo el Orden de Juego */
+			
+				ordenJuego.add(ordenViejo.get(ordenViejo.size()-1));
+				ordenJuego.add(ordenViejo.get(0));
+				ordenJuego.add(ordenViejo.get(1));
+				ordenJuego.add(ordenViejo.get(2));
+			}
+			/* Obtengo el Envite Actual */
+			
+			for(Movimiento movimiento: obtenerUltimaBaza().getTurnosBaza())
+			{
+				if(movimiento instanceof Envite)
+				{
+					enviteActual = (Envite) movimiento;
+				}
+			}
+			
+			puntajes = chico.getPuntajes();
+			
+			/* FALTA OBTENER EL JUGADOR ACTUAL */
+			
+			/* FALTA REARMAR LAS BAZAS */
+		}
+		
 	}
 
 }

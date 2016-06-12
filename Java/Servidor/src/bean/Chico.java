@@ -7,6 +7,7 @@ import javax.persistence.*;
 import org.hibernate.engine.Cascade;
 
 import dtos.*;
+import exceptions.BazaException;
 import exceptions.PartidoException;
 
 /**
@@ -211,8 +212,36 @@ public class Chico {
 		return mano.tocaCartaMano();
 	}
 
-	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) {
+	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException {
 		obtenerUltimaMano().agregarMovimiento(jugador, movimiento);
+	}
+
+	public void levantar(Partido partido) {
+		
+		this.partido = partido;
+		for(Mano mano: manos){
+			mano.levantar(this);
+		}
+		
+	}
+	
+	public Mano obtenerAnteUltimaMano (){
+		
+		if(manos.size() >= 2)
+			return manos.get(manos.size()-2);
+		else
+			return null;
+	}
+
+	public List<Jugador> getOrdenInicial() {
+		List<Jugador> orden = new ArrayList<Jugador>();
+		
+		orden.add(partido.getParejas().get(0).getJugador1());
+		orden.add(partido.getParejas().get(1).getJugador1());
+		orden.add(partido.getParejas().get(0).getJugador2());
+		orden.add(partido.getParejas().get(1).getJugador2());
+		
+		return orden;
 	}
 	
 	

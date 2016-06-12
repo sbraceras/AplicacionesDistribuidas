@@ -32,6 +32,15 @@ public class ServicioCentral {
 		this.sesiones = new ArrayList<Jugador>();
 		this.esperandoLibreIndividual = new ArrayList<Jugador>();
 		this.esperandoLibreParejas = new ArrayList<Pareja>();
+		
+		
+		/*Nuevo */
+		
+		try {
+			levantarPartidosPendientes();
+		} catch (PartidoException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static ServicioCentral getInstance() {
@@ -509,13 +518,25 @@ public class ServicioCentral {
 	}
 
 	/* DESARROLLAR */
-	public ArrayList<PartidoDTO> obtenerPartidos(Timestamp fechaDesde,
-			Timestamp fechaHasta, TipoPartido modalidad, JugadorDTO jugador) {
+	public ArrayList<PartidoDTO> obtenerPartidosEntreFechas(Timestamp fechaDesde,
+			Timestamp fechaHasta, TipoPartido modalidad, JugadorDTO jugador) throws PartidoException {
 
+		/* No se agregan a Memoria ya que solo son para mostrar a la vista */
+		
+		List<Partido> partidosFechas = PartidoDAO.getInstance().obtenerPartidosEntreFechas(fechaDesde, fechaHasta, modalidad, jugador);
+		if(partidosFechas != null)
+		{
+			ArrayList<PartidoDTO> devolver = new ArrayList<PartidoDTO>();
+			for(Partido partido: partidosFechas){
+				devolver.add(partido.toDTO());
+			}
+			return devolver;
+		}
 		return null;
+		
 	}
 
-	public ChicoDTO obtenerChicoDTO(PartidoDTO partido, int chico) {
+	public ChicoDTO obtenerChicoDTO(PartidoDTO partido, int chico) throws PartidoException {
 		Partido p = obtenerPartido(partido);
 
 		if (p != null)
@@ -584,7 +605,7 @@ public class ServicioCentral {
 		return false;		
 	}
 
-	public List<TipoEnvite> obtenerEnvitesDisponibles(PartidoDTO partido, JugadorDTO jugador) throws ControladorException {
+	public List<TipoEnvite> obtenerEnvitesDisponibles(PartidoDTO partido, JugadorDTO jugador) throws ControladorException, PartidoException {
 		Partido part = obtenerPartido(partido);
 
 		if (part != null) {
@@ -602,14 +623,13 @@ public class ServicioCentral {
 			throw new ControladorException("No existe el partido");
 	}
 	
-	private Partido obtenerPartido(PartidoDTO partido) {
+	public Partido obtenerPartido(PartidoDTO partido) throws PartidoException {
 		for(Partido p: partidos) {
 			if(p.sosPartido(partido))
 				return p;
 		}
 
-		/* falta dao */
-
+		
 		// no lo encontro en memoria, lo busco en la BD
 		Partido p = PartidoDAO.getInstance().buscarPartido(partido);
 
@@ -644,7 +664,7 @@ public class ServicioCentral {
 		return null;
 	}
 
-	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) throws ControladorException {
+	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) throws ControladorException, PartidoException, BazaException {
 		if (estaLogueado(jugador)) {
 			Partido part = obtenerPartido(partido);
 			if (part == null)
@@ -660,7 +680,7 @@ public class ServicioCentral {
 		}
 	}
 
-	public JugadorDTO obtenerJugadorActual(PartidoDTO partido, JugadorDTO jugador) throws ControladorException {
+	public JugadorDTO obtenerJugadorActual(PartidoDTO partido, JugadorDTO jugador) throws ControladorException, PartidoException {
 		
 		if(estaLogueado(jugador)){
 			
@@ -677,7 +697,7 @@ public class ServicioCentral {
 	}
 
 		
-	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws ControladorException{
+	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws ControladorException, PartidoException{
 		
 		if (estaLogueado(jugador)) {
 			Partido part = obtenerPartido(partido);
@@ -690,6 +710,18 @@ public class ServicioCentral {
 		} else {
 			throw new ControladorException("El jugador no ha iniciado sesion");
 		}
+	}
+	
+	public void levantarPartidosPendientes () throws PartidoException{
+		
+		partidos.addAll(PartidoDAO.getInstance().obtenerPartidosPendientes());
+		
+		for(Partido partido: partidos){
+			partido.levantar();
+		}
+		
+		System.out.println("Termine de Levantar Todos Los Partidos");
+		System.out.println("Levante: " + partidos.size() + " Partidos");
 	}
 	
 

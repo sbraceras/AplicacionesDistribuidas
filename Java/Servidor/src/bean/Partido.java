@@ -6,9 +6,13 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import daos.PartidoDAO;
 import dtos.*;
 import enums.*;
+import exceptions.BazaException;
 import exceptions.PartidoException;
 
 
@@ -42,7 +46,8 @@ public class Partido {
 	@Column (columnDefinition = "int")
 	private EstadoPartido estadoPartido;
 	
-	@OneToMany (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn (name = "id_partido")
 	private List<Chico> chicos;
 	
@@ -77,7 +82,10 @@ public class Partido {
 		dto.setFechaFin(this.fechaFin);
 		dto.setFechaInicio(this.fechaInicio);
 		dto.setId(this.id);
-		dto.setParejaGanadora(this.parejaGanadora.toDTO());
+		if(parejaGanadora != null)
+			dto.setParejaGanadora(this.parejaGanadora.toDTO());
+		else
+			dto.setParejaGanadora(null);
 		dto.setTipoPartido(this.tipoPartido);
 		List<ParejaDTO> parejasDto = new ArrayList<ParejaDTO>();
 		
@@ -294,7 +302,7 @@ public class Partido {
 		return null;
 	}
 
-	public void nuevoMovimiento(Jugador jugador, Movimiento movimiento) {
+	public void nuevoMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException {
 		if (!this.estasTerminado()) {
 			// deberia haber un Chico activo! 
 			Chico chico = obtenerChicoActivo();
@@ -304,6 +312,14 @@ public class Partido {
 
 	public List<TipoEnvite> obtenerEnvitesPosibles() {
 		return obtenerChicoActivo().obtenerUltimaMano().obtenerEnvitesPosibles();
+	}
+
+	public void levantar() {
+		
+		for(Chico chico: chicos){
+			chico.levantar(this);
+		}
+		
 	}
 
 	

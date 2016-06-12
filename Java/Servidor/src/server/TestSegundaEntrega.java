@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import bean.*;
 import controlador.ServicioCentral;
 import dtos.*;
 import enums.*;
@@ -162,7 +163,7 @@ public class TestSegundaEntrega {
 		try {
 			turnoJugador = ServicioCentral.getInstance().obtenerJugadorActual(part4, jugador4);
 			System.out.println("Le toca jugar a: " + turnoJugador.getApodo());
-		} catch (ControladorException e) {
+		} catch (PartidoException | ControladorException e) {
 			e.printStackTrace();
 		}
 
@@ -178,7 +179,7 @@ public class TestSegundaEntrega {
 					System.out.println("Puede cantar: " + envite.name());
 				}
 			}
-		} catch (ControladorException e) {
+		} catch (ControladorException | PartidoException e) {
 			e.printStackTrace();
 		}
 
@@ -191,7 +192,7 @@ public class TestSegundaEntrega {
 			for(CartaJugadorDTO cartaJugador: cartas) {
 				System.out.println("Puede tirar: " + cartaJugador.getCarta().toString());
 			}
-		} catch (ControladorException e) {
+		} catch (ControladorException | PartidoException e) {
 			e.printStackTrace();
 		}
 
@@ -203,9 +204,38 @@ public class TestSegundaEntrega {
 		cartaTirada.setCartaJugador(cartas.get(0));
 		try {
 			ServicioCentral.getInstance().nuevoMovimientoPartido(part4, turnoJugador, cartaTirada);
-		} catch (ControladorException e) {
+		} catch (ControladorException | PartidoException | BazaException e) {
 			e.printStackTrace();
 		}
+		
+		
+		
+		// ************** Se Prueba Obtener un Partido ************** //
+		
+		
+		PartidoDTO partidoObtenido = new PartidoDTO();
+			partidoObtenido.setId(46);
+		
+			try {
+				Partido partido = ServicioCentral.getInstance().obtenerPartido(partidoObtenido);
+				System.out.println("Se Obtuvo el Partido ID: "+ partido.getId());
+			} catch (PartidoException e) {
+				e.printStackTrace();
+			}
+			
+		
+		// ************** Se Prueba Obtener Partidos de un Jugador Entre Fechas ************** //
+		
+		
+		/* DESARROLLAR */
+		
+		
+				
+		
+		
 	}
+	
+	
+	
 
 }
