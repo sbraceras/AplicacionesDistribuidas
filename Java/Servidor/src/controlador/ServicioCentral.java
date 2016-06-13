@@ -629,7 +629,6 @@ public class ServicioCentral {
 				return p;
 		}
 
-		
 		// no lo encontro en memoria, lo busco en la BD
 		Partido p = PartidoDAO.getInstance().buscarPartido(partido);
 

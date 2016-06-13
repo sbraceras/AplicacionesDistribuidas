@@ -55,10 +55,15 @@ public class PartidoDAO {
 		Partido devolver;
 		try{
 			
-			devolver = (Partido) s.createQuery("select p from Partido p inner join p.chicos chicos inner join p.parejas parejas inner join chicos.manos manos inner join manos.bazas bazas  where p.id =:id").setParameter("id", partido.getId()).uniqueResult();
+			devolver = (Partido) s.createQuery(
+						"select p from Partido p " + 
+						"inner join p.chicos chicos " +
+						"inner join p.parejas parejas " +
+						"inner join chicos.manos manos " + 
+						"inner join manos.bazas bazas " +
+						"where p.id =:id").setParameter("id", partido.getId()).uniqueResult();
 			s.close();
 			return devolver;
-			
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -67,19 +72,35 @@ public class PartidoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Partido> obtenerPartidosEntreFechas(Timestamp fechaDesde,
-			Timestamp fechaHasta, TipoPartido modalidad, JugadorDTO jugador) throws PartidoException {
+	public List<Partido> obtenerPartidosEntreFechas(Timestamp fechaDesde, Timestamp fechaHasta, 
+			TipoPartido modalidad, JugadorDTO jugador) throws PartidoException {
+
 		Session s = sf.openSession();
-		List<Partido> devolver = new ArrayList<Partido>();
-		try{
-			
-			devolver = s.createQuery("select p from Partido p inner join p.chicos chicos inner "
-					+ "join p.parejas parejas inner join chicos.manos manos"
-					+ " inner join manos.bazas bazas  where p.tipoPartido =:modalidad and"
-					+ "p.fechaInicio between :desde and :hasta").setParameter("desde", fechaDesde).setParameter("hasta", fechaHasta).setParameter("modalidad", modalidad).list();
+		List<Partido> partidos = new ArrayList<Partido>();
+		try {
+			partidos = s.createQuery(
+					"select p from Partido p " +
+					"inner join p.chicos chicos " + 
+					"inner join p.parejas parejas " +
+					"inner join chicos.manos manos " +
+					"inner join manos.bazas bazas " + 
+					"where p.tipoPartido =:modalidad and p.fechaInicio between :desde and :hasta")
+					.setParameter("desde", fechaDesde)
+					.setParameter("hasta", fechaHasta)
+					.setParameter("modalidad", modalidad).list();
+
 			s.close();
-			return devolver;
-			
+
+			int i = 0;
+			while (i<partidos.size()) {
+				if(partidos.get(i).getParejas().get(0).tenesJugador(jugador) && partidos.get(i).getParejas().get(1).tenesJugador(jugador))
+					//El jugador no esta en ninguna de las parejas
+					partidos.remove(i);
+				else
+					i++;
+			}
+
+			return partidos;
 		}
 		catch(Exception e){
 			e.printStackTrace();

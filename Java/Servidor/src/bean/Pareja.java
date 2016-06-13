@@ -2,6 +2,7 @@ package bean;
 
 import javax.persistence.*;
 
+import dtos.JugadorDTO;
 import dtos.ParejaDTO;
 
 import enums.TipoCategoria;
@@ -115,6 +116,15 @@ public class Pareja {
 			return true;
 		else
 			return false;
+	}
+
+	public boolean tenesJugador(JugadorDTO jugador) {
+		if(jugador1.getApodo().equals(jugador.getApodo()))
+			return true;
+		else
+			if(jugador2.getApodo().equals(jugador.getApodo()))
+				return true;
+		return false;
 	}
 
 }

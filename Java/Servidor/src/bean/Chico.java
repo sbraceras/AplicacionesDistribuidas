@@ -218,9 +218,13 @@ public class Chico {
 
 	public void levantar(Partido partido) {
 		
-		this.partido = partido;
-		for(Mano mano: manos){
-			mano.levantar(this);
+		//Solo me interesa Levantar aquel que esta activo
+		
+		if(partido.obtenerChicoActivo().getId() == this.id){
+			this.partido = partido;
+			for(Mano mano: manos){
+				mano.levantar(this);
+			}
 		}
 		
 	}

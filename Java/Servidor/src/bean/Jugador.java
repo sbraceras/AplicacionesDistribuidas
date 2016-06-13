@@ -36,10 +36,7 @@ public class Jugador {
 	@JoinColumn(name = "id_ranking")
 	//@LazyCollection (LazyCollectionOption.FALSE)
 	private Ranking ranking;
-	
-	
-	
-	
+
 	@Column(columnDefinition = "varchar(50)")
 	private String mail;
 	@Column(name = "clave", columnDefinition = "varchar(50)")
@@ -191,14 +188,38 @@ public class Jugador {
 	}
 
 	public void actualizarRankingMiembro(Partido partido, int puntos) {
-		
 		for(Grupo grupo: grupos){
-			
 			if(grupo.tenesPartido(partido) == true)
 				grupo.actualizarRanking(this, puntos, partido);
-			
 		}
-		
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((apodo == null) ? 0 : apodo.hashCode());
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Jugador other = (Jugador) obj;
+		if (apodo == null) {
+			if (other.apodo != null)
+				return false;
+		} else if (!apodo.equals(other.apodo))
+			return false;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 }
