@@ -61,15 +61,16 @@ public class Baza {
 		BazaDTO dto = new BazaDTO();
 		dto.setId(this.id);
 		dto.setNumeroBaza(this.numeroBaza);
-		ArrayList<JugadorDTO> orden = new ArrayList<JugadorDTO>();
-		JugadorDTO jugador;
-		for(int i=0; i<ordenJuego.size(); i++){
-			
-			jugador = ordenJuego.get(i).toDTO();
-			orden.add(jugador);
-		}
-		dto.setOrdenJuego(orden);
-		
+
+//		JugadorDTO jugador;
+//		ArrayList<JugadorDTO> orden = new ArrayList<JugadorDTO>();
+//		for(int i=0; i<ordenJuego.size(); i++){
+//			
+//			jugador = ordenJuego.get(i).toDTO();
+//			orden.add(jugador);
+//		}
+//		dto.setOrdenJuego(orden);
+
 		MovimientoDTO mov;
 		ArrayList<MovimientoDTO> movimientos = new ArrayList<MovimientoDTO>();
 		for(int i=0; i<turnosBaza.size(); i++) {

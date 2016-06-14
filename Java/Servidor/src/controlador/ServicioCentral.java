@@ -32,11 +32,9 @@ public class ServicioCentral {
 		this.sesiones = new ArrayList<Jugador>();
 		this.esperandoLibreIndividual = new ArrayList<Jugador>();
 		this.esperandoLibreParejas = new ArrayList<Pareja>();
-		
-		
-		/*Nuevo */
-		
+
 		try {
+			// si se reinicia el Servidor, o se corta la luz, debo levantar los partidos pendientes!
 			levantarPartidosPendientes();
 		} catch (PartidoException e) {
 			e.printStackTrace();
@@ -400,18 +398,20 @@ public class ServicioCentral {
 		return null;
 	
 	}
-	
-	/* ver con DAO */
-	public ArrayList<PartidoDTO> tengoPartido(JugadorDTO jugadorDTO){
-		
+
+	public List<PartidoDTO> tengoPartido(JugadorDTO jugadorDTO){
 		Jugador jug = obtenerJugador(jugadorDTO);
-		ArrayList<PartidoDTO> partidosActivos = new ArrayList<PartidoDTO>();
-		for (Partido p : partidos){
-			if (p.participoJugador(jug) && !p.estasTerminado()){
+
+		List<PartidoDTO> partidosActivos = new ArrayList<PartidoDTO>();
+		for (Partido p : partidos) {
+			if (p.participoJugador(jug) && !p.estasTerminado()) {
 				PartidoDTO partidoDTO = p.toDTO();
 				partidosActivos.add(partidoDTO);				
 			}
 		}
+
+		/* No buscamos en la BD los partidos porque ya estan levantados los pendientes en memoria!  */
+
 		return partidosActivos;
 	}
 	
@@ -467,10 +467,10 @@ public class ServicioCentral {
 	 */
 	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws JugadorException {
 	
-		for(Jugador jug: sesiones) {
-			if (jug.getApodo().equals(jugador.getApodo()))
-				throw new JugadorException("Ya ha iniciado sesion");
-		}
+//		for(Jugador jug: sesiones) {
+//			if (jug.getApodo().equals(jugador.getApodo()))
+//				throw new JugadorException("Ya ha iniciado sesion");
+//		}
 
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
@@ -480,11 +480,8 @@ public class ServicioCentral {
 		} else {
 			System.out.println("LogIn Correcto");
 			sesiones.add(jug);
-			JugadorDTO j = new JugadorDTO();
-			j.setApodo(jug.getApodo());
-			j.setMail(jug.getMail());
-			j.setId(jug.getId());
-			return j;
+
+			return jug.toDTO();
 		}
 	}
 
@@ -672,8 +669,9 @@ public class ServicioCentral {
 			// fabrico los objetos a partir de los DTOs
 			Jugador jug = obtenerJugador(jugador);
 			Movimiento mov = crearMovimientoFromDTO(jug, movimiento);
-
+			
 			part.nuevoMovimiento(jug, mov);
+						
 		} else {
 			throw new ControladorException("El jugador no ha iniciado sesion");
 		}
@@ -715,7 +713,8 @@ public class ServicioCentral {
 		
 		partidos.addAll(PartidoDAO.getInstance().obtenerPartidosPendientes());
 		
-		for(Partido partido: partidos){
+		for(Partido partido: partidos) {
+			// levanto toda la informacion que no esta persistida!
 			partido.levantar();
 		}
 		

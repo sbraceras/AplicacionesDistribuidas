@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import dtos.*;
 import enums.TipoEnvite;
 import exceptions.BazaException;
@@ -29,7 +32,8 @@ public class Mano {
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_mano")
 	private List<Baza> bazas;
-	@OneToMany (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn (name = "id_mano")
 	private List<CartaJugador> cartasJugador;
 	@Transient
@@ -343,7 +347,7 @@ public class Mano {
 		dto.setId(this.id);
 		dto.setNumeroMano(this.numeroMano);
 		if(ultimoEnvite!=null){
-			dto.setEnviteActual((EnviteDTO) this.ultimoEnvite.toDTO());
+			dto.setUltimoEnvite(this.ultimoEnvite.toDTO());
 		}
 		ArrayList<BazaDTO> bazasDto = new ArrayList<BazaDTO>();
 		
@@ -607,13 +611,13 @@ public class Mano {
 		Baza ultimaBaza = obtenerUltimaBaza();
 		Jugador ganadorBaza = null;
 
+		movimiento.setNumeroTurno(ultimaBaza.getTurnosBaza().size() + 1);
 		if (movimiento instanceof CartaTirada) {
 			CartaTirada cartaTirada = (CartaTirada) movimiento;
 
 			// obtengo la CartaJugador en estado persistente!
 			CartaJugador cartaJugador = obtenerCartaJugador(cartaTirada);
 			cartaJugador.setTirada(true);
-			cartaTirada.setNumeroTurno(ultimaBaza.getTurnosBaza().size() + 1);
 			cartaTirada.setCartaJugador(cartaJugador);
 
 			ultimaBaza.agregarMovimiento(jugador, cartaTirada);
@@ -770,7 +774,21 @@ public class Mano {
 					chico.actualizarPuntajePareja(puntajeTruco, ganadorTruco);
 				}
 			} else if (envite.getTipoEnvite().equals(TipoEnvite.IrAlMazo)) {
-				// ANALIZAR...
+				
+				
+				if(obtenerUltimaBaza().getNumeroBaza() == 1)
+				{
+					if(!seCantoEnvido())
+						chico.actualizarPuntajePareja(puntajeTruco+1, obtenerParejaEnemiga(envite.getJugador()));
+				}
+				else
+					chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaEnemiga(envite.getJugador()));
+				
+				
+				if (!chico.isTerminado()) {
+					chico.nuevaMano();
+				}
+				
 			} else {
 				// canto algo! pasamos el turno al siguiente
 				// sea cual sea la Baza, hacemos que responda el pie de la otra Pareja. Aunque si es la segunda o tercer baza...canto Truco!.
