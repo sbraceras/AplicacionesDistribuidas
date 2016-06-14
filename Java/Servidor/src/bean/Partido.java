@@ -191,8 +191,7 @@ public class Partido {
 	}
 	
 	public boolean participoJugador(Jugador jugador) {
-		for(int i=0; i<parejas.size();i++){
-		
+		for(int i=0; i<parejas.size();i++) {
 			if(parejas.get(i).tenesJugador(jugador))
 				return true;
 		}
@@ -306,7 +305,13 @@ public class Partido {
 		if (!this.estasTerminado()) {
 			// deberia haber un Chico activo! 
 			Chico chico = obtenerChicoActivo();
+			if (!chico.obtenerUltimaMano().getJugadorActual().equals(jugador))
+				throw new PartidoException("Error grave: Nunca puede llamar a 'nuevoMovimiento' si no es su turno");
+
 			chico.agregarMovimiento(jugador, movimiento);
+			
+			// Se guardan los cambios en el partido 
+			PartidoDAO.getInstance().update(this);
 		}
 	}
 
@@ -320,6 +325,34 @@ public class Partido {
 			chico.levantar(this);
 		}
 		
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((estadoPartido == null) ? 0 : estadoPartido.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((tipoPartido == null) ? 0 : tipoPartido.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Partido other = (Partido) obj;
+		if (estadoPartido != other.estadoPartido)
+			return false;
+		if (id != other.id)
+			return false;
+		if (tipoPartido != other.tipoPartido)
+			return false;
+		return true;
 	}
 
 	

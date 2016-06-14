@@ -11,7 +11,8 @@ public class ManoDTO implements Serializable {
 	private int numeroMano;
 	private List<BazaDTO> bazas;
 	private List<CartaJugadorDTO> cartasJugador;
-	private EnviteDTO enviteActual;
+//	private EnviteDTO ultimoEnvite;
+	private MovimientoDTO ultimoEnvite;
 	// private Mazo mazo; CREO QUE NO HACE FALTA EL MAZO
 
 	public ManoDTO() {
@@ -49,12 +50,12 @@ public class ManoDTO implements Serializable {
 		this.cartasJugador = cartasJugador;
 	}
 
-	public EnviteDTO getEnviteActual() {
-		return enviteActual;
+	public MovimientoDTO getUltimoEnvite() {
+		return ultimoEnvite;
 	}
 
-	public void setEnviteActual(EnviteDTO enviteActual) {
-		this.enviteActual = enviteActual;
+	public void setUltimoEnvite(MovimientoDTO ultimoEnvite) {
+		this.ultimoEnvite = ultimoEnvite;
 	}
 
 }

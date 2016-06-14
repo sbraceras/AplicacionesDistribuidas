@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.engine.Cascade;
 
 import dtos.*;
@@ -29,7 +31,8 @@ public class Chico {
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_chico")
 	private List<Mano> manos;
-	@OneToMany (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn (name = "id_chico")
 	private List<PuntajePareja> puntajes;
 	@Column (name = "puntaje_maximo")

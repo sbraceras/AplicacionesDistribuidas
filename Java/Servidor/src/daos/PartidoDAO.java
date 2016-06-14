@@ -111,12 +111,18 @@ public class PartidoDAO {
 	@SuppressWarnings("unchecked")
 	public List<Partido> obtenerPartidosPendientes() throws PartidoException {
 		Session s = sf.openSession();
-		List<Partido> devolver = new ArrayList<Partido>();
+		List<Partido> devolver = null;
 		try{
 			
-			devolver = s.createQuery("select p from Partido p inner join p.chicos chicos inner "
-					+ "join p.parejas parejas inner join chicos.manos manos"
-					+ " inner join manos.bazas bazas  where p.estadoPartido =:estadoPartido").setParameter("estadoPartido", EstadoPartido.Empezado).list();
+			devolver = s.createQuery(
+							"select p from Partido p " +
+							"inner join p.chicos chicos " +
+//							"inner join p.parejas parejas " +
+							"inner join chicos.manos manos " +
+							"inner join manos.bazas bazas " +
+							"where p.estadoPartido =:estadoPartido")
+					.setParameter("estadoPartido", EstadoPartido.Empezado)
+					.list();
 			s.close();
 			return devolver;
 			
@@ -125,6 +131,23 @@ public class PartidoDAO {
 			e.printStackTrace();
 			throw new PartidoException("Error al Obtener Partidos Pendientes de la Base de Datos");
 		}
+	}
+	
+	public void update (Partido partido) throws PartidoException{
+		Transaction t = null;
+		Session s = sf.openSession();
+		try{
+			t = s.beginTransaction();
+			s.saveOrUpdate(partido);
+			s.flush();
+			t.commit();
+			s.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new PartidoException("Error al Hacer Update de Partido");
+		}
+		
 	}
 
 }
