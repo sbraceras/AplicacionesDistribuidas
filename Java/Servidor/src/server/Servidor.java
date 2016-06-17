@@ -15,7 +15,7 @@ public class Servidor {
 	public static void main(String[] args) {
 		new Servidor();
 
-		new TestSegundaEntrega();
+//		new TestSegundaEntrega();
 	}
 
 	public Servidor() {

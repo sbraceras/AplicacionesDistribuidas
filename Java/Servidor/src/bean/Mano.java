@@ -111,10 +111,6 @@ public class Mano {
 		this.bazas = bazas;
 	}
 
-	public void setCartasJugador(List<CartaJugador> cartasJugador) {
-		this.cartasJugador = cartasJugador;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -143,7 +139,7 @@ public class Mano {
 		return cartasJugador;
 	}
 
-	public void setCartasJugador(ArrayList<CartaJugador> cartasJugador) {
+	public void setCartasJugador(List<CartaJugador> cartasJugador) {
 		this.cartasJugador = cartasJugador;
 	}
 
@@ -178,7 +174,7 @@ public class Mano {
 				Envite envite = (Envite) mov;
 
 				if (envite.sosAlgunEnvido())
-					cadenaDeEnvidos.concat(envite.getTipoEnvite().name());
+					cadenaDeEnvidos = cadenaDeEnvidos + (envite.getTipoEnvite().name());
 			}
 		}
 
@@ -186,9 +182,9 @@ public class Mano {
 			return 0;
 		else {
 			if (querido)
-				cadenaDeEnvidos.concat(TipoEnvite.Quiero.name());
+				cadenaDeEnvidos = cadenaDeEnvidos + (TipoEnvite.Quiero.name());
 			else
-				cadenaDeEnvidos.concat(TipoEnvite.NoQuiero.name());
+				cadenaDeEnvidos = cadenaDeEnvidos + (TipoEnvite.NoQuiero.name());
 
 			return Envite.obtenerPuntajeEnvido(cadenaDeEnvidos);
 		}
@@ -389,6 +385,26 @@ public class Mano {
 		return obtenerUltimaBaza().obtenerTurnoBaza();
 	}
 
+	private Envite enviteAnteriorAlQuiero() {
+		List<Movimiento> movimientosBazas = new ArrayList<Movimiento>();
+
+		for (int i=0; i < bazas.size(); i++) {
+			for (int j=0; j < bazas.get(i).getTurnosBaza().size(); j++) {
+				// acumulo TODOS los movimientos de la mano!
+				movimientosBazas.add(bazas.get(i).getTurnosBaza().get(j));
+			}
+		}
+
+		for (int i = movimientosBazas.size() - 1; i >= 0; i--) {
+			if (movimientosBazas.get(i) instanceof Envite) {
+				if (((Envite) movimientosBazas.get(i)).getTipoEnvite().equals(TipoEnvite.Quiero)) {
+					return ((Envite) movimientosBazas.get(i-1));
+				}
+			}
+		}
+		return null;
+	}
+
 	public boolean puedoEnvido() {
 		if (bazas.size() == 1) {
 			// es la primer baza, primera condicion para cantar envido
@@ -521,6 +537,20 @@ public class Mano {
 				case NoQuiero :
 					break;
 				case Quiero :
+					Envite enviteAnterior = enviteAnteriorAlQuiero();
+
+					if (enviteAnterior.sosAlgunEnvido()) {
+						respuestas.add(TipoEnvite.Truco);
+					} else {
+						// antes del Quiero se canto algun Truco!
+						// La pareja que dijo 'Quiero' es la que tiene el poder de elevar la apuesta
+						if (obtenerParejaJugador(ultimoEnvite.getJugador()).esPareja(obtenerParejaJugador(jugadorActual))) {
+							if (enviteAnterior.getTipoEnvite().equals(TipoEnvite.Truco))
+								respuestas.add(TipoEnvite.ReTruco);
+							else if (enviteAnterior.getTipoEnvite().equals(TipoEnvite.ReTruco))
+								respuestas.add(TipoEnvite.ValeCuatro);
+						}
+					}
 					break;
 				default :
 					break;
@@ -603,7 +633,7 @@ public class Mano {
 		return envidoJugador4;
 	}
 
-	private Baza obtenerUltimaBaza() {
+	public Baza obtenerUltimaBaza() {
 		return bazas.get(bazas.size() - 1);
 	}
 
@@ -733,7 +763,7 @@ public class Mano {
 					
 					/* PREGUNTO SI NO TERMINO EL CHICO */
 					if(!chico.isTerminado()){
-						jugadorActual = obtenerUltimaBaza().getOrdenJuego().get(obtenerUltimaBaza().getCantidadCartasTiradas()-1);					
+						jugadorActual = obtenerUltimaBaza().getOrdenJuego().get(obtenerUltimaBaza().getCantidadCartasTiradas());					
 					}
 				} else
 				// ahora, verifico si el Envite es un 'Quiero' de alguno de todos los Trucos, o Retruco o Valecuatro 
@@ -743,7 +773,7 @@ public class Mano {
 					
 					if(envite.getTipoEnvite().equals(TipoEnvite.Quiero))
 						//Toca Tirar
-						jugadorActual = obtenerUltimaBaza().getOrdenJuego().get(obtenerUltimaBaza().getCantidadCartasTiradas()-1);
+						jugadorActual = obtenerUltimaBaza().getOrdenJuego().get(obtenerUltimaBaza().getCantidadCartasTiradas());
 					else
 						// Toca Responder
 						jugadorActual = (ordenJuego.indexOf(envite.getJugador()) == 0 || ordenJuego.indexOf(envite.getJugador()) == 2) ?
@@ -772,15 +802,16 @@ public class Mano {
 
 					// CERRAR BAZA Y LUEGO LA MANO!
 					chico.actualizarPuntajePareja(puntajeTruco, ganadorTruco);
+
+					if (!chico.isTerminado()) {
+						chico.nuevaMano();
+					}
 				}
 			} else if (envite.getTipoEnvite().equals(TipoEnvite.IrAlMazo)) {
 				
 				
-				if(obtenerUltimaBaza().getNumeroBaza() == 1)
-				{
-					if(!seCantoEnvido())
-						chico.actualizarPuntajePareja(puntajeTruco+1, obtenerParejaEnemiga(envite.getJugador()));
-				}
+				if ((obtenerUltimaBaza().getNumeroBaza() == 1) && (!seCantoEnvido()) && (puntajeTruco == 1))
+					chico.actualizarPuntajePareja(puntajeTruco+1, obtenerParejaEnemiga(envite.getJugador()));
 				else
 					chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaEnemiga(envite.getJugador()));
 				

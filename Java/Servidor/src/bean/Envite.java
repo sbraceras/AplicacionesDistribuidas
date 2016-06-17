@@ -2,6 +2,7 @@ package bean;
 
 import javax.persistence.*;
 
+import dtos.EnviteDTO;
 import enums.TipoEnvite;
 
 
@@ -183,6 +184,20 @@ public class Envite extends Movimiento {
 			return 7;
 
 		return 0;
+	}
+
+	@Override
+	public EnviteDTO toDTO() {
+		EnviteDTO envite = new EnviteDTO();
+
+		envite.setId(this.id);
+		envite.setNumeroTurno(numeroTurno);
+		envite.setFechaHora(this.fechaHora);
+
+		envite.setJugador(this.jugador.toDTO());
+		envite.setTipoEnvite(this.tipoEnvite);
+
+		return envite;
 	}
 
 }

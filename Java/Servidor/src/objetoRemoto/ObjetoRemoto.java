@@ -4,39 +4,127 @@ import interfaz.TDATruco;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 import controlador.ServicioCentral;
 import dtos.CartaDTO;
+import dtos.CartaJugadorDTO;
+import dtos.CartaTiradaDTO;
 import dtos.JugadorDTO;
+import dtos.MovimientoDTO;
+import dtos.PartidoDTO;
+import dtos.PuntajeParejaDTO;
+import enums.TipoEnvite;
+import exceptions.BazaException;
+import exceptions.ControladorException;
 import exceptions.JugadorException;
+import exceptions.PartidoException;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 
 	private static final long serialVersionUID = 1L;
-	private ServicioCentral controlador = ServicioCentral.getInstance();
+	private ServicioCentral controlador;
 
 	public ObjetoRemoto() throws RemoteException {
 		super();
+
+		controlador = ServicioCentral.getInstance();
 	}
 
-	@Override
-	public JugadorDTO login(String apodo, String password) throws JugadorException {
-		// TODO Auto-generated method stub
+	public JugadorDTO login(String apodo, String password) throws RemoteException {
+		
 		JugadorDTO jg = new JugadorDTO();
 		jg.setApodo(apodo);
 		jg.setPassword(password);
 		
 		//Intengo hacer login//
-		return controlador.iniciarSesion(jg);
+		try {
+			return controlador.iniciarSesion(jg);
+		} catch (JugadorException e) {
+			throw new RemoteException(e.getMessage());
+		}
 	}
 	
+	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return controlador.obtenerCartasJugador(partido, jugador);
+		} catch (ControladorException | PartidoException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+			
+		}
+	}
 	
-	@Override
-	public CartaDTO ObtenerCarta(CartaDTO carta) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PuntajeParejaDTO> obtenerPuntajeChico (PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return controlador.obtenerPuntajeChico(partido, jugador);
+		} catch (ControladorException | PartidoException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+			
+		}
 	}
 
+	public List<MovimientoDTO> obtenerMovimientosUltimaBaza(PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return controlador.obtenerMovimientosUltimaBaza(partido, jugador);
+		}
+		catch (ControladorException | PartidoException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+	public List<TipoEnvite> obtenerEnvitesDisponibles(PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
 	
+		try {
+			return controlador.obtenerEnvitesDisponibles(partido, jugador);
+		}
+		catch (PartidoException | ControladorException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+	
+	public PartidoDTO jugarLibreIndividual(JugadorDTO jugador) {
+		
+		return controlador.jugarLibreIndividual(jugador);
+	}
+	
+	public List<PartidoDTO> tengoPartido(JugadorDTO jugador) {
+		
+		return controlador.tengoPartido(jugador);
+	}
+
+	public JugadorDTO obtenerJugadorActual(PartidoDTO part, JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return controlador.obtenerJugadorActual(part, jugador);
+		} catch (ControladorException | PartidoException e) {
+			
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+		
+	}
+
+	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO turnoJugador, MovimientoDTO movimiento) throws RemoteException {
+	
+		try {
+			controlador.nuevoMovimientoPartido(partido, turnoJugador, movimiento);
+		} catch (ControladorException | PartidoException | BazaException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
 
 }

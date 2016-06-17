@@ -1,20 +1,36 @@
-package server;
+package gui;
 
+import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import bean.*;
-import controlador.ServicioCentral;
-import dtos.*;
-import enums.*;
-import exceptions.*;
+import businessDelegate.BusinessDelegate;
+import dtos.CartaJugadorDTO;
+import dtos.CartaTiradaDTO;
+import dtos.EnviteDTO;
+import dtos.JugadorDTO;
+import dtos.PartidoDTO;
+import enums.TipoEnvite;
 
 public class TestSegundaEntrega {
 
+	private BusinessDelegate businessDelegate = null;
+	
+	public static void main(String[] args) throws RemoteException {
+		new TestSegundaEntrega();
+	}
+	
+	
 	public TestSegundaEntrega() {
-
+		
+		try {
+			businessDelegate = new BusinessDelegate();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
 		/*
 		 * Jugador jug = new Jugador("Gaston","Gaston", "123");
 		 * 
@@ -126,33 +142,43 @@ public class TestSegundaEntrega {
 		jugador4.setPassword("balonDeOro");
 
 		try {
-			jugador1 = ServicioCentral.getInstance().iniciarSesion(jugador1);
-		} catch (JugadorException e) {
+			jugador1 = businessDelegate.login(jugador1.getApodo(), jugador1.getPassword());
+		} catch (RemoteException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			jugador2 = ServicioCentral.getInstance().iniciarSesion(jugador2);
-		} catch (JugadorException e) {
+			jugador2 = businessDelegate.login(jugador2.getApodo(), jugador2.getPassword());
+		} catch (RemoteException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			jugador3 = ServicioCentral.getInstance().iniciarSesion(jugador3);
-		} catch (JugadorException e) {
+			jugador3 = businessDelegate.login(jugador3.getApodo(), jugador3.getPassword());
+		} catch (RemoteException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			jugador4 = ServicioCentral.getInstance().iniciarSesion(jugador4);
-		} catch (JugadorException e) {
+			jugador4 = businessDelegate.login(jugador4.getApodo(), jugador4.getPassword());
+		} catch (RemoteException e) {
 			System.err.println(e.getMessage());
 		}	
 
 		// ************** Controlamos si se armo Partido ************** //
 		System.out.println("");
 
-		PartidoDTO part1 = ServicioCentral.getInstance().jugarLibreIndividual(jugador1);
-		PartidoDTO part2 = ServicioCentral.getInstance().jugarLibreIndividual(jugador2);
-		PartidoDTO part3 = ServicioCentral.getInstance().jugarLibreIndividual(jugador3);
-		PartidoDTO part4 = ServicioCentral.getInstance().jugarLibreIndividual(jugador4);
+		PartidoDTO part1 = null;
+		PartidoDTO part2 = null;
+		PartidoDTO part3 = null;
+		PartidoDTO part4 = null;
+
+		try {
+			part1 = businessDelegate.jugarLibreIndividual(jugador1);
+			part2 = businessDelegate.jugarLibreIndividual(jugador2);
+			part3 = businessDelegate.jugarLibreIndividual(jugador3);
+			part4 = businessDelegate.jugarLibreIndividual(jugador4);
+		}
+		catch (RemoteException e) {
+			System.err.println("Error al Intentar Jugar Libre Individual: " + e.getMessage());
+		}
 				
 		if (part4 != null) {
 			System.out.println("Se armo un partido! Inicio: " + part4.getFechaInicio());
@@ -160,44 +186,69 @@ public class TestSegundaEntrega {
 		}
 
 		if (part3 == null) {
-			List<PartidoDTO> partidosPendientes = ServicioCentral.getInstance().tengoPartido(jugador3);
-			if (!partidosPendientes.isEmpty()){
-				part3 = partidosPendientes.get(partidosPendientes.size()-1);
-				System.out.println("El partido nuevo es: " + part3.getId());
+			List<PartidoDTO> partidosPendientes;
+			try {
+				partidosPendientes = businessDelegate.tengoPartido(jugador3);
+				if (!partidosPendientes.isEmpty()){
+					part3 = partidosPendientes.get(partidosPendientes.size()-1);
+					System.out.println("El partido nuevo es: " + part3.getId());
+				}
+			} catch (RemoteException e) {
+				e.printStackTrace();
 			}
 		}
 
 		if (part2 == null) {
-			List<PartidoDTO> partidosPendientes = ServicioCentral.getInstance().tengoPartido(jugador2);
-			if (!partidosPendientes.isEmpty()){
-				part2 = partidosPendientes.get(partidosPendientes.size()-1);
-				System.out.println("El partido nuevo es: " + part2.getId());
+			List<PartidoDTO> partidosPendientes;
+			try {
+				partidosPendientes = businessDelegate.tengoPartido(jugador2);
+				if (!partidosPendientes.isEmpty()){
+					part2 = partidosPendientes.get(partidosPendientes.size()-1);
+					System.out.println("El partido nuevo es: " + part2.getId());
+				}
+			} catch (RemoteException e) {
+				e.printStackTrace();
 			}
 		}
 
 		if (part1 == null) {
-			List<PartidoDTO> partidosPendientes = ServicioCentral.getInstance().tengoPartido(jugador1);
-			if (!partidosPendientes.isEmpty()){
-				part1 = partidosPendientes.get(partidosPendientes.size()-1);
-				System.out.println("El partido nuevo es: " + part1.getId());
+			List<PartidoDTO> partidosPendientes;
+			try {
+				partidosPendientes = businessDelegate.tengoPartido(jugador1);
+				if (!partidosPendientes.isEmpty()){
+					part1 = partidosPendientes.get(partidosPendientes.size()-1);
+					System.out.println("El partido nuevo es: " + part1.getId());
+				}
+			} catch (RemoteException e) {
+				e.printStackTrace();
 			}
 		}
 
-		/* ACA HARIA LAS 4 VENTANAS */
-		
+		// ejecutamos las 4 ventanas de juego
+		try {
+			VentanaPrueba ventana1 = new VentanaPrueba(part1, jugador1);
+			VentanaPrueba ventana2 = new VentanaPrueba(part2, jugador2);
+			VentanaPrueba ventana3 = new VentanaPrueba(part3, jugador3);
+			VentanaPrueba ventana4 = new VentanaPrueba(part4, jugador4);
+		}
+		catch(RemoteException e){
+			System.out.println("Error al crear las Ventanas de Prueba: " + e.getMessage());
+		}
+	
+
 		
 		// ************** Obtenemos las cartas de los Jugadores ************** //
-		System.out.println("");
+	/*	System.out.println("");
 
 		List<CartaJugadorDTO> cartasJugador1 = new ArrayList<CartaJugadorDTO>();
 		List<CartaJugadorDTO> cartasJugador2 = new ArrayList<CartaJugadorDTO>();
 		List<CartaJugadorDTO> cartasJugador3 = new ArrayList<CartaJugadorDTO>();
 		List<CartaJugadorDTO> cartasJugador4 = new ArrayList<CartaJugadorDTO>();
 		try {
-			cartasJugador1 = ServicioCentral.getInstance().obtenerCartasJugador(part1, jugador1);
-			cartasJugador2 = ServicioCentral.getInstance().obtenerCartasJugador(part2, jugador2);
-			cartasJugador3 = ServicioCentral.getInstance().obtenerCartasJugador(part3, jugador3);
-			cartasJugador4 = ServicioCentral.getInstance().obtenerCartasJugador(part4, jugador4);
+			cartasJugador1 = businessDelegate.obtenerCartasJugador(part1, jugador1);
+			cartasJugador2 = businessDelegate.obtenerCartasJugador(part2, jugador2);
+			cartasJugador3 = businessDelegate.obtenerCartasJugador(part3, jugador3);
+			cartasJugador4 = businessDelegate.obtenerCartasJugador(part4, jugador4);
 
 			System.out.println("Cartas del jugador " + jugador1.getApodo());
 			for(CartaJugadorDTO cartaJugador: cartasJugador1) {
@@ -223,7 +274,7 @@ public class TestSegundaEntrega {
 			}
 			System.out.println("");
 
-		} catch (ControladorException | PartidoException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
@@ -233,9 +284,9 @@ public class TestSegundaEntrega {
 
 		JugadorDTO turnoJugador = new JugadorDTO();
 		try {
-			turnoJugador = ServicioCentral.getInstance().obtenerJugadorActual(part1, jugador1);
+			turnoJugador = businessDelegate.obtenerJugadorActual(part1, jugador1);
 			System.out.println("Le toca jugar a: " + turnoJugador.getApodo());
-		} catch (PartidoException | ControladorException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
@@ -243,7 +294,7 @@ public class TestSegundaEntrega {
 		System.out.println("");
 
 		try {
-			List<TipoEnvite> opciones = ServicioCentral.getInstance().obtenerEnvitesDisponibles(part1, turnoJugador);
+			List<TipoEnvite> opciones = businessDelegate.obtenerEnvitesDisponibles(part1, turnoJugador);
 			if (opciones.isEmpty()) {
 				System.out.println("El jugador " + turnoJugador.getApodo() +  " no puede cantar nada!");
 			} else {
@@ -251,7 +302,7 @@ public class TestSegundaEntrega {
 					System.out.println("El jugador " + turnoJugador.getApodo() + " puede cantar: " + envite.name());
 				}
 			}
-		} catch (ControladorException | PartidoException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
@@ -270,8 +321,8 @@ public class TestSegundaEntrega {
 		try {
 			System.out.println("");
 			System.out.println("Voy a tirar la Carta: " + cartaTirada.getCartaJugador().getCarta().toString());
-			ServicioCentral.getInstance().nuevoMovimientoPartido(part3, turnoJugador, cartaTirada);
-		} catch (ControladorException | PartidoException | BazaException e) {
+			businessDelegate.nuevoMovimientoPartido(part3, turnoJugador, cartaTirada);
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 				
@@ -280,16 +331,16 @@ public class TestSegundaEntrega {
 		
 		turnoJugador = new JugadorDTO();
 		try {
-			turnoJugador = ServicioCentral.getInstance().obtenerJugadorActual(part1, jugador1);
+			turnoJugador = businessDelegate.obtenerJugadorActual(part1, jugador1);
 			System.out.println("Le toca jugar a: " + turnoJugador.getApodo());
-		} catch (PartidoException | ControladorException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
 		// ************** Obtenemos los cantos Posibles del jugador actual ************** //
 
 		try {
-			List<TipoEnvite> opciones = ServicioCentral.getInstance().obtenerEnvitesDisponibles(part2, turnoJugador);
+			List<TipoEnvite> opciones = businessDelegate.obtenerEnvitesDisponibles(part2, turnoJugador);
 			if (opciones.isEmpty()) {
 				System.out.println("El jugador " + turnoJugador.getApodo() +  " no puede cantar nada!");
 			} else {
@@ -297,7 +348,7 @@ public class TestSegundaEntrega {
 					System.out.println("El jugador " + turnoJugador.getApodo() + " puede cantar: " + envite.name());
 				}
 			}
-		} catch (ControladorException | PartidoException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
@@ -315,8 +366,8 @@ public class TestSegundaEntrega {
 		}
 		try {
 			System.out.println("Voy a tirar la Carta: " + cartaTirada.getCartaJugador().getCarta().toString());
-			ServicioCentral.getInstance().nuevoMovimientoPartido(part3, turnoJugador, cartaTirada);
-		} catch (ControladorException | PartidoException | BazaException e) {
+			businessDelegate.nuevoMovimientoPartido(part3, turnoJugador, cartaTirada);
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		
@@ -327,17 +378,17 @@ public class TestSegundaEntrega {
 		cartaTirada.setCartaJugador(cartasJugador4.get(1));
 		try {
 			System.out.println("Trata de Tirar el Jugador " + jugador4.getApodo() + " el " + cartaTirada.getCartaJugador().getCarta().toString());
-			ServicioCentral.getInstance().nuevoMovimientoPartido(part4, jugador4, cartaTirada);
-		} catch (ControladorException | PartidoException | BazaException e) {
+			businessDelegate.nuevoMovimientoPartido(part4, jugador4, cartaTirada);
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
 		// ************** SIMULAMOS EL TERCER MOVIMIENTO DE LA BAZA ************** //
 		turnoJugador = new JugadorDTO();
 		try {
-			turnoJugador = ServicioCentral.getInstance().obtenerJugadorActual(part1, jugador1);
+			turnoJugador = businessDelegate.obtenerJugadorActual(part1, jugador1);
 			System.out.println("Le toca jugar a: " + turnoJugador.getApodo());
-		} catch (PartidoException | ControladorException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
@@ -345,7 +396,7 @@ public class TestSegundaEntrega {
 
 		List<TipoEnvite> opciones;
 		try {
-			opciones = ServicioCentral.getInstance().obtenerEnvitesDisponibles(part2, turnoJugador);
+			opciones = businessDelegate.obtenerEnvitesDisponibles(part2, turnoJugador);
 			if (opciones.isEmpty()) {
 				System.out.println("El jugador " + turnoJugador.getApodo() +  " no puede cantar nada!");
 			} else {
@@ -353,7 +404,7 @@ public class TestSegundaEntrega {
 					System.out.println("El jugador " + turnoJugador.getApodo() + " puede cantar: " + envite.name());
 				}
 			}
-		} catch (ControladorException | PartidoException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		
@@ -364,8 +415,8 @@ public class TestSegundaEntrega {
 		envite.setFechaHora(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 		
 		try {
-			ServicioCentral.getInstance().nuevoMovimientoPartido(part1, turnoJugador, envite);
-		} catch (BazaException | ControladorException | PartidoException e) {
+			businessDelegate.nuevoMovimientoPartido(part1, turnoJugador, envite);
+		} catch (RemoteException e) {
 			
 			e.printStackTrace();
 		}
@@ -374,9 +425,9 @@ public class TestSegundaEntrega {
 	
 		turnoJugador = new JugadorDTO();
 		try {
-			turnoJugador = ServicioCentral.getInstance().obtenerJugadorActual(part1, jugador1);
+			turnoJugador = businessDelegate.obtenerJugadorActual(part1, jugador1);
 			System.out.println("Le toca contestar a: " + turnoJugador.getApodo());
-		} catch (PartidoException | ControladorException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
@@ -384,7 +435,7 @@ public class TestSegundaEntrega {
 		// ************** Obtenemos los cantos Posibles del jugador actual ************** //
 
 		try {
-			opciones = ServicioCentral.getInstance().obtenerEnvitesDisponibles(part2, turnoJugador);
+			opciones = businessDelegate.obtenerEnvitesDisponibles(part2, turnoJugador);
 			if (opciones.isEmpty()) {
 				System.out.println("El jugador " + turnoJugador.getApodo() +  " no puede cantar nada!");
 			} else {
@@ -392,7 +443,7 @@ public class TestSegundaEntrega {
 					System.out.println("El jugador " + turnoJugador.getApodo() + " puede cantar: " + tipoEnvite.name());
 				}
 			}
-		} catch (ControladorException | PartidoException e) {
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		
@@ -402,30 +453,20 @@ public class TestSegundaEntrega {
 		
 		
 
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
 		// ************** Se Prueba Obtener un Partido ************** //
-		/*PartidoDTO partidoObtenido = new PartidoDTO();
+/*
+
+		PartidoDTO partidoObtenido = new PartidoDTO();
 		partidoObtenido.setId(46);
 	
 		try {
-			Partido partido = ServicioCentral.getInstance().obtenerPartido(partidoObtenido);
+			Partido partido = businessDelegate.obtenerPartido(partidoObtenido);
 			System.out.println("Se Obtuvo el Partido ID: "+ partido.getId());
 		} catch (PartidoException e) {
 			e.printStackTrace();
-		}*/
+
+*/
+
 
 		
 		// ************** Se Prueba Obtener Partidos de un Jugador Entre Fechas ************** //
@@ -434,5 +475,8 @@ public class TestSegundaEntrega {
 		
 		
 	}
-
+	
+	
 }
+
+

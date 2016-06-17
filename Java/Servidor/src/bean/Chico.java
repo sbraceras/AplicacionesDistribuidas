@@ -163,7 +163,7 @@ public class Chico {
 				
 				if(puntajes.get(i).getPuntaje()+puntaje >= 30){
 					puntajes.get(i).setPuntaje(30);
-					terminado= true;
+					terminado = true;
 					partido.cerrarChico();
 				}
 				else
@@ -250,6 +250,5 @@ public class Chico {
 		
 		return orden;
 	}
-	
-	
+		
 }

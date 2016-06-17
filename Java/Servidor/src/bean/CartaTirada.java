@@ -24,14 +24,15 @@ public class CartaTirada extends Movimiento {
 	public CartaTiradaDTO toDTO() {
 		CartaTiradaDTO dto = new CartaTiradaDTO();
 
+		dto.setId(this.id);
+		dto.setNumeroTurno(this.numeroTurno);
+		dto.setFechaHora(this.fechaHora);
+
 		dto.setCartaJugador(this.cartaJugador.toDTO());
-		dto.setFechaHora(super.fechaHora);
-		dto.setId(super.id);
-		dto.setNumeroTurno(super.numeroTurno);
 
 		return dto;
 	}
-
+	
 	public CartaJugador getCartaJugador() {
 		return cartaJugador;
 	}

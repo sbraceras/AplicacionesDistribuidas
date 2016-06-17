@@ -265,8 +265,8 @@ public class ServicioCentral {
 			
 			//Si llegue a armar con la misma categoria//
 			if (jugadoresPosibles.size()==4){
-				Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
-				Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
+				Pareja pareja1 = new Pareja(1, jugadoresPosibles.get(0), jugadoresPosibles.get(1));
+				Pareja pareja2 = new Pareja(2, jugadoresPosibles.get(2), jugadoresPosibles.get(3));
 				List<Pareja> parejas = new ArrayList<Pareja>();
 				parejas.add(pareja1);
 				parejas.add(pareja2);
@@ -315,8 +315,8 @@ public class ServicioCentral {
 					
 				}else{
 					//Si llegué con categoria original y mayor, compongo las parejas//
-					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
-					Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
+					Pareja pareja1 = new Pareja(1, jugadoresPosibles.get(0), jugadoresPosibles.get(1));
+					Pareja pareja2 = new Pareja(2, jugadoresPosibles.get(2), jugadoresPosibles.get(3));
 					List<Pareja> parejas = new ArrayList<Pareja>();
 					parejas.add(pareja1);
 					parejas.add(pareja2);
@@ -346,10 +346,10 @@ public class ServicioCentral {
 				}
 				
 				//Si encontre 4 jugadores entre categoria original y menor//
-				if (jugadoresPosibles.size()==4){
+				if (jugadoresPosibles.size() == 4) {
 					//componer parejas//
-					Pareja pareja1 = new Pareja(jugadoresPosibles.get(0), jugadoresPosibles.get(1));
-					Pareja pareja2 = new Pareja(jugadoresPosibles.get(2), jugadoresPosibles.get(3));
+					Pareja pareja1 = new Pareja(1, jugadoresPosibles.get(0), jugadoresPosibles.get(1));
+					Pareja pareja2 = new Pareja(2, jugadoresPosibles.get(2), jugadoresPosibles.get(3));
 					List<Pareja> parejas = new ArrayList<Pareja>();
 					parejas.add(pareja1);
 					parejas.add(pareja2);
@@ -445,7 +445,6 @@ public class ServicioCentral {
 		}
 	}
 
-
 	private boolean parejasCompatibles(List<Jugador> jugadoresPosibles, String categoriaMenor) {
 		int cantMenor = 0;
 		for (Jugador j : jugadoresPosibles){
@@ -467,10 +466,13 @@ public class ServicioCentral {
 	 */
 	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws JugadorException {
 	
-//		for(Jugador jug: sesiones) {
-//			if (jug.getApodo().equals(jugador.getApodo()))
+		for(Jugador jug: sesiones) {
+			if (jug.getApodo().equals(jugador.getApodo())) {
+				System.out.println("El jugador " + jug.getApodo() + " ya ha iniciado sesion");
+				return jug.toDTO();
 //				throw new JugadorException("Ya ha iniciado sesion");
-//		}
+			}
+		}
 
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
@@ -620,7 +622,7 @@ public class ServicioCentral {
 			throw new ControladorException("No existe el partido");
 	}
 	
-	public Partido obtenerPartido(PartidoDTO partido) throws PartidoException {
+	private Partido obtenerPartido(PartidoDTO partido) throws PartidoException {
 		for(Partido p: partidos) {
 			if(p.sosPartido(partido))
 				return p;
@@ -722,5 +724,59 @@ public class ServicioCentral {
 		System.out.println("Levante: " + partidos.size() + " Partidos");
 	}
 	
+	
+	public List<PuntajeParejaDTO> obtenerPuntajeChico (PartidoDTO partido, JugadorDTO jugador) throws PartidoException, ControladorException{
 
+		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+
+			Jugador jug = obtenerJugador(jugador);
+			
+			if(part.participoJugador(jug)){
+				
+				List<PuntajeParejaDTO> puntajes = new ArrayList<PuntajeParejaDTO>();
+				for(PuntajePareja punt : part.obtenerChicoActivo().getPuntajes()){
+					
+					puntajes.add(punt.toDTO());
+				}
+				
+				return puntajes;
+			}
+			else
+				throw new ControladorException("El Jugador no esta jugando ese Partido");
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+
+	}
+	
+	public List<MovimientoDTO> obtenerMovimientosUltimaBaza (PartidoDTO partido, JugadorDTO jugador) throws ControladorException, PartidoException{
+
+		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+
+			Jugador jug = obtenerJugador(jugador);
+			
+			if(part.participoJugador(jug)){
+				
+				List<MovimientoDTO> movimientos = new ArrayList<MovimientoDTO>();
+				for(Movimiento movimiento : part.obtenerChicoActivo().obtenerUltimaMano().obtenerUltimaBaza().getTurnosBaza()){
+					
+					movimientos.add(movimiento.toDTO());
+				}
+				
+				return movimientos;
+			}
+			else
+				throw new ControladorException("El Jugador no esta jugando ese Partido");
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
 }
+
+

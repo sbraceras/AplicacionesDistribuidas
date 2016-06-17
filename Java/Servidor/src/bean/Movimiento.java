@@ -31,6 +31,7 @@ public class Movimiento {
 		dto.setFechaHora(this.fechaHora);
 		dto.setId(this.id);
 		dto.setNumeroTurno(this.numeroTurno);
+
 		return dto;
 	}
 

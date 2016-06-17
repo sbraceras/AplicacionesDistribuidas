@@ -45,7 +45,8 @@ public class Pareja {
 	public Pareja() {
 	}
 
-	public Pareja(Jugador jugador1, Jugador jugador2) {
+	public Pareja(int numeroPareja, Jugador jugador1, Jugador jugador2) {
+		this.numeroPareja = numeroPareja;
 		this.jugador1 = jugador1;
 		this.jugador2 = jugador2;
 	}
@@ -92,7 +93,6 @@ public class Pareja {
 	}
 
 	public boolean tenesJugador(Jugador jugador) {
-	
 		if(jugador1.getApodo().equals(jugador.getApodo()))
 			return true;
 		else

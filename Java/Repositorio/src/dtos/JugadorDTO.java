@@ -18,6 +18,7 @@ public class JugadorDTO implements Serializable {
 	private TipoCategoria categoria;
 	private List<GrupoDTO> grupos;
 
+
 	public JugadorDTO() {
 	}
 
@@ -75,6 +76,11 @@ public class JugadorDTO implements Serializable {
 
 	public void setGrupos(List<GrupoDTO> grupos) {
 		this.grupos = grupos;
+	}
+
+	@Override
+	public String toString() {
+		return id + " - " + apodo + " (" + mail + ") - " + categoria;
 	}
 
 }
