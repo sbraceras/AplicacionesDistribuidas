@@ -166,8 +166,11 @@ public class Chico {
 					terminado = true;
 					partido.cerrarChico();
 				}
-				else
-					puntajes.get(i).setPuntaje(puntaje);
+				else{
+					int aux = puntajes.get(i).getPuntaje();
+					puntajes.get(i).setPuntaje(aux+puntaje);
+				}
+					
 			}
 		}
 		

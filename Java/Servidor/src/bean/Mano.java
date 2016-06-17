@@ -643,103 +643,108 @@ public class Mano {
 
 		movimiento.setNumeroTurno(ultimaBaza.getTurnosBaza().size() + 1);
 		if (movimiento instanceof CartaTirada) {
-			CartaTirada cartaTirada = (CartaTirada) movimiento;
-
-			// obtengo la CartaJugador en estado persistente!
-			CartaJugador cartaJugador = obtenerCartaJugador(cartaTirada);
-			cartaJugador.setTirada(true);
-			cartaTirada.setCartaJugador(cartaJugador);
-
-			ultimaBaza.agregarMovimiento(jugador, cartaTirada);
-
-			if (ultimaBaza.getCantidadCartasTiradas() == 4) {
-				// se arrojo la ultima carta de la ronda! hay que cerrar la baza
-				ganadorBaza = ultimaBaza.cerrarBaza();
-				
-				if (ganadorBaza == null) {
-					// se produjo un empate en la baza
-					if(ultimaBaza.getNumeroBaza() == 1)
-					{
-						nuevaBaza(2, ganadorBaza);
-						// juega el jugador mano
-						jugadorActual = ordenJuego.get(0);
-					}
-					else
-						if(ultimaBaza.getNumeroBaza() == 2) {
-							// se produjo un empate en la segunda baza
-							if(bazas.get(0).getGanador() == null){ //tambien se empato la primera
-								nuevaBaza(3, ganadorBaza);
+			if(!tiroCarta(jugador, movimiento))
+				{
+					CartaTirada cartaTirada = (CartaTirada) movimiento;
+		
+					// obtengo la CartaJugador en estado persistente!
+					CartaJugador cartaJugador = obtenerCartaJugador(cartaTirada);
+					cartaJugador.setTirada(true);
+					cartaTirada.setCartaJugador(cartaJugador);
+		
+					ultimaBaza.agregarMovimiento(jugador, cartaTirada);
+		
+					if (ultimaBaza.getCantidadCartasTiradas() == 4) {
+						// se arrojo la ultima carta de la ronda! hay que cerrar la baza
+						ganadorBaza = ultimaBaza.cerrarBaza();
+						
+						if (ganadorBaza == null) {
+							// se produjo un empate en la baza
+							if(ultimaBaza.getNumeroBaza() == 1)
+							{
+								nuevaBaza(2, ganadorBaza);
 								// juega el jugador mano
 								jugadorActual = ordenJuego.get(0);
 							}
-							else {
-								// hubo un ganador en la primera, por lo tanto ese ganador gana la mano. Se tiene que cerrar la mano
-								chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(bazas.get(0).getGanador()));
-
-								if(!chico.isTerminado()){
-									// Tengo que generar la Nueva Mano
+							else
+								if(ultimaBaza.getNumeroBaza() == 2) {
+									// se produjo un empate en la segunda baza
+									if(bazas.get(0).getGanador() == null){ //tambien se empato la primera
+										nuevaBaza(3, ganadorBaza);
+										// juega el jugador mano
+										jugadorActual = ordenJuego.get(0);
+									}
+									else {
+										// hubo un ganador en la primera, por lo tanto ese ganador gana la mano. Se tiene que cerrar la mano
+										chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(bazas.get(0).getGanador()));
+		
+										if(!chico.isTerminado()){
+											// Tengo que generar la Nueva Mano
+											chico.nuevaMano();
+										}
+										else{
+											// Se termina el chico, pero de esto se ocupa la funcion actualizarPuntajePareja
+										}
+									}									
+								} else {
+									// Es la tercer Baza
+									if(bazas.get(0).getGanador()==null){
+										// Hubo 3 empates Seguidos. gana el jugador Mano
+										chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(ordenJuego.get(0)));
+									}
+									else{
+										// Hubo un Ganador Distinto en la primera y segunda Baza, El ganador es la pareja que gano la primer Baza
+										chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(bazas.get(0).getGanador()));
+									}
+									
+									// Si el chico no termino, tengo que crear una nueva mano
+									if(!chico.isTerminado()){
+										// Tengo que generar la Nueva Mano
+										chico.nuevaMano();
+									}
+								}
+						}
+						else {
+							// hubo un ganador en la Baza
+							if (ultimaBaza.getNumeroBaza() == 1) {
+								// es la primer Baza, entonces creamos una nueva Baza
+								nuevaBaza(2, ganadorBaza);
+								jugadorActual = ganadorBaza;
+							} else if (ultimaBaza.getNumeroBaza() == 2) {
+								// veo quien gano la primer Baza
+								if ((bazas.get(0).getGanador() == null) || (obtenerParejaJugador(bazas.get(0).getGanador()) == obtenerParejaJugador(ganadorBaza))) {
+									// se habia empatado en la primer Baza o la pareja ganadora de la primer Baza es la misma que la que acaba de ganar la segunda,
+									// entonces el ganador es la que acaba de ganar esta segunda Baza
+									chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(ganadorBaza));
+									
+									// si el chico no termino, tengo que crear una nueva mano
+									if(!chico.isTerminado()){
+										// tengo que generar la Nueva Mano
+										chico.nuevaMano();
+									}
+								} else {
+									// una Pareja gano la primer baza y la otra Pareja gano la segunda
+									nuevaBaza(3, ganadorBaza);
+									jugadorActual = ganadorBaza;
+								}
+							} else {
+								// hubo un ganador en la tercer Baza, entonces ESE es el ganador de la Mano
+								chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(ganadorBaza));
+		
+								// Si el chico no termino, tengo que crear una nueva mano
+								if (!chico.isTerminado()) {
 									chico.nuevaMano();
 								}
-								else{
-									// Se termina el chico, pero de esto se ocupa la funcion actualizarPuntajePareja
-								}
-							}									
-						} else {
-							// Es la tercer Baza
-							if(bazas.get(0).getGanador()==null){
-								// Hubo 3 empates Seguidos. gana el jugador Mano
-								chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(ordenJuego.get(0)));
 							}
-							else{
-								// Hubo un Ganador Distinto en la primera y segunda Baza, El ganador es la pareja que gano la primer Baza
-								chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(bazas.get(0).getGanador()));
-							}
-							
-							// Si el chico no termino, tengo que crear una nueva mano
-							if(!chico.isTerminado()){
-								// Tengo que generar la Nueva Mano
-								chico.nuevaMano();
-							}
-						}
-				}
-				else {
-					// hubo un ganador en la Baza
-					if (ultimaBaza.getNumeroBaza() == 1) {
-						// es la primer Baza, entonces creamos una nueva Baza
-						nuevaBaza(2, ganadorBaza);
-						jugadorActual = ganadorBaza;
-					} else if (ultimaBaza.getNumeroBaza() == 2) {
-						// veo quien gano la primer Baza
-						if ((bazas.get(0).getGanador() == null) || (obtenerParejaJugador(bazas.get(0).getGanador()) == obtenerParejaJugador(ganadorBaza))) {
-							// se habia empatado en la primer Baza o la pareja ganadora de la primer Baza es la misma que la que acaba de ganar la segunda,
-							// entonces el ganador es la que acaba de ganar esta segunda Baza
-							chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(ganadorBaza));
-							
-							// si el chico no termino, tengo que crear una nueva mano
-							if(!chico.isTerminado()){
-								// tengo que generar la Nueva Mano
-								chico.nuevaMano();
-							}
-						} else {
-							// una Pareja gano la primer baza y la otra Pareja gano la segunda
-							nuevaBaza(3, ganadorBaza);
-							jugadorActual = ganadorBaza;
 						}
 					} else {
-						// hubo un ganador en la tercer Baza, entonces ESE es el ganador de la Mano
-						chico.actualizarPuntajePareja(puntajeTruco, obtenerParejaJugador(ganadorBaza));
-
-						// Si el chico no termino, tengo que crear una nueva mano
-						if (!chico.isTerminado()) {
-							chico.nuevaMano();
-						}
+						// todavia no se termino la Baza
+		//				jugadorActual = ordenJuego.get(ultimaBaza.getCantidadCartasTiradas());
+						jugadorActual = obtenerUltimaBaza().getOrdenJuego().get(ultimaBaza.getCantidadCartasTiradas());
 					}
 				}
-			} else {
-				// todavia no se termino la Baza
-				jugadorActual = ordenJuego.get(ultimaBaza.getCantidadCartasTiradas());
-			}
-		} else if (movimiento instanceof Envite) {
+		}
+		else if (movimiento instanceof Envite) {
 			Envite envite = (Envite) movimiento;
 
 			ultimaBaza.agregarMovimiento(jugador, envite);
@@ -829,6 +834,19 @@ public class Mano {
 			}
 			ultimoEnvite = envite;
 		}
+	}
+
+	private boolean tiroCarta(Jugador jugador, Movimiento movimiento) {
+		
+		for(CartaJugador cartaJugador: cartasJugador)
+		{
+			if(cartaJugador.getJugador().equals(jugador)) 
+				if(cartaJugador.isTirada())
+					return true;
+				else
+					return false;
+		}
+		return false;
 	}
 
 	private byte calcularPuntajeFaltaEnvido(Pareja ganadorEnvido) {
