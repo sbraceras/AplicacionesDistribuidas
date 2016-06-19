@@ -127,7 +127,7 @@ public class Grupo {
 
 	public void armarPareja(ArrayList<Jugador> integrantes) {
 
-		Pareja pareja = new Pareja(integrantes.get(0), integrantes.get(1));
+		Pareja pareja = new Pareja(0,integrantes.get(0), integrantes.get(1));
 		parejasActivas.add(pareja);
 	}
 	

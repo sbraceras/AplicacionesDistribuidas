@@ -662,7 +662,7 @@ public class ServicioCentral {
 		return null;
 	}
 
-	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) throws ControladorException, PartidoException, BazaException {
+	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO jugador, MovimientoDTO movimiento) throws ControladorException, PartidoException, BazaException, JugadorException {
 		if (estaLogueado(jugador)) {
 			Partido part = obtenerPartido(partido);
 			if (part == null)

@@ -11,6 +11,7 @@ import org.hibernate.annotations.FetchMode;
 import dtos.*;
 import enums.TipoEnvite;
 import exceptions.BazaException;
+import exceptions.JugadorException;
 import exceptions.PartidoException;
 
 
@@ -410,8 +411,8 @@ public class Mano {
 			// es la primer baza, primera condicion para cantar envido
 			Baza baza = bazas.get(0);
 
-			if (tocaCartaMano()) { //no hay que responder un envite anterior
-				if (baza.getCantidadCartasTiradas() >= 3) { // los que pueden cantar son el tercero o 4
+			if ((tocaCartaMano()) || (ultimoEnvite.getTipoEnvite().equals(TipoEnvite.Truco))) { //no hay que responder un envite anterior
+				if (baza.getCantidadCartasTiradas() >= 2) { // los que pueden cantar son el tercero o 4
 					if (seCantoEnvido() == false)
 						return true;
 
@@ -637,7 +638,7 @@ public class Mano {
 		return bazas.get(bazas.size() - 1);
 	}
 
-	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException {
+	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException, JugadorException {
 		Baza ultimaBaza = obtenerUltimaBaza();
 		Jugador ganadorBaza = null;
 
@@ -749,9 +750,10 @@ public class Mano {
 
 			ultimaBaza.agregarMovimiento(jugador, envite);
 
-			if ((envite.getTipoEnvite().equals(TipoEnvite.Quiero))	||
-				(envite.getTipoEnvite().equals(TipoEnvite.ReTruco))	||
-				(envite.getTipoEnvite().equals(TipoEnvite.ValeCuatro))) {
+//			if ((envite.getTipoEnvite().equals(TipoEnvite.Quiero))	||
+//				(envite.getTipoEnvite().equals(TipoEnvite.ReTruco))	||
+//			(envite.getTipoEnvite().equals(TipoEnvite.ValeCuatro))) {
+			if (envite.getTipoEnvite().equals(TipoEnvite.Quiero)){
 
 				// primero, verifico si el Envite es un 'Quiero' de alguno de todos los Envidos
 				if (ultimoEnvite.sosAlgunEnvido()) {
@@ -826,6 +828,11 @@ public class Mano {
 				}
 				
 			} else {
+				if((envite.getTipoEnvite().equals(TipoEnvite.ReTruco)) || (envite.getTipoEnvite().equals(TipoEnvite.ValeCuatro))){
+					//Verifico si se retruco algun truco, o retruco sin decir quiero antes. Debo sumar 1 al puntajeTruco
+					if((ultimoEnvite.getTipoEnvite().equals(TipoEnvite.Truco)) || (ultimoEnvite.getTipoEnvite().equals(TipoEnvite.ReTruco)))
+						puntajeTruco++;
+				}
 				// canto algo! pasamos el turno al siguiente
 				// sea cual sea la Baza, hacemos que responda el pie de la otra Pareja. Aunque si es la segunda o tercer baza...canto Truco!.
 				// el metodo 'obtenerEnvitesPosibles()' es el que filtra QUIEN puede cantar en cada Baza.
@@ -840,7 +847,7 @@ public class Mano {
 		
 		for(CartaJugador cartaJugador: cartasJugador)
 		{
-			if(cartaJugador.getJugador().equals(jugador)) 
+			if(cartaJugador.getJugador().equals(jugador) && (((CartaTirada) movimiento).getCartaJugador().equals(cartaJugador)))
 				if(cartaJugador.isTirada())
 					return true;
 				else

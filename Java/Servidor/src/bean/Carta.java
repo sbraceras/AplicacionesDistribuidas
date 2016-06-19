@@ -81,4 +81,37 @@ public class Carta {
 		return (this.numero == 10 || this.numero == 11 || this.numero == 12);
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + numero;
+		result = prime * result + ((palo == null) ? 0 : palo.hashCode());
+		result = prime * result + posicionValor;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Carta other = (Carta) obj;
+		if (id != other.id)
+			return false;
+		if (numero != other.numero)
+			return false;
+		if (palo != other.palo)
+			return false;
+		if (posicionValor != other.posicionValor)
+			return false;
+		return true;
+	}
+	
+	
+
 }

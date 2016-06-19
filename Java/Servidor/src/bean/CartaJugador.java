@@ -66,7 +66,45 @@ public class CartaJugador {
 	public void setTirada(boolean tirada) {
 		this.tirada = tirada;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((carta == null) ? 0 : carta.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((jugador == null) ? 0 : jugador.hashCode());
+		result = prime * result + (tirada ? 1231 : 1237);
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CartaJugador other = (CartaJugador) obj;
+		if (carta == null) {
+			if (other.carta != null)
+				return false;
+		} else if (!carta.equals(other.carta))
+			return false;
+		/*if (id != other.id)
+			return false;*/
+		if (jugador == null) {
+			if (other.jugador != null)
+				return false;
+		} else if (!jugador.equals(other.jugador))
+			return false;
+		if (tirada != other.tirada)
+			return false;
+		return true;
+	}
+	
+	
 
+	
 	
 	
 }

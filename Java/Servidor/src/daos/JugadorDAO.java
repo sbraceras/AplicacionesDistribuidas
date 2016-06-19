@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import org.hibernate.*;
 
 import dtos.JugadorDTO;
-
+import exceptions.JugadorException;
+import exceptions.PartidoException;
 import bean.Grupo;
 import bean.Jugador;
+import bean.Partido;
 
 public class JugadorDAO {
 
@@ -154,5 +156,6 @@ public class JugadorDAO {
 			return null;
 		}
 	}
+
 
 }

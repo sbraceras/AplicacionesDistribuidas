@@ -16,10 +16,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import daos.JugadorDAO;
+import daos.PartidoDAO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.RankingDTO;
 import enums.TipoCategoria;
+import exceptions.JugadorException;
 
 @Entity
 @Table(name = "Jugadores")
@@ -191,6 +193,14 @@ public class Jugador {
 		for(Grupo grupo: grupos){
 			if(grupo.tenesPartido(partido) == true)
 				grupo.actualizarRanking(this, puntos, partido);
+		}
+	}
+	
+	public void comprobarCambioCategoria() throws JugadorException {
+		
+		if(!categoria.equals(ranking.calculoCategoria())){
+			categoria= ranking.calculoCategoria();
+			JugadorDAO.getinstance().guardarJugador(this);
 		}
 	}
 

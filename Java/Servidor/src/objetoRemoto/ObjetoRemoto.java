@@ -120,7 +120,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 	
 		try {
 			controlador.nuevoMovimientoPartido(partido, turnoJugador, movimiento);
-		} catch (ControladorException | PartidoException | BazaException e) {
+		} catch (ControladorException | PartidoException | BazaException | JugadorException e) {
 			throw new RemoteException(e.getMessage());
 			
 			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */

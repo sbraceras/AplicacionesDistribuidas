@@ -136,9 +136,13 @@ public class PartidoDAO {
 	public void update (Partido partido) throws PartidoException{
 		Transaction t = null;
 		Session s = sf.openSession();
+//		Session s = sf.getCurrentSession();
 		try{
 			t = s.beginTransaction();
+			//
+			s.clear();
 			s.saveOrUpdate(partido);
+//			s.merge(partido);
 			s.flush();
 			t.commit();
 			s.close();

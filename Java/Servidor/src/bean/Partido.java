@@ -2,6 +2,7 @@ package bean;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import daos.PartidoDAO;
 import dtos.*;
 import enums.*;
 import exceptions.BazaException;
+import exceptions.JugadorException;
 import exceptions.PartidoException;
 
 
@@ -208,8 +210,8 @@ public class Partido {
 		return aux;
 	}
 
-	public void actualizarRankingJugadores() {
-		Pareja perdedora;
+	public void actualizarRankingJugadores() throws JugadorException {
+		Pareja perdedora= null;
 		if(parejas.get(0).esPareja(parejaGanadora))
 			perdedora = parejas.get(1);
 		else
@@ -229,6 +231,7 @@ public class Partido {
 			perdedora.getJugador2().actualizarRankingMiembro(this, 0);
 
 		} else {
+			//es libre individual o libre parejas
 			TipoCategoria categoriaOponente = perdedora.obtenerCategoriaSuperior();
 			
 			if(parejaGanadora.getJugador1().getCategoria().ordinal()<categoriaOponente.ordinal()) //el jugador 1 es inferior
@@ -244,6 +247,13 @@ public class Partido {
 		
 		perdedora.getJugador1().actualizarRanking(0, this);
 		perdedora.getJugador2().actualizarRanking(0, this);
+		
+		//Actualizo las categoría de cada jugador para comprobar si bajo de categoría
+		
+		for(Pareja pareja: parejas){
+			pareja.getJugador1().comprobarCambioCategoria();
+			pareja.getJugador2().comprobarCambioCategoria();
+		}
 	}
 
 	public boolean estasTerminado() {		
@@ -254,7 +264,7 @@ public class Partido {
 		return partido.getId() == this.id;
 	}
 
-	public void cerrarChico () throws PartidoException{
+	public void cerrarChico () throws PartidoException, JugadorException{
 		int  chicosGanadosPareja1 =0;
 		int  chicosGanadosPareja2 =0;
 		
@@ -270,7 +280,8 @@ public class Partido {
 			}
 			
 			if(chicosGanadosPareja1 == 2 || chicosGanadosPareja2 == 2) {
-				fechaFin = (Timestamp) new Date();
+//				fechaFin = (Timestamp) new Date();
+				fechaFin = new Timestamp (Calendar.getInstance().getTimeInMillis());
 				estadoPartido = EstadoPartido.Terminado;
 
 				if(chicosGanadosPareja1 == 2) {
@@ -301,7 +312,7 @@ public class Partido {
 		return null;
 	}
 
-	public void nuevoMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException {
+	public void nuevoMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException, JugadorException {
 		if (!this.estasTerminado()) {
 			// deberia haber un Chico activo! 
 			Chico chico = obtenerChicoActivo();

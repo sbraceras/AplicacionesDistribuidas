@@ -10,6 +10,7 @@ import org.hibernate.engine.Cascade;
 
 import dtos.*;
 import exceptions.BazaException;
+import exceptions.JugadorException;
 import exceptions.PartidoException;
 
 /**
@@ -157,7 +158,7 @@ public class Chico {
 		return manos.get(manos.size() - 1);
 	}
 
-	public void actualizarPuntajePareja(int puntaje, Pareja pareja) throws PartidoException {
+	public void actualizarPuntajePareja(int puntaje, Pareja pareja) throws PartidoException, JugadorException {
 		for(int i=0; i<puntajes.size(); i++){
 			if(puntajes.get(i).getPareja().getNumeroPareja() == pareja.getNumeroPareja()){
 				
@@ -218,7 +219,7 @@ public class Chico {
 		return mano.tocaCartaMano();
 	}
 
-	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException {
+	public void agregarMovimiento(Jugador jugador, Movimiento movimiento) throws PartidoException, BazaException, JugadorException {
 		obtenerUltimaMano().agregarMovimiento(jugador, movimiento);
 	}
 
