@@ -15,7 +15,7 @@ public class Servidor {
 	public static void main(String[] args) {
 		new Servidor();
 
-//		new TestSegundaEntrega();
+	//	new TestSegundaEntrega();
 	}
 
 	public Servidor() {
@@ -30,7 +30,7 @@ public class Servidor {
 			Naming.rebind("//localhost/ServicioCentral", objetoRemoto);
 			System.out.println("Fijado en //localhost/ServicioCentral");
 
-			new HibernateUtil(); // crea la conexión a la BD
+			new HibernateUtil(); // crea la conexiï¿½n a la BD
 
 			/*
 			 * ServicioCentral.getModelo().registrarObserver((Observer) objetoRemoto);

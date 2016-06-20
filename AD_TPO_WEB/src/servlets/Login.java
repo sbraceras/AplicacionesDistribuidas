@@ -22,9 +22,7 @@ import exceptions.JugadorException;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	/*
-	 * private BusinessDelegate bd;
-	 */
+	private static BusinessDelegate bd;
 	
 	
     /**
@@ -39,13 +37,14 @@ public class Login extends HttpServlet {
     @Override
     public void init() throws ServletException {
     	super.init();
-/*    	try {
+    	/*
+    	try {
 			bd = new BusinessDelegate();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    throw new ServletException(e);
 		}
-*/		
+		*/
     }
 
 	/**
@@ -60,7 +59,7 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	
-	/*protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String apodo = request.getParameter("apodo");
 		String contrasena = request.getParameter("pass");
@@ -77,5 +76,5 @@ public class Login extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			rd.forward(request, response);
 		}
-	}*/
+	}
 }

@@ -44,7 +44,7 @@ public class BusinessDelegate {
 
 	public JugadorDTO login(String apodo, String contrasena) throws RemoteException {
 		return objetoRemoto.login(apodo, contrasena);
-	}	//sessionService = (SesionService) Naming.lookup("//" + webServerProperties.getProperty("server.url") + "/" + SesionService.SERVICENAME);
+	}
 
 	
 	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
