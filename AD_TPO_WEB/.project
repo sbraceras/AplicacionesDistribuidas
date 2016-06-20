@@ -3,6 +3,7 @@
 	<name>AD_TPO_WEB</name>
 	<comment></comment>
 	<projects>
+		<project>AD_TPO_Repositorio</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

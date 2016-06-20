@@ -60,7 +60,7 @@
 <body>
 <div class="pagina-login">
   <div class="form">
-  	<form class="inicio de sesion" id="formInicio">
+  	<form class="inicio de sesion" id="formInicio" action="Login">
       <input type="text" placeholder="Apodo" id="campoApodo"/>
       <input type="password" placeholder="Contraseña" id="campoContrasena"/>
       <button onclick="iniciarSesion()">Aceptar</button>

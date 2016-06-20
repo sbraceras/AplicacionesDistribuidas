@@ -37,14 +37,12 @@ public class Login extends HttpServlet {
     @Override
     public void init() throws ServletException {
     	super.init();
-    	/*
     	try {
 			bd = new BusinessDelegate();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 		    throw new ServletException(e);
 		}
-		*/
     }
 
 	/**
