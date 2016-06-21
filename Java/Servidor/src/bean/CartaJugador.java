@@ -17,7 +17,7 @@ public class CartaJugador {
 	@JoinColumn(name = "id_jugador")
 	private Jugador jugador;
 
-	@ManyToOne(cascade = CascadeType.ALL) /* fetch = FetchType.EAGER) */
+	@ManyToOne /* fetch = FetchType.EAGER) */
 	@JoinColumn(name = "id_carta")
 	private Carta carta;
 

@@ -557,8 +557,10 @@ public class Mano {
 					break;
 			}
 
-			if ((obtenerUltimaBaza().getCantidadCartasTiradas() == 2) ||
-				(obtenerUltimaBaza().getCantidadCartasTiradas() == 3)) {
+			if ((!ultimoEnvite.sosAlgunEnvido()) &&
+				((obtenerUltimaBaza().getCantidadCartasTiradas() == 2) ||
+				 (obtenerUltimaBaza().getCantidadCartasTiradas() == 3))) {
+
 				respuestas.add(TipoEnvite.IrAlMazo);
 			}
 		}
@@ -836,8 +838,10 @@ public class Mano {
 				// canto algo! pasamos el turno al siguiente
 				// sea cual sea la Baza, hacemos que responda el pie de la otra Pareja. Aunque si es la segunda o tercer baza...canto Truco!.
 				// el metodo 'obtenerEnvitesPosibles()' es el que filtra QUIEN puede cantar en cada Baza.
-				jugadorActual = (ordenJuego.indexOf(envite.getJugador()) == 0 || ordenJuego.indexOf(envite.getJugador()) == 2) ?
-									ordenJuego.get(3) : ordenJuego.get(2);
+				List<Jugador> ordenJuegoBaza = ultimaBaza.getOrdenJuego();
+
+				jugadorActual = (ordenJuegoBaza.indexOf(envite.getJugador()) == 0 || ordenJuegoBaza.indexOf(envite.getJugador()) == 2) ?
+									ordenJuegoBaza.get(3) : ordenJuegoBaza.get(2);
 			}
 			ultimoEnvite = envite;
 		}
