@@ -18,8 +18,8 @@ import exceptions.JugadorException;
 /**
  * Servlet implementation class Login
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/RegistroServlet")
+public class RegistroServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private static BusinessDelegate bd;
@@ -28,7 +28,7 @@ public class Login extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public RegistroServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -59,18 +59,26 @@ public class Login extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String apodo = request.getParameter("apodo");
-		String contrasena = request.getParameter("pass");
+		String apodo = request.getParameter("apodoR");
+		String contrasena = request.getParameter("contrasenaR");
+		String mail = request.getParameter("mailR");
+		
+		JugadorDTO jg = new JugadorDTO();
+		jg.setApodo(apodo);
+		jg.setPassword(contrasena);
+		jg.setMail(mail);
+		
+		
 		HttpSession session = request.getSession(true);
 		session.removeAttribute("resultado");
 		
 		try {
-			JugadorDTO jg = bd.login(apodo, contrasena);
+			bd.registrarJugador(jg);
 			session.setAttribute("user", jg);
 			session.setAttribute("userId", jg.getApodo());
-			response.sendRedirect("index.jsp");
+			response.sendRedirect("main.jsp");
 		} catch (Exception e) {
-			session.setAttribute("resultado", false);
+			session.setAttribute("resultadoRegistro", false);
 			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			rd.forward(request, response);
 		}

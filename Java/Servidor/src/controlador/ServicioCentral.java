@@ -53,9 +53,9 @@ public class ServicioCentral {
 
 		if (jug != null) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()))
-				throw new JugadorException("El apodo ingresado ya est� en uso");
+				throw new JugadorException("El apodo ingresado ya esta en uso");
 			if (jug.getMail().equalsIgnoreCase(jugador.getMail()))
-				throw new JugadorException("El correo electr�nico ingresado ya esta en uso");
+				throw new JugadorException("El correo electronico ingresado ya esta en uso");
 		} else {
 			// Podemos registrar el Jugador! 
 			// Suponemos que la validacion de la segunda password la hace la interfaz
@@ -477,10 +477,11 @@ public class ServicioCentral {
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
 		if (jug == null) {
+			System.out.println("Login Incorrecto");
 			throw new JugadorException("Inicio de sesion no valido. " +
 				"Por favor, verifique sus credenciales.");
 		} else {
-			System.out.println("LogIn Correcto");
+			System.out.println("Login Correcto");
 			sesiones.add(jug);
 
 			return jug.toDTO();

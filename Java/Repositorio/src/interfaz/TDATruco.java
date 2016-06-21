@@ -19,8 +19,6 @@ import exceptions.JugadorException;
 
 public interface TDATruco extends Remote {
 	
-	public JugadorDTO login(String apodo, String contrasena) throws RemoteException;
-	
 	public PartidoDTO jugarLibreIndividual(JugadorDTO jugador) throws RemoteException;
 	
 	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws RemoteException;
@@ -36,6 +34,10 @@ public interface TDATruco extends Remote {
 	public JugadorDTO obtenerJugadorActual(PartidoDTO partido, JugadorDTO jugador) throws RemoteException;
 
 	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO turnoJugador, MovimientoDTO movimiento) throws RemoteException;
+
+	public JugadorDTO login (JugadorDTO jg) throws RemoteException;
+	
+	public void registrarJugador(JugadorDTO jg) throws RemoteException;
 	
 	
 }

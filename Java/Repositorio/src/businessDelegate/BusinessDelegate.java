@@ -42,8 +42,8 @@ public class BusinessDelegate {
 		}
 	}
 
-	public JugadorDTO login(String apodo, String contrasena) throws RemoteException {
-		return objetoRemoto.login(apodo, contrasena);
+	public JugadorDTO login(JugadorDTO jg) throws RemoteException {
+		return objetoRemoto.login(jg);
 	}
 
 	
@@ -114,6 +114,16 @@ public class BusinessDelegate {
 		} catch (RemoteException e) {
 			throw new RemoteException("Se produjo un error al obtener el Puntaje del Chico: " + e.getMessage());
 		}
+	}
+
+	public void registrarJugador(JugadorDTO jg) throws RemoteException {
+		// TODO Auto-generated method stub
+		try {
+			objetoRemoto.registrarJugador(jg);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			throw new RemoteException("Se produjo un error al querer registrar el jugador.");
+		}	
 	}
 
 	

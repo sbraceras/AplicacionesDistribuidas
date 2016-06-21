@@ -31,11 +31,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 		controlador = ServicioCentral.getInstance();
 	}
 
-	public JugadorDTO login(String apodo, String password) throws JugadorException {
-		
-		JugadorDTO jg = new JugadorDTO();
-		jg.setApodo(apodo);
-		jg.setPassword(password);
+	public JugadorDTO login(JugadorDTO jg) throws JugadorException {
 		
 		//Intengo hacer login//
 		try {
@@ -44,6 +40,13 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 			throw new JugadorException(e.getMessage());
 		}
 	}
+	
+	@Override
+	public void registrarJugador(JugadorDTO jg) throws RemoteException {
+		// TODO Auto-generated method stub
+		controlador.registrarJugador(jg);
+	}
+
 	
 	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
 		
