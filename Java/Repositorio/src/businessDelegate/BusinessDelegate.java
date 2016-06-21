@@ -41,11 +41,10 @@ public class BusinessDelegate {
 		}
 	}
 
-	public JugadorDTO login(String apodo, String contrasena) throws RemoteException {
-		return objetoRemoto.login(apodo, contrasena);
-//		sessionService = (SesionService) Naming.lookup("//" + webServerProperties.getProperty("server.url") + "/" + SesionService.SERVICENAME);
+	public JugadorDTO login(JugadorDTO jg) throws RemoteException {
+		return objetoRemoto.login(jg);
 	}
-
+	
 	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
 		try {
 			return objetoRemoto.obtenerCartasJugador(partido, jugador);
@@ -107,4 +106,13 @@ public class BusinessDelegate {
 		}
 	}
 
+	public void registrarJugador(JugadorDTO jg) throws RemoteException {
+		try {
+			objetoRemoto.registrarJugador(jg);
+		} catch (RemoteException e) {
+			throw new RemoteException("Se produjo un error al querer registrar el jugador.");
+		}	
+	}
+
+	
 }

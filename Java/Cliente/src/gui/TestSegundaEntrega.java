@@ -131,22 +131,22 @@ public class TestSegundaEntrega {
 		jugador4.setPassword("balonDeOro");
 
 		try {
-			jugador1 = businessDelegate.login(jugador1.getApodo(), jugador1.getPassword());
+			jugador1 = businessDelegate.login(jugador1);
 		} catch (RemoteException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			jugador2 = businessDelegate.login(jugador2.getApodo(), jugador2.getPassword());
+			jugador2 = businessDelegate.login(jugador2);
 		} catch (RemoteException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			jugador3 = businessDelegate.login(jugador3.getApodo(), jugador3.getPassword());
+			jugador3 = businessDelegate.login(jugador3);
 		} catch (RemoteException e) {
 			System.err.println(e.getMessage());
 		}
 		try {
-			jugador4 = businessDelegate.login(jugador4.getApodo(), jugador4.getPassword());
+			jugador4 = businessDelegate.login(jugador4);
 		} catch (RemoteException e) {
 			System.err.println(e.getMessage());
 		}	

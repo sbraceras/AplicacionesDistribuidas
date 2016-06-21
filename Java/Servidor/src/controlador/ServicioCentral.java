@@ -53,9 +53,9 @@ public class ServicioCentral {
 
 		if (jug != null) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()))
-				throw new JugadorException("El apodo ingresado ya est� en uso");
+				throw new JugadorException("El apodo ingresado ya esta en uso");
 			if (jug.getMail().equalsIgnoreCase(jugador.getMail()))
-				throw new JugadorException("El correo electr�nico ingresado ya esta en uso");
+				throw new JugadorException("El correo electronico ingresado ya esta en uso");
 		} else {
 			// Podemos registrar el Jugador! 
 			// Suponemos que la validacion de la segunda password la hace la interfaz
@@ -69,7 +69,7 @@ public class ServicioCentral {
 	private Jugador obtenerJugadorPorApodoPassword(JugadorDTO jugador) {
 		for (Jugador jug: jugadores) {
 			if (jug.getApodo().equalsIgnoreCase(jugador.getApodo()) &&
-				// La Password la hacemos sensible a May�sculas
+				// La Password la hacemos sensible a Mayusculas
 				jug.getPassword().equals(jugador.getPassword())) {
 					return jug;
 			}
@@ -465,7 +465,7 @@ public class ServicioCentral {
 	 * de juego para elegir el tipo de partida a jugar.
 	 */
 	public JugadorDTO iniciarSesion(JugadorDTO jugador) throws JugadorException {
-	
+
 		for(Jugador jug: sesiones) {
 			if (jug.getApodo().equals(jugador.getApodo())) {
 				System.out.println("El jugador " + jug.getApodo() + " ya ha iniciado sesion");
@@ -477,10 +477,11 @@ public class ServicioCentral {
 		Jugador jug = obtenerJugadorPorApodoPassword(jugador);
 
 		if (jug == null) {
+			System.out.println("Login Incorrecto");
 			throw new JugadorException("Inicio de sesion no valido. " +
 				"Por favor, verifique sus credenciales.");
 		} else {
-			System.out.println("LogIn Correcto");
+			System.out.println("Login Correcto");
 			sesiones.add(jug);
 
 			return jug.toDTO();
@@ -488,9 +489,7 @@ public class ServicioCentral {
 	}
 
 	public void cerrarSesion(JugadorDTO jugador) {
-
 		for (int i = 0; i < sesiones.size(); i++) {
-
 			if (sesiones.get(i).sosJugador(jugador))
 				sesiones.remove(i);
 		}

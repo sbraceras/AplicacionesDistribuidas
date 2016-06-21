@@ -23,33 +23,37 @@
 	function mostrarInicioSesion(){
 		document.getElementById("formRegistro").style.display = 'none';
 		document.getElementById("formInicio").style.display = '';
+	    document.getElementById("divErrorLoginIncompleto").style.display = 'none';
+		
+		
 	}
 	
 	function mostrarRegistro(){
 		document.getElementById("formRegistro").style.display = '';
 		document.getElementById("formInicio").style.display = 'none';	
+		document.getElementById("divErrorRegistroIncompleto").style.display = 'none';
 	}
 
-	function iniciarSesion() {
-		var messageRow = document.getElementById("messageRow");
+	function inicioValido() {
 		var apodo = document.getElementById("campoApodo").value;
 		var contrasena = document.getElementById("campoContrasena").value;
 
+		document.getElementById("divErrorLogin").style.display = 'none';
 		if (!apodo || !contrasena) {
-			alert("Son requeridos un apodo y una contraseña para iniciar sesion.");
+			document.getElementById("divErrorLoginIncompleto").style.display = '';
 			return false;
 		}
 		return true;
 	}
 	
-	function registrarse(){
-		var messageRow = document.getElementById("messageRow");
+	function registroValido(){
 		var apodoR = document.getElementById("campoApodoR").value;
 		var contrasenaR = document.getElementById("campoContrasenaR").value;
 		var emailR = document.getElementById("campoEmailR").value;
 
+		document.getElementById("divErrorRegistro").style.display = 'none';
 		if (!apodoR || !contrasenaR || !emailR) {
-			alert("Son requeridos un apodo, una contraseña y un email para registrarse en el sistema.");
+			document.getElementById("divErrorRegistroIncompleto").style.display = '';
 			return false;
 		}
 		return true;
@@ -60,17 +64,51 @@
 <body>
 <div class="pagina-login">
   <div class="form">
-  	<form class="inicio de sesion" id="formInicio">
-      <input type="text" placeholder="Apodo" id="campoApodo"/>
-      <input type="password" placeholder="Contraseña" id="campoContrasena"/>
-      <button onclick="iniciarSesion()">Aceptar</button>
-      <p class="message" onclick="mostrarRegistro()">¿No estás registrado? <a href="#">Registrarse</a></p>
+  	<form class="inicio de sesion" id="formInicio" action="LoginServlet" method=post onsubmit="return inicioValido()">
+      <input type="text" placeholder="Apodo" id="campoApodo" name="apodo"/>
+      <input type="password" placeholder="Contraseña" id="campoContrasena" name="contrasena"/>
+      <input type="submit" value="Iniciar Sesion" class="botonAceptar"/>
+      
+      <%
+      if (session != null && session.getAttribute("resultadoLogin") != null
+				&& !((Boolean) session.getAttribute("resultadoLogin"))) {
+			session.removeAttribute("resultadoLogin");
+	    	%>
+	    	<div id="divErrorLogin">
+				<span id="mensajeErrorLogin">La informacion ingresada no es correcta, intente nuevamente.</span>
+			</div>
+	    <%
+	    }
+	    
+	    %>
+		<div id="divErrorLoginIncompleto">
+			<span id="mensajeErrorLoginIncompleto">Son requeridos un apodo y una contraseña para iniciar sesion.</span>
+	    </div>
+     	<p class="message" onclick="mostrarRegistro()">¿No estás registrado? <a href="#">Registrarse</a></p>
     </form>
-    <form class="registracion" id="formRegistro">
-      <input type="text" placeholder="Apodo" id="campoApodoR"/>
-      <input type="password" placeholder="Contraseña" id="campoContrasenaR"/>
-      <input type="text" placeholder="Email@mail.com" id="campoEmailR"/>
-      <button onclick="registrarse()">Aceptar</button>
+    
+   
+    <form class="registracion" id="formRegistro" action="RegistroServlet"  method=post onsubmit="return registroValido()">
+      <input type="text" placeholder="Apodo" id="campoApodoR" name="apodoR"/>
+      <input type="password" placeholder="Contraseña" id="campoContrasenaR" name="contrasenaR"/>
+      <input type="text" placeholder="Email@mail.com" id="campoEmailR" name="mailR"/>
+      <input type="submit" value="Registrarse" class="botonAceptar"/>
+	<%
+      if (session != null && session.getAttribute("resultadoRegistro") != null
+				&& !((Boolean) session.getAttribute("resultadoRegistro"))) {
+			session.removeAttribute("resultadoRegistro");
+	    	%>
+	    	<div id="divErrorRegistro">
+				<span id="mensajeErrorRegistro">No se ha podido registrar al nuevo usuario, intente nuevamente.</span>
+			</div>
+	    <%
+	    }
+	    
+	    %>
+
+		<div id="divErrorRegistroIncompleto">
+				<span id="mensajeErrorRegistroIncompleto">Son requeridos un apodo, una contraseña y un email para registrarse en el sistema.</span>
+		</div>
       <p class="message" onclick="mostrarInicioSesion()">¿Ya estás registrado? <a href="#">Iniciar Sesión</a></p>
     </form>
   </div>
