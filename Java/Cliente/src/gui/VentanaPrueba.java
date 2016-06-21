@@ -1,6 +1,8 @@
 package gui;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,23 +14,36 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
 
 import businessDelegate.BusinessDelegate;
 import dtos.*;
 import enums.TipoEnvite;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.JScrollPane;
-import java.awt.Color;
 
-
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 public class VentanaPrueba extends JFrame implements  ActionListener{
 
 	private static final long serialVersionUID = 1L;
@@ -36,23 +51,30 @@ public class VentanaPrueba extends JFrame implements  ActionListener{
 
 	private DefaultTableModel listaMovimientos, listaCartas;
 	private JButton btnActBaza, btnActCantos, btnActPuntaje, btnActCartas, btnCantar, btnTirar;
-	private JLabel lblPuntos, lblPuntosPareja1, lblPuntosPareja2, lblCantos, lblCartas, lblBaza, lblPuntos1, lblPuntos2;
-	
+
 	private BusinessDelegate businessDelegate;
 	private JugadorDTO yo;
 	private PartidoDTO miPartido;
 
 	private List<PuntajeParejaDTO> puntajes;
+	private JSeparator jSeparator1;
+	private JLabel lblPuntosPareja2;
+	private JLabel lblPuntos1;
+	private JLabel lblPuntosPareja1;
+	private JLabel lblPuntos;
+	private JPanel pnlNE;
+	private JLabel lblJugadorActual;
+	private JLabel lblNewLabel;
+	private JButton btnActualizarInformacionJuego;
+	private JLabel jLabel1;
+	private JSeparator jSeparator2;
+	private JLabel lblPuntos2;
+	private JPanel panel;
+	private JScrollPane jScrollPane1;
 	private List<CartaJugadorDTO> cartasJugador;
 	private JComboBox<String> comboBox;
 	private JTable tableBaza;
 	private JTable tableCartas;
-	private JLabel label;
-	private JLabel label_1;
-	private JButton btnActualizarInformacionJuego;
-	private JPanel panel;
-	private JLabel lblJugadorActual;
-	private JLabel lblNewLabel;
 	private JScrollPane scrollPane;
 	
 	
@@ -69,129 +91,228 @@ public class VentanaPrueba extends JFrame implements  ActionListener{
 		this.setLocation(50 , 100);
 		setVisible(true);
 		this.pack();
+		this.setSize(654, 404);
 	}
 
 	private void initUI()
 	{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(new BorderLayout(5, 5));
-		JPanel pnlNO = new JPanel();
-		JPanel pnlSO = new JPanel(new GridLayout(3,2));
-		JPanel pnlNE = new JPanel(new GridLayout(4,2));
-		JPanel pnlSE = new JPanel(new GridLayout(3,2));
-		btnActPuntaje = new JButton("Actualizar Puntaje");
-		btnActCantos = new JButton("Actualizar Cantos");
-		btnActPuntaje.addActionListener(this);
-		btnActCantos.addActionListener(this);
-		lblPuntos = new JLabel("Puntaje");
-		lblPuntosPareja2 = new JLabel("Pareja 2");
-		lblPuntos1 = new JLabel("0");
-		lblPuntos2 = new JLabel("0");
-		lblCartas = new JLabel("Cartas");
-		lblCantos = new JLabel("Cantos");
-		pnlNO.setLayout(new GridLayout(4, 1, 0, 0));
-						
-		lblBaza = new JLabel("Baza");
-		pnlNO.add(lblBaza);
-		
-		tableBaza = new JTable();
-		tableBaza.setShowHorizontalLines(false);
-		listaMovimientos = new DefaultTableModel(
-				new Object[][] {
-					{null, null, null}
-				},
-				new String[] {
-					"TipoMov", "Carta / Envite", "Fecha / Hora"
+		FlowLayout thisLayout = new FlowLayout();
+		getContentPane().setLayout(thisLayout);
+		JPanel pnlNO = new JPanel(new GridLayout(4, 1));
+		pnlNO.setLayout(null);
+		{
+			panel = new JPanel();
+			pnlNO.add(panel);
+			panel.setLayout(null);
+			panel.setOpaque(true);
+			panel.setBounds(7, 5, 619, 43);
+			panel.setSize(619, 30);
+			{
+				lblNewLabel = new JLabel("Jugador Actual :");
+				panel.add(lblNewLabel);
+				lblNewLabel.setFont(new Font("Tahoma",Font.BOLD,11));
+				lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+				lblNewLabel.setText("Jugador Actual :");
+				lblNewLabel.setBounds(4, 0, 101, 30);
+			}
+			{
+				lblJugadorActual = new JLabel("");
+				panel.add(lblJugadorActual);
+				lblJugadorActual.setBackground(Color.BLACK);
+				lblJugadorActual.setText("");
+				lblJugadorActual.setFont(new java.awt.Font("Segoe UI",1,16));
+				lblJugadorActual.setBounds(103, 0, 157, 30);
+			}
+			{
+				btnActBaza = new JButton("Actualizar Baza");
+				panel.add(btnActBaza);
+				btnActBaza.addActionListener(this);
+				btnActBaza.setAlignmentX(0.5f);
+				btnActBaza.setText("Actualizar MOVIMIENTOS BAZA");
+				btnActBaza.setFont(new java.awt.Font("Segoe UI",0,12));
+				btnActBaza.setBounds(408, 0, 211, 30);
+			}
+		}
+
+		{
+			jScrollPane1 = new JScrollPane();
+			pnlNO.add(jScrollPane1);
+			jScrollPane1.setMinimumSize(new java.awt.Dimension(21, 21));
+			jScrollPane1.setBounds(2, 41, 628, 75);
+			{
+				tableBaza = new JTable();
+				jScrollPane1.setViewportView(tableBaza);
+				listaMovimientos = new DefaultTableModel(
+						new Object[][] {
+							{null, null, null},
+						},
+						new String[] {
+							"TipoMov", "Carta / Envite", "Fecha / Hora"
+						}
+						);
+				listaMovimientos.setRowCount(20);
+				tableBaza.setModel(listaMovimientos);
+				tableBaza.setPreferredSize(new java.awt.Dimension(622, 50));
+				tableBaza.getTableHeader().setSize(622, 50);
+				tableBaza.getTableHeader().setPreferredSize(new java.awt.Dimension(225, 20));
+				tableBaza.getTableHeader().setAutoscrolls(true);
+			}
+		}
+		{
+			JPanel pnlSO = new JPanel(new GridLayout(3, 2));
+			pnlNO.add(pnlSO);
+			pnlSO.setLayout(null);
+			pnlSO.setBorder(BorderFactory.createTitledBorder(""));
+			pnlSO.setBounds(2, 121, 628, 235);
+			{
+				btnActCartas = new JButton("Actualizar Cartas");
+				pnlSO.add(btnActCartas);
+				FlowLayout btnActCartasLayout = new FlowLayout();
+				btnActCartas.setLayout(btnActCartasLayout);
+				btnActCartas.setBounds(40, 105, 150, 30);
+				btnActCartas.addActionListener(this);
+			}
+			{
+				btnTirar = new JButton("Tirar Carta");
+				pnlSO.add(btnTirar);
+				FlowLayout btnTirarLayout = new FlowLayout();
+				btnTirar.setLayout(btnTirarLayout);
+				btnTirar.addActionListener(this);
+				btnTirar.setBounds(191, 105, 150, 30);
+			}
+			{
+				scrollPane = new JScrollPane();
+				pnlSO.add(scrollPane);
+				scrollPane.setBounds(5, 28, 337, 74);
+				{
+					tableCartas = new JTable();
+					scrollPane.setViewportView(tableCartas);
+					listaCartas = new DefaultTableModel(
+							new Object[][] {
+									{null, null},
+									{null, null},
+									{null, null},
+							},
+							new String[] {
+									"Carta", "Tirada"
+							}
+							);
+					tableCartas.setModel(listaCartas);
 				}
-		);
-
-		tableBaza.setModel(listaMovimientos);
-
-		tableBaza.getColumnModel().getColumn(1).setPreferredWidth(90);
-		pnlNO.add(tableBaza);
-
-		tableCartas = new JTable();
-
-		listaCartas = new DefaultTableModel(
-				new Object[][] {
-					{null, null},
-					{null, null},
-					{null, null},
-				},
-				new String[] {
-					"Carta", "Tirada"
+			}
+			{
+				pnlNE = new JPanel();
+				pnlSO.add(pnlNE);
+				pnlNE.setLayout(null);
+				pnlNE.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+				pnlNE.setToolTipText("Partido a 30 puntos!");
+				pnlNE.setBounds(424, 32, 159, 64);
+				{
+					lblPuntosPareja1 = new JLabel();
+					pnlNE.add(lblPuntosPareja1);
+					lblPuntosPareja1.setText("Pareja 1");
+					lblPuntosPareja1.setHorizontalAlignment(SwingConstants.RIGHT);
+					lblPuntosPareja1.setBounds(3, 4, 67, 29);
+					lblPuntosPareja1.setFont(new java.awt.Font("Segoe UI",2,12));
 				}
-		);
-		tableCartas.setModel(listaCartas);
+				{
+					lblPuntos1 = new JLabel();
+					pnlNE.add(lblPuntos1);
+					lblPuntos1.setBounds(89, 4, 34, 29);
+				}
+				{
+					lblPuntosPareja2 = new JLabel();
+					pnlNE.add(lblPuntosPareja2);
+					lblPuntosPareja2.setText("Pareja 2");
+					lblPuntosPareja2.setHorizontalAlignment(SwingConstants.RIGHT);
+					lblPuntosPareja2.setBounds(3, 33, 72, 29);
+					lblPuntosPareja2.setFont(new java.awt.Font("Segoe UI",2,12));
+					lblPuntosPareja2.setSize(67, 29);
+				}
+				{
+					lblPuntos2 = new JLabel();
+					pnlNE.add(lblPuntos2);
+					lblPuntos2.setBounds(89, 33, 34, 29);
+				}
+				{
+					jSeparator1 = new JSeparator();
+					pnlNE.add(jSeparator1);
+					jSeparator1.setBounds(81, 12, 8, 42);
+					jSeparator1.setOrientation(SwingConstants.VERTICAL);
+				}
+			}
+			{
+				lblPuntos = new JLabel();
+				pnlSO.add(lblPuntos);
+				lblPuntos.setText("Puntajes");
+				lblPuntos.setFont(new java.awt.Font("Segoe UI",1,12));
+				lblPuntos.setHorizontalAlignment(SwingConstants.LEFT);
+				lblPuntos.setBounds(424, 3, 69, 21);
+			}
+			{
+				btnActPuntaje = new JButton();
+				pnlSO.add(btnActPuntaje);
+				btnActPuntaje.setText("Actualizar Puntaje");
+				btnActPuntaje.setBounds(433, 100, 150, 30);
+				btnActPuntaje.addActionListener(this);
+			}
+			{
+				jSeparator2 = new JSeparator();
+				pnlSO.add(jSeparator2);
+				jSeparator2.setOrientation(SwingConstants.VERTICAL);
+				jSeparator2.setBounds(379, 8, 12, 209);
+			}
+			{
+				JPanel pnlSE = new JPanel(new GridLayout(3, 2));
+				pnlSO.add(pnlSE);
+				pnlSE.setLayout(null);
+				pnlSE.setBounds(7, 141, 307, 86);
+				{
+					JLabel lblCantos = new JLabel("Cantos");
+					pnlSE.add(lblCantos, "0, 0");
+					lblCantos.setBounds(0, 0, 131, 21);
+					lblCantos.setFont(new java.awt.Font("Segoe UI",1,12));
+				}
+				{
+					comboBox = new JComboBox<String>();
+					pnlSE.add(comboBox, "1, 0");
+					comboBox.setBounds(0, 25, 300, 24);
+				}
+				{
+					btnActCantos = new JButton("Actualizar Cantos");
+					pnlSE.add(btnActCantos, "2, 0");
+					btnActCantos.setBounds(0, 51, 150, 30);
+					btnActCantos.addActionListener(this);
+				}
+				{
+					btnCantar = new JButton("Cantar");
+					pnlSE.add(btnCantar, "3, 0");
+					btnCantar.setBounds(150, 51, 150, 30);
+					btnCantar.addActionListener(this);
+				}
+			}
+			{
+				jLabel1 = new JLabel();
+				pnlSO.add(jLabel1, "0, 0");
+				jLabel1.setText("Cartas en mano");
+				jLabel1.setFont(new java.awt.Font("Segoe UI",1,12));
+				jLabel1.setBounds(7, 3, 96, 21);
+			}
+			{
+				btnActualizarInformacionJuego = new JButton("Actualizar Informacion Juego");
+				pnlSO.add(btnActualizarInformacionJuego);
+				btnActualizarInformacionJuego.setText("Actualizar Informacion Juego");
+				btnActualizarInformacionJuego.setBounds(403, 145, 206, 59);
+				btnActualizarInformacionJuego.setForeground(new java.awt.Color(255,0,0));
+				btnActualizarInformacionJuego.setFont(new java.awt.Font("Segoe UI",1,12));
+				btnActualizarInformacionJuego.addActionListener(this);
+			}
+		}
 
-		pnlNE.add(lblPuntos);
-		pnlNE.add(new JLabel(""));
-		lblPuntosPareja1 = new JLabel("Pareja 1");
-		pnlNE.add(lblPuntosPareja1);
-		pnlNE.add(lblPuntos1);
-		pnlNE.add(lblPuntosPareja2);
-		pnlNE.add(lblPuntos2);
-		pnlNE.add(btnActPuntaje);
-		
-		pnlSO.add(lblCartas);
-		
-		pnlSE.add(lblCantos);
-		pnlSE.add(new JLabel(""));
-		
-		comboBox = new JComboBox<String>();
-		pnlSE.add(comboBox);
-		
-		label = new JLabel("");
-		pnlSE.add(label);
-		pnlSE.add(btnActCantos);
-		
-		getContentPane().add(pnlNO, BorderLayout.NORTH);
-		
-		btnActBaza = new JButton("Actualizar Baza");
-		
-		btnActBaza.addActionListener(this);
-		pnlNO.add(btnActBaza);
-		
-		panel = new JPanel();
-		pnlNO.add(panel);
-		panel.setLayout(new GridLayout(0, 3, 0, 0));
-		
-		btnActualizarInformacionJuego = new JButton("Actualizar Informacion Juego");
-		btnActualizarInformacionJuego.addActionListener(this);
+		getContentPane().add(pnlNO);
+		pnlNO.setPreferredSize(new java.awt.Dimension(640, 381));
 
-		panel.add(btnActualizarInformacionJuego);
-		
-		lblNewLabel = new JLabel("Jugador Actual :");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(lblNewLabel);
-		
-		lblJugadorActual = new JLabel("");
-		lblJugadorActual.setBackground(Color.BLACK);
-		panel.add(lblJugadorActual);
-
-		getContentPane().add(pnlNE, BorderLayout.EAST);
-		getContentPane().add(pnlSO, BorderLayout.WEST);
-		
-		label_1 = new JLabel("");
-		pnlSO.add(label_1);
-		
-		pnlSO.add(tableCartas);
-		btnTirar = new JButton("Tirar Carta");
-		btnTirar.addActionListener(this);
-		
-		scrollPane = new JScrollPane();
-		pnlSO.add(scrollPane);
-		btnActCartas = new JButton("Actualizar Cartas");
-		btnActCartas.addActionListener(this);
-		pnlSO.add(btnActCartas);
-
-		pnlSO.add(btnTirar);
-		getContentPane().add(pnlSE, BorderLayout.SOUTH);
-		btnCantar = new JButton("Cantar");
-		btnCantar.addActionListener(this);
-
-		pnlSE.add(btnCantar);
 	}
 
 	private void actualizarInformacionJuego() {

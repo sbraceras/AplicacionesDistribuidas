@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.engine.Cascade;
 
 import dtos.*;
 import exceptions.BazaException;
@@ -25,26 +24,31 @@ public class Chico {
 	@Column (name = "id_chico", nullable = false)
 	@GeneratedValue
 	private int id;
+
 	@Column (name = "nro_chico")
 	private int numeroChico;
+
 	@Transient
 	private Partido partido; //se utiliza para reemplazar los observers
+
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_chico")
 	private List<Mano> manos;
+
 	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn (name = "id_chico")
 	private List<PuntajePareja> puntajes;
+
 	@Column (name = "puntaje_maximo")
 	private int puntajeMaximo;
 	
 	@Column (columnDefinition = "bit")
 	private boolean terminado;
-	
-	
-	
+
+
 	public Chico() {
+		
 	}
 
 	public Chico(Partido partido,int numeroChico, int puntajeMaximo, List<Pareja> parejas) {
@@ -224,20 +228,16 @@ public class Chico {
 	}
 
 	public void levantar(Partido partido) {
-		
 		//Solo me interesa Levantar aquel que esta activo
-		
 		if(partido.obtenerChicoActivo().getId() == this.id){
 			this.partido = partido;
 			for(Mano mano: manos){
 				mano.levantar(this);
 			}
 		}
-		
 	}
 	
-	public Mano obtenerAnteUltimaMano (){
-		
+	public Mano obtenerAnteUltimaMano() {
 		if(manos.size() >= 2)
 			return manos.get(manos.size()-2);
 		else

@@ -160,12 +160,14 @@ public class Baza {
 		CartaJugador cartaJugador2 = null;
 		CartaJugador cartaJugador3 = null;
 		CartaJugador cartaJugador4 = null;
-		int cantidadCartas=0;
+
 		CartaTirada cartaTirada;
+		int cantidadCartas = 0;
+
 		for(Movimiento mov: turnosBaza) {
 			if(mov instanceof CartaTirada) {
 				cartaTirada = (CartaTirada) mov;
-				
+
 				if(cantidadCartas == 0)
 					cartaJugador1 = cartaTirada.getCartaJugador();
 				if(cantidadCartas == 1)

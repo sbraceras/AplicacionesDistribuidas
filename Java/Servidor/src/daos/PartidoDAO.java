@@ -133,25 +133,23 @@ public class PartidoDAO {
 		}
 	}
 	
-	public void update (Partido partido) throws PartidoException{
+	public void update(Partido partido) throws PartidoException {
 		Transaction t = null;
 		Session s = sf.openSession();
-//		Session s = sf.getCurrentSession();
-		try{
+		try {
 			t = s.beginTransaction();
-			//
-			s.clear();
+//			s.clear();
 			s.saveOrUpdate(partido);
 //			s.merge(partido);
 			s.flush();
 			t.commit();
 			s.close();
-		}
-		catch(Exception e){
+		} catch(Exception e) {
+			t.rollback();
+			s.close();
 			e.printStackTrace();
 			throw new PartidoException("Error al Hacer Update de Partido");
 		}
-		
 	}
 
 }

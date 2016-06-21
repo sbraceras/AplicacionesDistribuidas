@@ -1,18 +1,11 @@
 package gui;
 
 import java.rmi.RemoteException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import businessDelegate.BusinessDelegate;
-import dtos.CartaJugadorDTO;
-import dtos.CartaTiradaDTO;
-import dtos.EnviteDTO;
 import dtos.JugadorDTO;
 import dtos.PartidoDTO;
-import enums.TipoEnvite;
 
 public class TestSegundaEntrega {
 
@@ -23,13 +16,9 @@ public class TestSegundaEntrega {
 	}
 	
 	
-	public TestSegundaEntrega() {
+	public TestSegundaEntrega() throws RemoteException {
 		
-		try {
-			businessDelegate = new BusinessDelegate();
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		businessDelegate = new BusinessDelegate();
 		
 		/*
 		 * Jugador jug = new Jugador("Gaston","Gaston", "123");

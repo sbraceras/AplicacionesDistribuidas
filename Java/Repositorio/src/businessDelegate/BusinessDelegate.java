@@ -37,18 +37,16 @@ public class BusinessDelegate {
 		try {
 			objetoRemoto = (TDATruco) Naming.lookup("//localhost/ServicioCentral");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			//Generar exception real
-			throw new RemoteException("Se produjeron problemas al intentar encontrar el servicio central: " + e.getMessage());
+			throw new RemoteException("No pudo encontrarse el Servicio Central. " + e.getMessage());
 		}
 	}
 
 	public JugadorDTO login(String apodo, String contrasena) throws RemoteException {
 		return objetoRemoto.login(apodo, contrasena);
-	}	//sessionService = (SesionService) Naming.lookup("//" + webServerProperties.getProperty("server.url") + "/" + SesionService.SERVICENAME);
+//		sessionService = (SesionService) Naming.lookup("//" + webServerProperties.getProperty("server.url") + "/" + SesionService.SERVICENAME);
+	}
 
-	
 	public List<CartaJugadorDTO> obtenerCartasJugador (PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
-		
 		try {
 			return objetoRemoto.obtenerCartasJugador(partido, jugador);
 		} catch (RemoteException e) {
@@ -58,7 +56,6 @@ public class BusinessDelegate {
 	}
 	
 	public List<MovimientoDTO> obtenerMovimientosUltimaBaza (PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
-		
 		try {
 			return objetoRemoto.obtenerMovimientosUltimaBaza(partido, jugador);
 		} catch (RemoteException e) {
@@ -68,7 +65,6 @@ public class BusinessDelegate {
 	}	
 	
 	public List<TipoEnvite> obtenerEnvitesDisponibles(PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
-		
 		try {
 			return objetoRemoto.obtenerEnvitesDisponibles(partido, jugador);
 		} catch (RemoteException e) {
@@ -78,18 +74,14 @@ public class BusinessDelegate {
 	}	
 	
 	public PartidoDTO jugarLibreIndividual(JugadorDTO jugador) throws RemoteException {
-		
 		return objetoRemoto.jugarLibreIndividual(jugador);
 	}
 
 	public List<PartidoDTO> tengoPartido(JugadorDTO jugador) throws RemoteException {
-		
 		return objetoRemoto.tengoPartido(jugador);
-		
 	}
 
 	public JugadorDTO obtenerJugadorActual(PartidoDTO part, JugadorDTO jugador) throws RemoteException {
-		
 		try {
 			return objetoRemoto.obtenerJugadorActual(part,jugador);
 		} catch (RemoteException e) {
@@ -99,7 +91,6 @@ public class BusinessDelegate {
 	}
 
 	public void nuevoMovimientoPartido(PartidoDTO partido, JugadorDTO turnoJugador, MovimientoDTO movimiento) throws RemoteException {
-		
 		try {
 			objetoRemoto.nuevoMovimientoPartido(partido, turnoJugador, movimiento);
 		} catch (RemoteException e) {
@@ -116,5 +107,4 @@ public class BusinessDelegate {
 		}
 	}
 
-	
 }

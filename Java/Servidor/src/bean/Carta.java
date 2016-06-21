@@ -17,23 +17,28 @@ import enums.Palo;
 @Table(name = "Cartas")
 public class Carta {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_carta", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
 	@Column(columnDefinition = "tinyint")
 	private Palo palo;
+
 	@Column
 	private int numero;
+
 	@Column(name = "posicion_valor")
 	private int posicionValor;
+
+
+	public Carta() {
+		
+	}
 
 	public Carta(Palo palo, int numero, int posicionValor) {
 		this.palo = palo;
 		this.numero = numero;
 		this.posicionValor = posicionValor;
-	}
-
-	public Carta() {
 	}
 
 	public CartaDTO toDTO() {
@@ -111,7 +116,5 @@ public class Carta {
 			return false;
 		return true;
 	}
-	
-	
 
 }

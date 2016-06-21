@@ -4,14 +4,13 @@ import hibernate.HibernateUtil;
 
 import java.util.ArrayList;
 
-import org.hibernate.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
-import dtos.JugadorDTO;
-import exceptions.JugadorException;
-import exceptions.PartidoException;
 import bean.Grupo;
 import bean.Jugador;
-import bean.Partido;
+import dtos.JugadorDTO;
 
 public class JugadorDAO {
 

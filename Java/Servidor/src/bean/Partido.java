@@ -39,12 +39,15 @@ public class Partido {
 	@OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_pareja")
 	private Pareja parejaGanadora;
+
 	@Column (name = "fecha_inicio")
 	private Timestamp fechaInicio;
 	@Column (name = "fecha_fin")
 	private Timestamp fechaFin;
+
 	@Column (columnDefinition = "int")
 	private TipoPartido tipoPartido;
+
 	@Column (columnDefinition = "int")
 	private EstadoPartido estadoPartido;
 	
@@ -52,9 +55,10 @@ public class Partido {
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn (name = "id_partido")
 	private List<Chico> chicos;
-	
-	
+
+
 	public Partido() {
+		
 	}
 
 	public Partido(List<Pareja> parejas, Timestamp fechaInicio, TipoPartido tipoPartido) {
@@ -316,11 +320,12 @@ public class Partido {
 		if (!this.estasTerminado()) {
 			// deberia haber un Chico activo! 
 			Chico chico = obtenerChicoActivo();
+
 			if (!chico.obtenerUltimaMano().getJugadorActual().equals(jugador))
 				throw new PartidoException("Error grave: Nunca puede llamar a 'nuevoMovimiento' si no es su turno");
 
 			chico.agregarMovimiento(jugador, movimiento);
-			
+
 			// Se guardan los cambios en el partido 
 			PartidoDAO.getInstance().update(this);
 		}
