@@ -3,7 +3,6 @@ package servlets;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,13 +12,12 @@ import javax.servlet.http.HttpSession;
 
 import businessDelegate.BusinessDelegate;
 import dtos.JugadorDTO;
-import exceptions.JugadorException;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class LogoutServlet
  */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/LogoutServlet")
+public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private static BusinessDelegate bd;
@@ -28,7 +26,7 @@ public class LoginServlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public LogoutServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -59,33 +57,17 @@ public class LoginServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String apodo = request.getParameter("apodo");
-		String contrasena = request.getParameter("contrasena");
-		
-		
-		JugadorDTO jg = new JugadorDTO();
-		
-		jg.setApodo(apodo);
-		jg.setPassword(contrasena);
-			
 		HttpSession session = request.getSession(true);
-		session.removeAttribute("resultadoLogin");
+		JugadorDTO jg = (JugadorDTO) session.getAttribute("user");
 		
-		if(!apodo.isEmpty() && !contrasena.isEmpty()){
-			try {
-				jg = bd.login(jg);
-				session.setAttribute("user", jg);
-				session.setAttribute("userId", jg.getApodo());
-				response.sendRedirect("main.jsp");
-			} catch (Exception e) {
-				session.setAttribute("resultadoLogin", false);
-				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-				rd.forward(request, response);
-			}
+		if (jg!=null){
+			
+				bd.cerrarSesion(jg);
+				session.invalidate();
+				response.sendRedirect("index.jsp");
+			
 		}else{
-			session.setAttribute("resultadoLogin", false);
-			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("index.jsp");
 		}
-	}
+	}	
 }

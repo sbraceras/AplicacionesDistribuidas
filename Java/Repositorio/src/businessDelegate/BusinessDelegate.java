@@ -114,5 +114,8 @@ public class BusinessDelegate {
 		}	
 	}
 
+	public void cerrarSesion(JugadorDTO jg) throws RemoteException{
+		objetoRemoto.cerrarSesion(jg);
+	}
 	
 }
