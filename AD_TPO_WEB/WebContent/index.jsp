@@ -64,10 +64,10 @@
 <body>
 <div class="pagina-login">
   <div class="form">
-  	<form class="inicio de sesion" id="formInicio" onsubmit="return inicioValido()" action="LoginServlet" method=post>
-      <input type="text" placeholder="Apodo" id="campoApodo" name="apodo"/ required>
-      <input type="password" placeholder="Contraseña" id="campoContrasena" name="contrasena" required/>
-      <input type="submit" value="Iniciar Sesion" class="boton"/>
+  	<form class="inicio de sesion" id="formInicio" action="LoginServlet" method=post onsubmit="return inicioValido()">
+      <input type="text" placeholder="Apodo" id="campoApodo" name="apodo"/>
+      <input type="password" placeholder="Contraseña" id="campoContrasena" name="contrasena"/>
+      <input type="submit" value="Iniciar Sesion" class="botonAceptar"/>
       
       <%
       if (session != null && session.getAttribute("resultadoLogin") != null
@@ -89,10 +89,10 @@
     
    
     <form class="registracion" id="formRegistro" action="RegistroServlet"  method=post onsubmit="return registroValido()">
-      <input type="text" placeholder="Apodo" id="campoApodoR" name="apodoR" required/>
-      <input type="password" placeholder="Contraseña" id="campoContrasenaR" name="contrasenaR" required/>
-      <input type="text" placeholder="Email@mail.com" id="campoEmailR" name="mailR" required/>
-      <input type="submit" value="Registrarse" class="boton"/>
+      <input type="text" placeholder="Apodo" id="campoApodoR" name="apodoR"/>
+      <input type="password" placeholder="Contraseña" id="campoContrasenaR" name="contrasenaR"/>
+      <input type="text" placeholder="Email@mail.com" id="campoEmailR" name="mailR"/>
+      <input type="submit" value="Registrarse" class="botonAceptar"/>
 	<%
       if (session != null && session.getAttribute("resultadoRegistro") != null
 				&& !((Boolean) session.getAttribute("resultadoRegistro"))) {

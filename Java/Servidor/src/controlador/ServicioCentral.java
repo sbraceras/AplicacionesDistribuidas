@@ -490,10 +490,8 @@ public class ServicioCentral {
 
 	public void cerrarSesion(JugadorDTO jugador) {
 		for (int i = 0; i < sesiones.size(); i++) {
-			if (sesiones.get(i).sosJugador(jugador)){
+			if (sesiones.get(i).sosJugador(jugador))
 				sesiones.remove(i);
-				System.out.print("Logout Correcto");
-			}
 		}
 
 	}

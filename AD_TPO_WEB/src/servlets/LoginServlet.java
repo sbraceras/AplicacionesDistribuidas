@@ -62,27 +62,19 @@ public class LoginServlet extends HttpServlet {
 		String apodo = request.getParameter("apodo");
 		String contrasena = request.getParameter("contrasena");
 		
-		
 		JugadorDTO jg = new JugadorDTO();
-		
 		jg.setApodo(apodo);
 		jg.setPassword(contrasena);
-			
+		
 		HttpSession session = request.getSession(true);
 		session.removeAttribute("resultadoLogin");
 		
-		if(!apodo.isEmpty() && !contrasena.isEmpty()){
-			try {
-				jg = bd.login(jg);
-				session.setAttribute("user", jg);
-				session.setAttribute("userId", jg.getApodo());
-				response.sendRedirect("main.jsp");
-			} catch (Exception e) {
-				session.setAttribute("resultadoLogin", false);
-				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-				rd.forward(request, response);
-			}
-		}else{
+		try {
+			jg = bd.login(jg);
+			session.setAttribute("user", jg);
+			session.setAttribute("userId", jg.getApodo());
+			response.sendRedirect("main.jsp");
+		} catch (Exception e) {
 			session.setAttribute("resultadoLogin", false);
 			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			rd.forward(request, response);

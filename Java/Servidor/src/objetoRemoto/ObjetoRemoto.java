@@ -128,9 +128,5 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
 		}
 	}
-	
-	public void cerrarSesion(JugadorDTO jg) throws RemoteException{
-		controlador.cerrarSesion(jg);
-	}
 
 }
