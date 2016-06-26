@@ -10,11 +10,13 @@ import controlador.ServicioCentral;
 import dtos.CartaDTO;
 import dtos.CartaJugadorDTO;
 import dtos.CartaTiradaDTO;
+import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.MovimientoDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
+import enums.TipoPartido;
 import exceptions.BazaException;
 import exceptions.ControladorException;
 import exceptions.JugadorException;
@@ -127,6 +129,22 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 			
 			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
 		}
+	}
+
+
+	public void crearGrupo(GrupoDTO dto, JugadorDTO administrador) throws RemoteException {		
+		try {
+			controlador.crearGrupo(dto, administrador);
+		} catch (ControladorException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}		
+	}
+
+	public PartidoDTO obtenerUltimoPartidoPendienteModalidad(TipoPartido tipoPartido, JugadorDTO jugadorDTO) throws RemoteException {
+
+		return controlador.obtenerUltimoPartidoPendienteModalidad(tipoPartido, jugadorDTO);
 	}
 
 }

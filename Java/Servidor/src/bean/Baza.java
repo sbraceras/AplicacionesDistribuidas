@@ -31,7 +31,8 @@ public class Baza {
 	@Transient
 	private Mano mano; //se utiliza para reemplazar los observers	
 
-	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+//	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+	@OneToOne /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_jugador")
 	private Jugador ganador;
 	

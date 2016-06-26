@@ -5,12 +5,15 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
+
 import dtos.CartaJugadorDTO;
+import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.MovimientoDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
+import enums.TipoPartido;
 import interfaz.TDATruco;
 
 public class BusinessDelegate {
@@ -113,6 +116,25 @@ public class BusinessDelegate {
 			throw new RemoteException("Se produjo un error al querer registrar el jugador.");
 		}	
 	}
+	
+	public void crearGrupo(GrupoDTO dto, JugadorDTO administrador) throws RemoteException {
+		
+		try {
+			objetoRemoto.crearGrupo(dto, administrador);
+		} catch (RemoteException e) {
+			throw new RemoteException("Se produjo un error al querer crear el grupo. " + e.getMessage());
+		}	
+	}
+	
+	public PartidoDTO obtenerUltimoPartidoPendienteModalidad (TipoPartido tipoPartido, JugadorDTO jugadorDTO) throws RemoteException {
+		
+		try {
+			return objetoRemoto.obtenerUltimoPartidoPendienteModalidad(tipoPartido, jugadorDTO);
+		} catch (RemoteException e) {
+			throw new RemoteException("Se produjo un error al verificar partidos pendientes. " + e.getMessage());
+		}
+	}
+
 
 	
 }

@@ -123,13 +123,11 @@ public class JugadorDAO {
 	@SuppressWarnings("unchecked")
 	public ArrayList<Grupo> obtenerGruposJugador(Jugador jugador) {
 		Session s = this.getSession();
-		ArrayList<Grupo> devolver;
+		ArrayList<Grupo> devolver = null;
 		try {
-
-			devolver = (ArrayList<Grupo>) s
-					.createQuery(
+			devolver = (ArrayList<Grupo>) s.createQuery(
 							"select g from Jugador j inner join j.grupos g where j.id =:id")
-					.setParameter("id", jugador.getId()).list();
+							.setParameter("id", jugador.getId()).list();
 			s.close();
 			return devolver;
 		} catch (Exception e) {

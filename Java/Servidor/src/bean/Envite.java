@@ -13,7 +13,8 @@ public class Envite extends Movimiento {
 	@Column (name = "tipo_envite", columnDefinition = "tinyint")
 	private TipoEnvite tipoEnvite;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+//	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "id_jugador")
 	private Jugador jugador;
 

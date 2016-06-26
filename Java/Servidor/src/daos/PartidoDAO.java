@@ -113,13 +113,13 @@ public class PartidoDAO {
 		Session s = sf.openSession();
 		List<Partido> devolver = null;
 		try{
-			
+			//No es necesario los inners por la estrategia de EAGER!!!!
 			devolver = s.createQuery(
 							"select p from Partido p " +
-							"inner join p.chicos chicos " +
+//							"inner join p.chicos chicos " +
 //							"inner join p.parejas parejas " +
-							"inner join chicos.manos manos " +
-							"inner join manos.bazas bazas " +
+//							"inner join chicos.manos manos " +
+//							"inner join manos.bazas bazas " +
 							"where p.estadoPartido =:estadoPartido")
 					.setParameter("estadoPartido", EstadoPartido.Empezado)
 					.list();

@@ -13,7 +13,8 @@ public class CartaJugador {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_jugador")
 	private Jugador jugador;
 

@@ -36,12 +36,14 @@ public class Partido {
 	@JoinColumn (name = "id_partido")
 	private List<Pareja> parejas;
 	
-	@OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne (fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_pareja")
 	private Pareja parejaGanadora;
 
 	@Column (name = "fecha_inicio")
 	private Timestamp fechaInicio;
+
 	@Column (name = "fecha_fin")
 	private Timestamp fechaFin;
 

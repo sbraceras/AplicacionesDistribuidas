@@ -8,7 +8,11 @@ import javax.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import dtos.*;
+import dtos.BazaDTO;
+import dtos.CartaJugadorDTO;
+import dtos.JugadorDTO;
+import dtos.ManoDTO;
+import dtos.MovimientoDTO;
 import enums.TipoEnvite;
 import exceptions.BazaException;
 import exceptions.JugadorException;
@@ -400,6 +404,19 @@ public class Mano {
 			}
 		}
 		return null;
+	}
+
+	public List<MovimientoDTO> obtenerTodosLosMovimientos() {
+		List<MovimientoDTO> movimientosBazas = new ArrayList<MovimientoDTO>();
+		
+		for (int i=0; i < bazas.size(); i++) {
+			for (int j=0; j < bazas.get(i).getTurnosBaza().size(); j++) {
+				// acumulo TODOS los movimientos de la mano!
+				movimientosBazas.add(bazas.get(i).getTurnosBaza().get(j).toDTO());
+			}
+		}
+
+		return movimientosBazas;
 	}
 
 	public boolean puedoEnvido() {

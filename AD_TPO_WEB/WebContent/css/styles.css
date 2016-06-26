@@ -5,6 +5,13 @@
   padding: 8% 0 0;
   margin: auto;
 }
+
+.pagina-crear-grupo{
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+
 .form {
   position: relative;
   z-index: 1;
@@ -40,6 +47,22 @@
   transition: all 0.3 ease;
   cursor: pointer;
 }
+
+.form .botonCrearGrupo {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
 .form .botonAceptar:hover,.form .botonAceptar:active,.form .botonAceptar:focus {
   background: #43A047;
 }
@@ -99,7 +122,38 @@ body {
   -moz-osx-font-smoothing: grayscale;      
 }
 
+
+.pagina-juego {
+	
+	
+	background-image: "images/MesaDeJuego.jpg"
+}
+
+
 head {
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #7580d6;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+
+}
+
+select {
+	
+	text-transform: uppercase;
+	font-style: italic;
+	background: teal;
 }
 
 h1 {

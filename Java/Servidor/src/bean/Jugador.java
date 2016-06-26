@@ -74,10 +74,12 @@ public class Jugador {
 		ArrayList<GrupoDTO> gruposDto = new ArrayList<GrupoDTO>();
 
 		getGrupos();
-		for (int i = 0; i < grupos.size(); i++) {
-			gruposDto.add(grupos.get(i).toDto());
+		if (!grupos.isEmpty()) {
+			for (int i = 0; i < grupos.size(); i++) {
+				gruposDto.add(grupos.get(i).toDto());
+			}
 		}
-		
+
 		dto.setGrupos(gruposDto);
 		dto.setMail(this.mail);
 		dto.setPassword(this.password);

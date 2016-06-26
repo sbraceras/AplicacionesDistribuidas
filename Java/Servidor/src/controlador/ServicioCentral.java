@@ -137,7 +137,7 @@ public class ServicioCentral {
 		return jug.getRanking().toDTO();
 	}
 
-	public void crearGrupo(GrupoDTO dto, JugadorDTO administrador) {
+	public void crearGrupo(GrupoDTO dto, JugadorDTO administrador) throws ControladorException {
 		if (!existeGrupo(dto)) {
 			Jugador jug = obtenerJugador(administrador);
 			if (jug != null) {
@@ -147,6 +147,8 @@ public class ServicioCentral {
 				grupos.add(grupo);
 			}
 		}
+		else
+			throw new ControladorException("El Grupo " + dto.getNombre() + " ya existe");
 	}
 
 	public void agregarJugadorGrupo(List<JugadorDTO> agregar, GrupoDTO dto, JugadorDTO administrador) {
@@ -413,6 +415,25 @@ public class ServicioCentral {
 		/* No buscamos en la BD los partidos porque ya estan levantados los pendientes en memoria!  */
 
 		return partidosActivos;
+	}
+		
+	public PartidoDTO obtenerUltimoPartidoPendienteModalidad (TipoPartido tipoPartido, JugadorDTO jugadorDTO){
+		
+		Jugador jug = obtenerJugador(jugadorDTO);
+		Partido ultimo = null;
+		
+		for (Partido p : partidos) {
+			if ((p.participoJugador(jug)) && (!p.estasTerminado()) && (p.getTipoPartido().equals(tipoPartido))) {
+				
+				ultimo = p;
+			}
+		}
+
+		/* No buscamos en la BD los partidos porque ya estan levantados los pendientes en memoria!  */
+		if(ultimo == null)
+			return null;
+		else
+			return ultimo.toDTO();
 	}
 	
 
