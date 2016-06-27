@@ -66,11 +66,13 @@ public class EsperandoPartidoServlet extends HttpServlet {
 			RequestDispatcher rd = null;
 
 			PartidoDTO ultimoPartido = bd.obtenerUltimoPartidoPendienteModalidad(tipoPartido, jugador);
-			if (ultimoPartido.getId() > idUltimoPartido) {
+			
+			if ((ultimoPartido != null) && (ultimoPartido.getId() > idUltimoPartido)) {
 				// encontramos un partido nuevo!
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(ultimoPartido, jugador);
 				List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(ultimoPartido, jugador);
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(ultimoPartido, jugador);
+				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(ultimoPartido, jugador);
 				
 				rd = getServletContext().getRequestDispatcher("/ventanaJuego.jsp");
 
@@ -81,6 +83,7 @@ public class EsperandoPartidoServlet extends HttpServlet {
 				request.setAttribute("misCartas", misCartas);
 				request.setAttribute("puntajes", puntajes);
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
+				request.setAttribute("ganadoresBazas", ganadoresBazas);
 
 
 				//La inicio vacia ya que no hay envites por jugar apenas comienza

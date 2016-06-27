@@ -222,4 +222,12 @@ public class Baza {
 		return ganador;
 	}
 
+	public boolean esEmpate() {
+		
+		if(cantidadCartasTiradas<4)
+			return false;
+		return true;
+		
+	}
+
 }

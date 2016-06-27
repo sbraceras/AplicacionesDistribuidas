@@ -72,6 +72,19 @@ body {
 	visibility: hidden;
 }
 
+.tableStyle {
+	height: 400px;
+}
+.tablaMovimientos {
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #FFC;
+	border-right-color: #FFC;
+	border-bottom-color: #FFC;
+	border-left-color: #FFC;
+}
 </style>
 
 </head>
@@ -93,6 +106,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	List<ParejaDTO> parejas = (List<ParejaDTO>) request.getAttribute("parejas");
 	List<CartaJugadorDTO> misCartas = (List<CartaJugadorDTO>) request.getAttribute("misCartas");
 	List<PuntajeParejaDTO> puntajes = (List<PuntajeParejaDTO>) request.getAttribute("puntajes");
+	List<JugadorDTO> ganadoresBazas = (List<JugadorDTO>) request.getAttribute("ganadoresBazas");
 
 	List<TipoEnvite> envites = new ArrayList<TipoEnvite>();	
 	if(jugadorActual.getId()== yo.getId()) {
@@ -297,6 +311,8 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 <%--     <img src=<%=j2c1%> width="69" height="104" alt="j2c1" /><img src=<%=j2c2%> width="69" height="104" alt="j2c2" /><img src=<%=j2c3%> width="69" height="104" alt="j2c3" /> --%>
     </div></td>
   </tr>
+  
+  
   <tr>
     <td><div align="left"></div></td>
     <td colspan="2"><div align="center" ><font color="white"> <strong>YO: <%=jugador1%></strong></font></div></td>
@@ -321,16 +337,67 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
         </label>
       </form>
       </div></td>
-    <td><div align="left">Ganador Baza 1: <br />
-      Ganador Baza 2:
-          <br />
-    Ganador Baza 3: </div></td>
+    <td><div align="left">
+    
+    <% 
+    	//Marco los Ganadores de las Bazas
+    	JugadorDTO ganador;
+    
+    	for(int i=0; i<ganadoresBazas.size(); i++)
+    	{
+    		ganador= ganadoresBazas.get(i);
+    		%>Ganador Baza <%=i+1%>: <%=ganador.getApodo()%><br />
+    	
+    	<% }
+    	
+		if(ganadoresBazas.size()<3){
+			//Aun se esta jugando alguna mano
+			%>
+			Ganador Baza <%=ganadoresBazas.size()+1%>: En Juego
+		<% }
+    		
+    
+    %>
+    
+<!--     Ganador Baza 1: <br /> -->
+<!--       Ganador Baza 2: -->
+<!--           <br /> -->
+<!--     Ganador Baza 3: </div></td> -->
+
   </tr>
 </table>
 
 <div id="contenedorCarta1" ondrop="drop1(event)" ondragover="allowDrop(event)"></div>
 <div id="contenedorCarta2" ondrop="drop2(event)" ondragover="allowDrop(event)"></div>
 <div id="contenedorCarta3" ondrop="drop3(event)" ondragover="allowDrop(event)"></div>
+
+
+	<div  align="left" class="tableStyle" height= "200"="Tabla">
+	  <table width="496" id="t01" class="tablaMovimientos">
+  <tr>
+    <th width="153">TipoMovimiento</th>
+    <th width="178">Carta / Envite</th>
+    <th width="128">Fecha / Hora</th>
+  </tr>
+  <tr>
+    <td>Jill</td>
+    <td>Smith</td>
+    <td>50</td>
+  </tr>
+  <tr>
+    <td>Eve</td>
+    <td>Jackson</td>
+    <td>94</td>
+  </tr>
+  <tr>
+    <td>John</td>
+    <td>Doe</td>
+    <td>80</td>
+  </tr>
+</table>
+	</div>
+
+
 
 <% }
 
@@ -340,9 +407,12 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		ParejaDTO pareja = (ParejaDTO) request.getAttribute("parejaGanadora");
 	%> 
 	
-	<h1 align="center">El PARTIDO ESTA TERMINADO</h1>
 	
-	<h2 align="center">GANO LA PAREJA: <%=pareja.getNumeroPareja()%></h2>
+
+	
+    
+ <h1 align="center">El PARTIDO ESTA TERMINADO</h1>   
+<h2 align="center">GANO LA PAREJA: <%=pareja.getNumeroPareja()%></h2>
 	
 	
 	<div align="center">Falta codear ir al menu

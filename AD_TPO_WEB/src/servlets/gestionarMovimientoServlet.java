@@ -134,6 +134,8 @@ public class gestionarMovimientoServlet extends HttpServlet {
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(partido, jugador);
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(partido, jugador);
 				List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
+				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
+
 		
 				request.setAttribute("miPartido", partido);
 				request.setAttribute("jugador", jugador);
@@ -141,6 +143,7 @@ public class gestionarMovimientoServlet extends HttpServlet {
 				request.setAttribute("parejas", parejas);
 				request.setAttribute("misCartas", misCartas);
 				request.setAttribute("puntajes", puntajes);
+				request.setAttribute("ganadoresBazas", ganadoresBazas);
 				
 				if(idJugador== jugadorActual.getId())
 				{
