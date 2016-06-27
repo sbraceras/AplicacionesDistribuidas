@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
+import dtos.ManoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
@@ -81,6 +82,7 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(partido, jugador);
 			List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(partido, jugador);
 			List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
+			ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(partido, jugador);
 	
 			request.setAttribute("miPartido", partido);
 			request.setAttribute("jugador", jugador);
@@ -89,17 +91,14 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			request.setAttribute("misCartas", misCartas);
 			request.setAttribute("puntajes", puntajes);
 			request.setAttribute("estadoPartido", EstadoPartido.Empezado);
+			request.setAttribute("bazas", ultimaMano.getBazas());
 
-			
-			if(idJugador== jugadorActual.getId())
-			{
+			if(idJugador== jugadorActual.getId()) {
 				//Es el Turno de este jugador
 				List<TipoEnvite> envites = bd.obtenerEnvitesDisponibles(partido, jugador);
 				request.setAttribute("envites", envites);
-				
 			}
 	
-		
 			rd = getServletContext().getRequestDispatcher("/ventanaJuego.jsp");
 			rd.forward(request, response);
 		

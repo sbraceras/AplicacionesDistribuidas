@@ -76,9 +76,9 @@ body {
 
 </head>
 
-<body>
+<body onload="refrescarCartas();"/>
 
-<!-- Declaro las variables de las cartas para usarlas imagenes -->
+<body>
 
 <%
 
@@ -86,6 +86,7 @@ JugadorDTO yo = (JugadorDTO) request.getAttribute("jugador");
 JugadorDTO jugadorActual = (JugadorDTO) request.getAttribute("jugadorActual");
 PartidoDTO miPartido = (PartidoDTO) request.getAttribute("miPartido");
 EstadoPartido estadoPartido = (EstadoPartido) request.getAttribute("estadoPartido");
+List<BazaDTO> bazas = (List<BazaDTO>)request.getAttribute("bazas");
 
 if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	
@@ -101,27 +102,10 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	//Cargamos Nuestras Cartas
 	
 	String j1c1,j1c2,j1c3;
-	
-	if(misCartas.get(0).isTirada()==true)
-		j1c1 = "images/cartas/vacia2.png";
-	else
-		j1c1 = "" + misCartas.get(0).getCarta().getPalo() + misCartas.get(0).getCarta().getNumero() + ".png";
-	
-	
-	if(misCartas.get(1).isTirada()==true)
-		j1c2 = "images/cartas/vacia2.png";
-	else
-		j1c2 = "" + misCartas.get(1).getCarta().getPalo() + misCartas.get(1).getCarta().getNumero() + ".png";
-	
-	
-	if(misCartas.get(2).isTirada()==true)
-		j1c3 = "images/cartas/vacia2.png";
-	else
-		j1c3 = "" + misCartas.get(2).getCarta().getPalo() + misCartas.get(2).getCarta().getNumero() + ".png";
-	
-	j1c1 = "images/cartas/" + j1c1.toUpperCase();
-	j1c2 = "images/cartas/" + j1c2.toUpperCase();
-	j1c3 = "images/cartas/" + j1c3.toUpperCase();
+
+	j1c1 = "images/cartas/" + misCartas.get(0).getCarta().getPalo() + misCartas.get(0).getCarta().getNumero() + ".png";	
+	j1c2 = "images/cartas/" + misCartas.get(1).getCarta().getPalo() + misCartas.get(1).getCarta().getNumero() + ".png";
+	j1c3 = "images/cartas/" + misCartas.get(2).getCarta().getPalo() + misCartas.get(2).getCarta().getNumero() + ".png";
 	
 	String j2c1 = "images/cartas/" + "dorso" + ".png";
 	String j2c2 = "images/cartas/" + "dorso" + ".png";
@@ -203,12 +187,12 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 
 <script type="text/javascript">
 
-	setInterval(function() { actualizar() }, 30000); // 4000
+	setInterval(function() { actualizar() }, 15000); // 4000
 
 	function actualizar() {
 		window.location.href='RefrescarPartido?idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&idPartido=<%=miPartido.getId()%>'
 	}
-	
+
 	function cantarEnvite(parametros){
 		window.location.href=parametros
 	}
@@ -225,7 +209,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		ev.preventDefault();
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
-		
+
 		document.getElementById(carta).draggable = false;
 		document.getElementById("contenedorCarta1").ondrop = '';
 		document.getElementById("contenedorCarta2").style.visibility = 'visible';
@@ -237,7 +221,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		ev.preventDefault();
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
-		
+
 		document.getElementById(carta).draggable = false;
 		document.getElementById("contenedorCarta2").ondrop = '';
 		document.getElementById("contenedorCarta3").style.visibility = 'visible';
@@ -247,13 +231,38 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		ev.preventDefault();
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
-		
+
 		document.getElementById(carta).draggable = false;
 		document.getElementById("contenedorCarta3").ondrop = '';
 	}
 	
-	function habilitarCartas() {
-
+	function refrescarCartas() {
+		// recorremos TODOS los movimientos en TODAS las bazas y vamos colocando las cartas en la mesa que tiraron
+		<%
+		for (int i=0; i<bazas.size(); i++) {
+			for (MovimientoDTO movimiento: bazas.get(i).getTurnosBaza()) {
+				if (movimiento instanceof CartaTiradaDTO) {
+					CartaTiradaDTO cartaTirada = (CartaTiradaDTO) movimiento;
+					if (cartaTirada.getCartaJugador().getJugador().getId() == yo.getId()) {
+						// encontre una carta que tire yo!
+						if (bazas.get(i).getNumeroBaza() == 1) { %>
+							// la debo colocar en el primer div container
+							document.getElementById("contenedorCarta1").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
+						<%
+						} else if (bazas.get(i).getNumeroBaza() == 2) { %>
+							// la debo colocar en el primer div container
+							document.getElementById("contenedorCarta2").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
+						<%
+						} else if (bazas.get(i).getNumeroBaza() == 3) { %>
+							// la debo colocar en el primer div container
+							document.getElementById("contenedorCarta3").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
+						<%
+						}
+					}
+				}
+			}
+		}
+		%>
 	}
 
 </script>
@@ -296,9 +305,9 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
   <tr>
     <td><div align="left"></div></td>
     <td width="423"><div align="right">
-    <img src=<%=j1c1%> alt="j1c1" name="j1c1" width="69" height="96" id=<%=misCartas.get(0).getCarta().getId()%> draggable=<%=(jugadorActual.getId() == yo.getId() ? "true" : "false")%> ondragstart="drag(event)"/>
-    <img src=<%=j1c2%> alt="j1c2" name="j1c2" width="69" height="96" id=<%=misCartas.get(1).getCarta().getId()%> draggable=<%=(jugadorActual.getId() == yo.getId() ? "true" : "false")%> ondragstart="drag(event)"/>
-    <img src=<%=j1c3%> alt="j1c3" name="j1c3" width="69" height="96" id=<%=misCartas.get(2).getCarta().getId()%> draggable=<%=(jugadorActual.getId() == yo.getId() ? "true" : "false")%> ondragstart="drag(event)"/>
+    <img src=<%=j1c1%> alt="j1c1" name="j1c1" width="69" height="96" id=<%=misCartas.get(0).getCarta().getId()%> draggable=<%=(jugadorActual.getId() == yo.getId() ? "true" : "false")%> ondragstart="drag(event)" />
+    <img src=<%=j1c2%> alt="j1c2" name="j1c2" width="69" height="96" id=<%=misCartas.get(1).getCarta().getId()%> draggable=<%=(jugadorActual.getId() == yo.getId() ? "true" : "false")%> ondragstart="drag(event)" />
+    <img src=<%=j1c3%> alt="j1c3" name="j1c3" width="69" height="96" id=<%=misCartas.get(2).getCarta().getId()%> draggable=<%=(jugadorActual.getId() == yo.getId() ? "true" : "false")%> ondragstart="drag(event)" />
     </div></td>
     <td width="210"><div align="right">
       <form id="form1" name="form1" method="post" action="">
