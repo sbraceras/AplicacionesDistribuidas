@@ -107,6 +107,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	List<CartaJugadorDTO> misCartas = (List<CartaJugadorDTO>) request.getAttribute("misCartas");
 	List<PuntajeParejaDTO> puntajes = (List<PuntajeParejaDTO>) request.getAttribute("puntajes");
 	List<JugadorDTO> ganadoresBazas = (List<JugadorDTO>) request.getAttribute("ganadoresBazas");
+	List<MovimientoDTO> movimientosBazas = (List<MovimientoDTO>) request.getAttribute("movimientos");
 
 	List<TipoEnvite> envites = new ArrayList<TipoEnvite>();	
 	if(jugadorActual.getId()== yo.getId()) {
@@ -392,21 +393,32 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
     <th width="178">Carta / Envite</th>
     <th width="128">Fecha / Hora</th>
   </tr>
-  <tr>
-    <td>Jill</td>
-    <td>Smith</td>
-    <td>50</td>
-  </tr>
-  <tr>
-    <td>Eve</td>
-    <td>Jackson</td>
-    <td>94</td>
-  </tr>
-  <tr>
-    <td>John</td>
-    <td>Doe</td>
-    <td>80</td>
-  </tr>
+  
+  <% for(MovimientoDTO movimiento: movimientosBazas)
+  	{
+	  %>
+	  <tr>
+	  	<%
+			//Es un Envite	  	
+	  		if(movimiento instanceof EnviteDTO)
+	  		{
+	  			%><td>Envite</td>
+	  			  <td>El Jugador <%=((EnviteDTO)movimiento).getJugador().getApodo()%> canto <%=((EnviteDTO)movimiento).getTipoEnvite()%></td>
+	  			  
+	  			<%} 
+	  		//Es una carta Tirada
+	  		else
+	  			 {%><td>CartaTirada</td>
+		  		 <td>El Jugador <%=((CartaTiradaDTO)movimiento).getCartaJugador().getJugador().getApodo()%> lanzo la carta 
+		  		 <%=((CartaTiradaDTO)movimiento).getCartaJugador().getCarta().toString()%></td> 
+		  		<%}%>
+		  	
+		  	<td><%=movimiento.getFechaHora()%></td>
+		  	</tr>  
+	<%} %>
+	  	
+  
+
 </table>
 	</div>
 
