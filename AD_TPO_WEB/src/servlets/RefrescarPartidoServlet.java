@@ -11,15 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
+import dtos.ManoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.EstadoPartido;
 import enums.TipoEnvite;
-import enums.TipoPartido;
-import businessDelegate.BusinessDelegate;
 
 
 @WebServlet ("/RefrescarPartido")
@@ -81,8 +81,8 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(partido, jugador);
 			List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(partido, jugador);
 			List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
+			ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(partido, jugador);
 			List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
-
 	
 			request.setAttribute("miPartido", partido);
 			request.setAttribute("jugador", jugador);
@@ -91,19 +91,15 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			request.setAttribute("misCartas", misCartas);
 			request.setAttribute("puntajes", puntajes);
 			request.setAttribute("estadoPartido", EstadoPartido.Empezado);
+			request.setAttribute("bazas", ultimaMano.getBazas());
 			request.setAttribute("ganadoresBazas", ganadoresBazas);
 
-
-			
-			if(idJugador== jugadorActual.getId())
-			{
+			if(idJugador== jugadorActual.getId()) {
 				//Es el Turno de este jugador
 				List<TipoEnvite> envites = bd.obtenerEnvitesDisponibles(partido, jugador);
 				request.setAttribute("envites", envites);
-				
 			}
 	
-		
 			rd = getServletContext().getRequestDispatcher("/ventanaJuego.jsp");
 			rd.forward(request, response);
 		
