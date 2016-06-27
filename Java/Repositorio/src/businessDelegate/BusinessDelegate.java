@@ -10,6 +10,7 @@ import dtos.CartaJugadorDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.MovimientoDTO;
+import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
@@ -135,6 +136,23 @@ public class BusinessDelegate {
 		}
 	}
 
+	public List<ParejaDTO> obtenerParejasPartido(PartidoDTO partido) throws RemoteException {
+		
+		try {
+			return objetoRemoto.obtenerParejasPartido(partido);
+		} catch (RemoteException e) {
+			throw new RemoteException("Se produjo un error al Obtener Parejas del Partido. " + e.getMessage());
 
+		}
+	}
+	
+	public boolean partidoEstaTerminado(PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return objetoRemoto.partidoEstaTerminado(partido, jugador);
+		} catch (RemoteException e) {
+			throw new RemoteException("Se produjo un error al conocer si el partido esta Terminado. " + e.getMessage());
+		}
+	}
 	
 }

@@ -8,10 +8,13 @@ import dtos.CartaJugadorDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.MovimientoDTO;
+import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
 import enums.TipoPartido;
+import exceptions.ControladorException;
+import exceptions.PartidoException;
 
 
 public interface TDATruco extends Remote {
@@ -39,5 +42,9 @@ public interface TDATruco extends Remote {
 	public void crearGrupo(GrupoDTO dto, JugadorDTO administrador) throws RemoteException;
 	
 	public PartidoDTO obtenerUltimoPartidoPendienteModalidad (TipoPartido tipoPartido, JugadorDTO jugadorDTO) throws RemoteException;
+
+	public List<ParejaDTO> obtenerParejasPartido(PartidoDTO partido) throws RemoteException;
+
+	public boolean partidoEstaTerminado (PartidoDTO partido, JugadorDTO jugador) throws RemoteException;
 
 }

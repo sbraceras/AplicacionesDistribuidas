@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -17,6 +18,8 @@ import dtos.JugadorDTO;
 import dtos.PartidoDTO;
 import dtos.CartaJugadorDTO;
 import dtos.PuntajeParejaDTO;
+import enums.EstadoPartido;
+import enums.TipoEnvite;
 import enums.TipoPartido;
 
 /**
@@ -97,6 +100,12 @@ public class LoginServlet extends HttpServlet {
 				request.setAttribute("parejas", miPartido.getParejas());
 				request.setAttribute("misCartas", misCartas);
 				request.setAttribute("puntajes", puntajes);
+				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
+				
+				//La inicio vacia ya que no hay envites por jugar apenas comienza
+				
+				List<TipoEnvite> envites = new ArrayList<TipoEnvite>();
+				request.setAttribute("envites", envites);
 
 				rd = request.getRequestDispatcher("/ventanaJuego.jsp");
 			}

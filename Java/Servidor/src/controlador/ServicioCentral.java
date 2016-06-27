@@ -104,7 +104,7 @@ public class ServicioCentral {
 	private Jugador obtenerJugador(JugadorDTO jugador) {
 		for (int i = 0; i < jugadores.size(); i++) {
 			if (jugadores.get(i).sosJugador(jugador))
-				return jugadores. get(i);
+				return jugadores.get(i);
 		}
 
 		// no lo encontro en memoria, lo busco en la BD
@@ -796,6 +796,51 @@ public class ServicioCentral {
 		} else {
 			throw new ControladorException("El jugador no ha iniciado sesion");
 		}
+	}
+	
+	
+	public List<ParejaDTO> obtenerParejasPartido(PartidoDTO partido) throws ControladorException{
+		
+		
+		Partido part;
+		try {
+			part = obtenerPartido(partido);
+			List<ParejaDTO> parejas = new ArrayList<ParejaDTO>();
+			for(Pareja pareja: part.getParejas()){
+				parejas.add(pareja.toDTO());
+				
+			}
+			return parejas;
+		} catch (PartidoException e) {
+			throw new ControladorException("Error al obtener las Parejas del Partido");
+		}
+		
+	}
+	
+	public boolean partidoEstaTerminado (PartidoDTO partido, JugadorDTO jugador) throws ControladorException, PartidoException{
+		
+		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+
+			Jugador jug = obtenerJugador(jugador);
+			
+			if(part.participoJugador(jug)){
+				
+				if(part.getEstadoPartido().equals(EstadoPartido.Terminado))
+					return true;
+				return false;
+			}
+		}
+		else
+		{
+			throw new ControladorException("El Jugador no Pertenece al Partido");
+
+		}
+		return false;
+
+			
 	}
 }
 

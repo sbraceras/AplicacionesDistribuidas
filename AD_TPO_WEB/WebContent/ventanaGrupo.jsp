@@ -63,18 +63,7 @@
       <input type="text" placeholder="Apodo del Miembro" id="ApodoMiembro" name="ApodoMiembro"/>
            <input type="submit" value="Agregar Miembro" class="botonAgregarMiembro"/>
       
-<%--      <% --%>
-<!-- //       if (session != null && session.getAttribute("resultadoLogin") != null -->
-<!-- // 				&& !((Boolean) session.getAttribute("resultadoLogin"))) { -->
-<!-- // 			session.removeAttribute("resultadoLogin"); -->
-<!-- 	    	%> -->
-<!-- 	    	<div id="divErrorLogin"> -->
-<!-- 				<span id="mensajeErrorLogin">La informacion ingresada no es correcta, intente nuevamente.</span> -->
-<!-- 			</div> -->
-<%-- 	    <% --%>
-<!-- // 	    } -->
-	    
-<%-- 	    %> --%>
+
 		<div id="divErrorLoginIncompleto">
 		<br><br>
 			<span id="mensajeErrorLoginIncompleto">Ingrese un nombre valido para el grupo.</span>

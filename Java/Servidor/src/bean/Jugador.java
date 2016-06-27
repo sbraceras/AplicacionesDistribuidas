@@ -74,7 +74,7 @@ public class Jugador {
 		ArrayList<GrupoDTO> gruposDto = new ArrayList<GrupoDTO>();
 
 		getGrupos();
-		if (!grupos.isEmpty()) {
+		if (grupos!=null) {
 			for (int i = 0; i < grupos.size(); i++) {
 				gruposDto.add(grupos.get(i).toDto());
 			}

@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -16,6 +17,8 @@ import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
+import enums.EstadoPartido;
+import enums.TipoEnvite;
 import enums.TipoPartido;
 
 /**
@@ -29,7 +32,6 @@ public class EsperandoPartidoServlet extends HttpServlet {
  
     public EsperandoPartidoServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     public void init() throws ServletException {
@@ -78,7 +80,11 @@ public class EsperandoPartidoServlet extends HttpServlet {
 				request.setAttribute("parejas", ultimoPartido.getParejas());
 				request.setAttribute("misCartas", misCartas);
 				request.setAttribute("puntajes", puntajes);
+				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 
+
+				//La inicio vacia ya que no hay envites por jugar apenas comienza
+				request.setAttribute("envites", new ArrayList<TipoEnvite>());
 
 
 				rd.forward(request, response);

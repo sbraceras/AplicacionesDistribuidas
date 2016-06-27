@@ -19,4 +19,24 @@
     <servlet-name>esperandoPartido</servlet-name>
     <url-pattern>/esperandoPartido</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RefrescarPartidoServlet</display-name>
+    <servlet-name>RefrescarPartidoServlet</servlet-name>
+    <servlet-class>servlets.RefrescarPartidoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RefrescarPartidoServlet</servlet-name>
+    <url-pattern>/RefrescarPartidoServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>desarrolloJuegoServlet</display-name>
+    <servlet-name>desarrolloJuegoServlet</servlet-name>
+    <servlet-class>servlets.desarrolloJuegoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>desarrolloJuegoServlet</servlet-name>
+    <url-pattern>/desarrolloJuegoServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
