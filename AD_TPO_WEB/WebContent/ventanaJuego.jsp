@@ -119,9 +119,9 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	else
 		j1c3 = "" + misCartas.get(2).getCarta().getPalo() + misCartas.get(2).getCarta().getNumero() + ".png";
 	
-	j1c1 = "images/cartas/" + j1c1;
-	j1c2 = "images/cartas/" + j1c2;
-	j1c3 = "images/cartas/" + j1c3;
+	j1c1 = "images/cartas/" + j1c1.toUpperCase();
+	j1c2 = "images/cartas/" + j1c2.toUpperCase();
+	j1c3 = "images/cartas/" + j1c3.toUpperCase();
 	
 	String j2c1 = "images/cartas/" + "dorso" + ".png";
 	String j2c2 = "images/cartas/" + "dorso" + ".png";
@@ -227,10 +227,10 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		ev.target.appendChild(document.getElementById(carta));
 		
 		document.getElementById(carta).draggable = false;
-// 		document.getElementById("contenedorCarta1").ondrop = '';
+		document.getElementById("contenedorCarta1").ondrop = '';
 		document.getElementById("contenedorCarta2").style.visibility = 'visible';
 
-		window.location.href='desarrolloJuego?idJugador=<%=yo.getId()%>&movimiento=ct&idPartido=<%=miPartido.getId()%>&idCartaTirada=' + carta;
+		window.location.href='gestionarMovimiento?idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&movimiento=ct&idPartido=<%=miPartido.getId()%>&idCartaTirada=' + carta;
 	} 
 
 	function drop2(ev) {
@@ -239,7 +239,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		ev.target.appendChild(document.getElementById(carta));
 		
 		document.getElementById(carta).draggable = false;
-// 		document.getElementById("contenedorCarta2").ondrop = '';
+		document.getElementById("contenedorCarta2").ondrop = '';
 		document.getElementById("contenedorCarta3").style.visibility = 'visible';
 	} 
 
@@ -249,7 +249,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		ev.target.appendChild(document.getElementById(carta));
 		
 		document.getElementById(carta).draggable = false;
-// 		document.getElementById("contenedorCarta3").ondrop = '';
+		document.getElementById("contenedorCarta3").ondrop = '';
 	}
 	
 	function habilitarCartas() {
@@ -305,8 +305,8 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
         <label>
         <% // cargo los Envites para cantar
         	for (TipoEnvite envite: envites) { %>
-        		<a href="desarrolloJuego?movimiento=env&nombreEnvite=<%=envite.name()%>&idJugador=<%=yo.getId()%>&idPartido=<%=miPartido.getId()%>" target="_self"><%=envite%></a>
-<%--         		<button onclick=cantarEnvite('desarrolloJuego?movimiento=env&nombreEnvite=<%=envite.name()%>&idJugador=<%=yo.getId()%>&idPartido=<%=miPartido.getId()%>>)<%=envite%></button> --%>
+        		<a href="gestionarMovimiento?movimiento=env&nombreEnvite=<%=envite.name()%>&idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&idPartido=<%=miPartido.getId()%>" target="_self"><%=envite%></a>
+<%--         		<button onclick=cantarEnvite('gestionarMovimiento?movimiento=env&nombreEnvite=<%=envite.name()%>&idJugador=<%=yo.getId()%>&idPartido=<%=miPartido.getId()%>>)<%=envite%></button> --%>
             <br />        	
         	<%}%>
         </label>

@@ -31,12 +31,12 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>desarrolloJuegoServlet</display-name>
-    <servlet-name>desarrolloJuegoServlet</servlet-name>
-    <servlet-class>servlets.desarrolloJuegoServlet</servlet-class>
+    <display-name>gestionarMovimientoServlet</display-name>
+    <servlet-name>gestionarMovimientoServlet</servlet-name>
+    <servlet-class>servlets.gestionarMovimientoServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>desarrolloJuegoServlet</servlet-name>
-    <url-pattern>/desarrolloJuegoServlet</url-pattern>
+    <servlet-name>gestionarMovimientoServlet</servlet-name>
+    <url-pattern>/gestionarMovimientoServlet</url-pattern>
   </servlet-mapping>
 </web-app>

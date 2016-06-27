@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
 import dtos.CartaTiradaDTO;
 import dtos.EnviteDTO;
@@ -23,20 +24,18 @@ import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.EstadoPartido;
 import enums.TipoEnvite;
-import enums.TipoPartido;
-import businessDelegate.BusinessDelegate;
 
 /**
- * Servlet implementation class desarrolloJuegoServlet
+ * Servlet implementation class gestionarMovimientoServlet
  */
 
-@WebServlet("/desarrolloJuego")
-public class desarrolloJuegoServlet extends HttpServlet {
+@WebServlet("/gestionarMovimiento")
+public class gestionarMovimientoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    	private static BusinessDelegate bd;
 	
 	
-    public desarrolloJuegoServlet() {
+    public gestionarMovimientoServlet() {
         super();
     }
 
@@ -62,12 +61,15 @@ public class desarrolloJuegoServlet extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int idJugador = Integer.valueOf(request.getParameter("idJugador")).intValue();
+		String apodoJugador = request.getParameter("apodoJugador");
+
 		String movimiento = request.getParameter("movimiento");
 		int idPartido = Integer.valueOf(request.getParameter("idPartido"));
 
 		JugadorDTO jugador = new JugadorDTO();
 		jugador.setId(idJugador);
-		
+		jugador.setApodo(apodoJugador);
+
 		PartidoDTO partido = new PartidoDTO();
 		partido.setId(idPartido);
 
