@@ -116,8 +116,8 @@ public class LoginServlet extends HttpServlet {
 //
 			
 //			response.sendRedirect("main.jsp");			
-//			session.setAttribute("user", jg);
-//			session.setAttribute("userId", jg.getApodo());
+			session.setAttribute("user", jg);
+			session.setAttribute("userId", jg.getApodo());
 //			response.sendRedirect("main.jsp");
 
 			RequestDispatcher rd= null;

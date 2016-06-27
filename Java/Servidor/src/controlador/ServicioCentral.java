@@ -800,8 +800,6 @@ public class ServicioCentral {
 	
 	
 	public List<ParejaDTO> obtenerParejasPartido(PartidoDTO partido) throws ControladorException{
-		
-		
 		Partido part;
 		try {
 			part = obtenerPartido(partido);

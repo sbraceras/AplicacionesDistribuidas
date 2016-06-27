@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
+import dtos.ManoDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.EstadoPartido;
@@ -69,6 +70,7 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 			System.out.println("Llamo al business delegate");
 			PartidoDTO miPartido = bd.jugarLibreIndividual(jg);
 
+			request.setAttribute("jugador", jg);
 			
 			if (miPartido == null) {
 				// aun no se armo el partido en esa modalidad
@@ -76,13 +78,15 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 				// enviamos el ultimo identificador de partido para que pueda obtener el partido nuevo!
 				request.setAttribute("idUltimoPartido", ultimoPartido == null ? 0 : ultimoPartido.getId());
 				request.setAttribute("tipoPartido", TipoPartido.LibreIndividual);
-				request.setAttribute("jugador", jg);
+				
 				rd = request.getRequestDispatcher("ventanaEsperandoPartido.jsp");
 			} else {
 				// le pasamos a la pagina todos los parametros de juego que se necesitan
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(miPartido, jg);
 				List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(miPartido, jg);
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(miPartido, jg);
+				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(miPartido, jg);
+				ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(miPartido, jg);
 				
 				request.setAttribute("miPartido", miPartido);
 				request.setAttribute("jugadorActual", jugadorActual);
@@ -90,6 +94,8 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 				request.setAttribute("misCartas", misCartas);
 				request.setAttribute("puntajes", puntajes);
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
+				request.setAttribute("bazas", ultimaMano.getBazas());
+				request.setAttribute("ganadoresBazas", ganadoresBazas);
 
 				List<TipoEnvite> envites = new ArrayList<TipoEnvite>();
 				request.setAttribute("envites", envites);

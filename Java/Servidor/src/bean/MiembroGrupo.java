@@ -20,7 +20,7 @@ public class MiembroGrupo {
 	@Column (name = "id_miembro", nullable = false)
 	@GeneratedValue
 	private int id;
-	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_jugador")
 	private Jugador jugador;
 	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/

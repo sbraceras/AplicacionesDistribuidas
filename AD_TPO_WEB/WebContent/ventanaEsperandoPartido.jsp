@@ -47,7 +47,7 @@
 <p>&nbsp;</p>
 <div id="contenedor">
   <div align="center">
-    <p>Por favor espere. Se est&aacute;n buscando jugadores acordes a tu nivel.</p>
+    <p>Por favor espere. Se estan buscando jugadores acordes a tu nivel.</p>
   </div>
 </div>
 <p>

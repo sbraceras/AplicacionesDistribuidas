@@ -72,8 +72,6 @@ public class RefrescarPartidoServlet extends HttpServlet {
 		PartidoDTO partido = new PartidoDTO();
 		partido.setId(idPartido);
 
-		
-		
 		try {
 			RequestDispatcher rd = null;
 			

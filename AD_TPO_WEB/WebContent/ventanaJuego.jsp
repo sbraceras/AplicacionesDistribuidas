@@ -99,7 +99,7 @@ JugadorDTO yo = (JugadorDTO) request.getAttribute("jugador");
 JugadorDTO jugadorActual = (JugadorDTO) request.getAttribute("jugadorActual");
 PartidoDTO miPartido = (PartidoDTO) request.getAttribute("miPartido");
 EstadoPartido estadoPartido = (EstadoPartido) request.getAttribute("estadoPartido");
-List<BazaDTO> bazas = (List<BazaDTO>)request.getAttribute("bazas");
+List<BazaDTO> bazas = (List<BazaDTO>) request.getAttribute("bazas");
 
 if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	
@@ -253,7 +253,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	function refrescarCartas() {
 		// recorremos TODOS los movimientos en TODAS las bazas y vamos colocando las cartas en la mesa que tiraron
 		<%
-		for (int i=0; i<bazas.size(); i++) {
+		for (int i=0; i < bazas.size(); i++) {
 			for (MovimientoDTO movimiento: bazas.get(i).getTurnosBaza()) {
 				if (movimiento instanceof CartaTiradaDTO) {
 					CartaTiradaDTO cartaTirada = (CartaTiradaDTO) movimiento;
@@ -290,7 +290,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		%>
 	}
 
-	window.onload = refrescarCartas()
+	window.onload = refrescarCartas();
 
 </script>
 
@@ -351,7 +351,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
       </form>
       </div></td>
     <td><div align="left">
-    
+
     <% 
     	//Marco los Ganadores de las Bazas
     	JugadorDTO ganador;
@@ -370,7 +370,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		<% }
     		
     
-    %>
+    %>    
     
 <!--     Ganador Baza 1: <br /> -->
 <!--       Ganador Baza 2: -->
@@ -420,9 +420,6 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		ParejaDTO pareja = (ParejaDTO) request.getAttribute("parejaGanadora");
 	%> 
 	
-	
-
-	
     
  <h1 align="center">El PARTIDO ESTA TERMINADO</h1>   
 <h2 align="center">GANO LA PAREJA: <%=pareja.getNumeroPareja()%></h2>
@@ -432,6 +429,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
       <button>Volver al Menu</button>
 	
 <% }%>
+
 
     </div>
 </body>

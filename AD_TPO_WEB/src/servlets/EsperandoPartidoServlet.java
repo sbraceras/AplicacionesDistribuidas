@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
+import dtos.ManoDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.EstadoPartido;
@@ -72,10 +73,9 @@ public class EsperandoPartidoServlet extends HttpServlet {
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(ultimoPartido, jugador);
 				List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(ultimoPartido, jugador);
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(ultimoPartido, jugador);
+				ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(ultimoPartido, jugador);
 				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(ultimoPartido, jugador);
 				
-				rd = getServletContext().getRequestDispatcher("/ventanaJuego.jsp");
-
 				request.setAttribute("miPartido", ultimoPartido);
 				request.setAttribute("jugador", jugador);
 				request.setAttribute("jugadorActual", jugadorActual);
@@ -84,12 +84,12 @@ public class EsperandoPartidoServlet extends HttpServlet {
 				request.setAttribute("puntajes", puntajes);
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 				request.setAttribute("ganadoresBazas", ganadoresBazas);
-
+				request.setAttribute("bazas", ultimaMano.getBazas());
 
 				//La inicio vacia ya que no hay envites por jugar apenas comienza
 				request.setAttribute("envites", new ArrayList<TipoEnvite>());
 
-
+				rd = getServletContext().getRequestDispatcher("/ventanaJuego.jsp");
 				rd.forward(request, response);
 			} else {
 				// puede tener partidos pendientes en esa modalidad, pero aun no se encontro uno nuevo!!!

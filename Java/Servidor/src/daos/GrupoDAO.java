@@ -62,7 +62,7 @@ public class GrupoDAO {
 		Grupo devolver;
 		try{
 			
-			devolver = (Grupo) s.createQuery("Select g from Grupo g inner join g.miembros where g.nombre =:nombre").setParameter("nombre", grupo.getNombre()).uniqueResult();
+			devolver = (Grupo) s.createQuery("Select g from Grupo g left join g.miembros where g.nombre =:nombre").setParameter("nombre", grupo.getNombre()).uniqueResult();
 			s.close();
 			return devolver;
 		}
