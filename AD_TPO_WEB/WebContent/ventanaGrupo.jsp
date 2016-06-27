@@ -1,3 +1,4 @@
+<%@page import="dtos.JugadorDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -16,6 +17,22 @@
 <title>Truco Web - Aplicaciones Distribuidas</title>
 
 <h1>Truco Web - Aplicaciones Distribuidas - 2016</h1>
+
+<%
+
+	String apodoJugador = request.getParameter("apodoJugador");
+	Integer idJugador = (Integer) request.getAttribute("idJugador");
+	
+	JugadorDTO jugador = new JugadorDTO();
+	
+	jugador.setApodo(apodoJugador);
+	jugador.setId(idJugador);
+	
+	request.setAttribute("jugador", jugador);
+
+%>
+
+
 <script type="text/javascript">
 
 	function inicioValido() {

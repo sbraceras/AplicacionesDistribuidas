@@ -114,12 +114,16 @@ public class LoginServlet extends HttpServlet {
 //				rd = request.getRequestDispatcher("/ventanaJuego.jsp");
 //			}
 //
-//			rd.forward(request, response);
-////			response.sendRedirect("main.jsp");
+			
+//			response.sendRedirect("main.jsp");			
+//			session.setAttribute("user", jg);
+//			session.setAttribute("userId", jg.getApodo());
+//			response.sendRedirect("main.jsp");
 
-			session.setAttribute("user", jg);
-			session.setAttribute("userId", jg.getApodo());
-			response.sendRedirect("main.jsp");
+			RequestDispatcher rd= null;
+			request.setAttribute("jugador", jg);
+			rd = request.getRequestDispatcher("/main.jsp");
+			rd.forward(request, response);
 			
 
 		} catch (Exception e) {

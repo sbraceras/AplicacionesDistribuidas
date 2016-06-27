@@ -1,3 +1,5 @@
+<%@page import="javax.xml.bind.ParseConversionEvent"%>
+<%@page import="dtos.JugadorDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -15,6 +17,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Truco Web - Aplicaciones Distribuidas</title>
 
+<%
+
+	JugadorDTO jugador = (JugadorDTO) request.getAttribute("jugador");
+	
+// 	JugadorDTO jugador = new JugadorDTO();
+	
+// 	jugador.setApodo(apodoJugador);
+// 	jugador.setId(idJugador);
+	
+// 	request.setAttribute("jugador", jugador);
+
+%>
+
+
 <script type="text/javascript">
 
 </script>
@@ -26,10 +42,10 @@
 <br>
 <div class="menu">
 <div class="verticalIzquierdo">
-<input type="submit" class="boton" value="Buscar Partido" onclick="location.href='buscarpartido.jsp'"/>
+<input type="submit" class="boton" value="Buscar Partido" onclick="location.href='buscarpartido.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 </div> 
 <div class="verticalCentro">
-<input type="button" class="boton" value="Crear Grupo" onclick="location.href='crearGrupo.jsp'"/>
+<input type="submit" class="boton" value="Crear Grupo" onclick="location.href='crearGrupo.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 </div>
 <div class="abajoCentro">
 <form method="post" action="LogoutServlet">   
