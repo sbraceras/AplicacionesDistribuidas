@@ -157,6 +157,7 @@ public class BusinessDelegate {
 		}
 	}
 	
+
 	public List<JugadorDTO> obtenerGanadoresBazas(PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
 		
 		try {
@@ -177,5 +178,12 @@ public class BusinessDelegate {
 			throw new RemoteException("Se produjo un error al Obtener la Ultima Mano Activa del Partido. " + e.getMessage());
 		}
 	}
+
+	public void cerrarSesion(JugadorDTO jg) throws RemoteException {
+		// TODO Auto-generated method stub
+		objetoRemoto.cerrarSesion(jg);
+	}
+
+
 	
 }

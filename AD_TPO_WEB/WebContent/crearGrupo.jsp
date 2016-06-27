@@ -20,7 +20,7 @@
 <script type="text/javascript">
 
 	function volverMenu(){
-	    window.location = "index.jsp";
+	    window.location = "main.jsp";
 	}
 
 	function mostrarError(error) {
