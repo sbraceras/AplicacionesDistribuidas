@@ -94,6 +94,7 @@ public class LoginServlet extends HttpServlet {
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(miPartido, jg);
 				List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(miPartido, jg);
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(miPartido, jg);
+				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(miPartido, jg);
 				
 				request.setAttribute("miPartido", miPartido);
 				request.setAttribute("jugadorActual", jugadorActual);
@@ -101,6 +102,8 @@ public class LoginServlet extends HttpServlet {
 				request.setAttribute("misCartas", misCartas);
 				request.setAttribute("puntajes", puntajes);
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
+				request.setAttribute("ganadoresBazas", ganadoresBazas);
+				
 				
 				//La inicio vacia ya que no hay envites por jugar apenas comienza
 				

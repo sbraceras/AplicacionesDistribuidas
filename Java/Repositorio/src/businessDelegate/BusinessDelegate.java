@@ -9,6 +9,7 @@ import java.util.List;
 import dtos.CartaJugadorDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
+import dtos.ManoDTO;
 import dtos.MovimientoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
@@ -40,6 +41,7 @@ public class BusinessDelegate {
 
 		try {
 			objetoRemoto = (TDATruco) Naming.lookup("//localhost/ServicioCentral");
+//			objetoRemoto = (TDATruco) Naming.lookup("//192.168.0.12/ServicioCentral");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			throw new RemoteException("No pudo encontrarse el Servicio Central. " + e.getMessage());
 		}
@@ -152,6 +154,27 @@ public class BusinessDelegate {
 			return objetoRemoto.partidoEstaTerminado(partido, jugador);
 		} catch (RemoteException e) {
 			throw new RemoteException("Se produjo un error al conocer si el partido esta Terminado. " + e.getMessage());
+		}
+	}
+	
+	public List<JugadorDTO> obtenerGanadoresBazas(PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return objetoRemoto.obtenerGanadoresBazas(partido, jugador);
+		} catch (RemoteException e) {
+			
+			throw new RemoteException("Se produjo un error al Obtener los Ganadores de las Bazas. " + e.getMessage());
+
+		}
+	}
+	
+	public ManoDTO obtenerUltimaManoActiva(PartidoDTO partido, JugadorDTO jugador) throws RemoteException{
+		
+		try {
+			return objetoRemoto.obtenerUltimaManoActiva(partido, jugador);
+		} catch (RemoteException e) {
+			
+			throw new RemoteException("Se produjo un error al Obtener la Ultima Mano Activa del Partido. " + e.getMessage());
 		}
 	}
 	

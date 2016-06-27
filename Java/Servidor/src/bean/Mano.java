@@ -978,5 +978,31 @@ public class Mano {
 		}
 		
 	}
+	
+	public List<JugadorDTO>  obtenerGanadoresBazas (){
+		
+		List<JugadorDTO> ganadores = new ArrayList<JugadorDTO>();
+		
+		JugadorDTO aux;
+		for(Baza baza: bazas){
+			
+			if(baza.getGanador() != null)
+			{
+				ganadores.add(baza.getGanador().toDTO());
+			}
+			else
+			{
+				if(baza.esEmpate())
+				{
+					aux = new JugadorDTO();
+					aux.setApodo("Empate");
+					ganadores.add(aux);
+				}
+			}
+		}
+		
+		return ganadores;
+		
+	}
 
 }

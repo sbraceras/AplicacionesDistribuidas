@@ -842,6 +842,42 @@ public class ServicioCentral {
 
 			
 	}
+	
+	
+	public List<JugadorDTO> obtenerGanadoresBazas (PartidoDTO partido, JugadorDTO jugador) throws ControladorException, PartidoException{
+		
+		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+
+			return part.obtenerChicoActivo().obtenerUltimaMano().obtenerGanadoresBazas();
+
+			
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
+	
+	
+	
+	public ManoDTO obtenerUltimaManoActiva (PartidoDTO partido, JugadorDTO jugador) throws ControladorException, PartidoException{
+		
+		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+
+			return part.obtenerChicoActivo().obtenerUltimaMano().toDTO();
+
+			
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
+	
+	
+	
 }
 
 

@@ -12,6 +12,7 @@ import dtos.CartaJugadorDTO;
 import dtos.CartaTiradaDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
+import dtos.ManoDTO;
 import dtos.MovimientoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
@@ -163,6 +164,30 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 		
 		try {
 			return controlador.partidoEstaTerminado(partido, jugador);
+		} catch (ControladorException | PartidoException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+
+	public List<JugadorDTO> obtenerGanadoresBazas(PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
+	
+		try {
+			return controlador.obtenerGanadoresBazas(partido, jugador);
+		} catch (ControladorException | PartidoException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+
+	public ManoDTO obtenerUltimaManoActiva(PartidoDTO partido, JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return controlador.obtenerUltimaManoActiva(partido, jugador);
 		} catch (ControladorException | PartidoException e) {
 			throw new RemoteException(e.getMessage());
 			

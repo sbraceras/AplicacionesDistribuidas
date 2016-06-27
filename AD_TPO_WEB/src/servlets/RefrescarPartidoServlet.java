@@ -81,6 +81,8 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(partido, jugador);
 			List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(partido, jugador);
 			List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
+			List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
+
 	
 			request.setAttribute("miPartido", partido);
 			request.setAttribute("jugador", jugador);
@@ -89,6 +91,8 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			request.setAttribute("misCartas", misCartas);
 			request.setAttribute("puntajes", puntajes);
 			request.setAttribute("estadoPartido", EstadoPartido.Empezado);
+			request.setAttribute("ganadoresBazas", ganadoresBazas);
+
 
 			
 			if(idJugador== jugadorActual.getId())

@@ -7,6 +7,7 @@ import java.util.List;
 import dtos.CartaJugadorDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
+import dtos.ManoDTO;
 import dtos.MovimientoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
@@ -46,5 +47,8 @@ public interface TDATruco extends Remote {
 	public List<ParejaDTO> obtenerParejasPartido(PartidoDTO partido) throws RemoteException;
 
 	public boolean partidoEstaTerminado (PartidoDTO partido, JugadorDTO jugador) throws RemoteException;
+	
+	public List<JugadorDTO> obtenerGanadoresBazas (PartidoDTO partido, JugadorDTO jugador) throws RemoteException;
 
+	public ManoDTO obtenerUltimaManoActiva (PartidoDTO partido, JugadorDTO jugador) throws RemoteException;
 }
