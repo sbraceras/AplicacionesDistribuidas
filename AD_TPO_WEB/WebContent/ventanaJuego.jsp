@@ -89,7 +89,7 @@ body {
 
 </head>
 
-<body onload="refrescarCartas();"/>
+<!-- <body onload="refrescarCartas();"/> -->
 
 <body>
 
@@ -224,9 +224,9 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
 
-		document.getElementById(carta).draggable = false;
-		document.getElementById("contenedorCarta1").ondrop = '';
-		document.getElementById("contenedorCarta2").style.visibility = 'visible';
+// 		document.getElementById(carta).draggable = false;
+// 		document.getElementById("contenedorCarta1").ondrop = '';
+// 		document.getElementById("contenedorCarta2").style.visibility = 'visible';
 
 		window.location.href='gestionarMovimiento?idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&movimiento=ct&idPartido=<%=miPartido.getId()%>&idCartaTirada=' + carta;
 	} 
@@ -236,9 +236,9 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
 
-		document.getElementById(carta).draggable = false;
-		document.getElementById("contenedorCarta2").ondrop = '';
-		document.getElementById("contenedorCarta3").style.visibility = 'visible';
+// 		document.getElementById(carta).draggable = false;
+// 		document.getElementById("contenedorCarta2").ondrop = '';
+// 		document.getElementById("contenedorCarta3").style.visibility = 'visible';
 	} 
 
 	function drop3(ev) {
@@ -246,8 +246,8 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
 
-		document.getElementById(carta).draggable = false;
-		document.getElementById("contenedorCarta3").ondrop = '';
+// 		document.getElementById(carta).draggable = false;
+// 		document.getElementById("contenedorCarta3").ondrop = '';
 	}
 	
 	function refrescarCartas() {
@@ -262,14 +262,25 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 						if (bazas.get(i).getNumeroBaza() == 1) { %>
 							// la debo colocar en el primer div container
 							document.getElementById("contenedorCarta1").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
+
+							document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>).draggable = false;
+							document.getElementById("contenedorCarta1").ondrop = '';
+							document.getElementById("contenedorCarta2").style.visibility = 'visible';
 						<%
 						} else if (bazas.get(i).getNumeroBaza() == 2) { %>
-							// la debo colocar en el primer div container
+							// la debo colocar en el segundo div container
 							document.getElementById("contenedorCarta2").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
+
+					 		document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>).draggable = false;
+					 		document.getElementById("contenedorCarta2").ondrop = '';
+					 		document.getElementById("contenedorCarta3").style.visibility = 'visible';
 						<%
 						} else if (bazas.get(i).getNumeroBaza() == 3) { %>
-							// la debo colocar en el primer div container
+							// la debo colocar en el tercer div container
 							document.getElementById("contenedorCarta3").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
+
+					 		document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>).draggable = false;
+					 		document.getElementById("contenedorCarta3").ondrop = '';
 						<%
 						}
 					}
@@ -278,6 +289,8 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		}
 		%>
 	}
+
+	window.onload = refrescarCartas()
 
 </script>
 

@@ -8,6 +8,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="icon" href="images/dice.png">
+<style type="text/css">
+.dedos {
+	position: absolute;
+	top: 110px;
+	left: 368px;
+	width: 295px;
+	height: 191px;
+}
+#contenedor {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	top: 325px;
+	position: absolute;
+	width: 734px;
+	left: 157px;
+}
+</style>
 <title>Esperando jugadores...</title>
 <%
 	TipoPartido tipoPartido = (TipoPartido) request.getAttribute("tipoPartido");
@@ -26,6 +43,16 @@
 </head>
 
 <body>
-	<img src="images/esperando.gif" width="158" height="125" align="middle">
+<p><img src="images/esperando 2.gif" width="268" height="212" class="dedos" align="absbottom"></p>
+<p>&nbsp;</p>
+<div id="contenedor">
+  <div align="center">
+    <p>Por favor espere. Se est&aacute;n buscando jugadores acordes a tu nivel.</p>
+  </div>
+</div>
+<p>
+  <label></label>
+</p>
+<p>&nbsp;</p>
 </body>
 </html>

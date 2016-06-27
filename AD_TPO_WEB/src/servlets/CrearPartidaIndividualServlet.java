@@ -55,8 +55,6 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
-		System.out.println("Antes de llamar al business delegate");
 		JugadorDTO jg = new JugadorDTO();
 		
 		HttpSession session = request.getSession(true);
