@@ -47,4 +47,5 @@ public interface TDATruco extends Remote {
 
 	public boolean partidoEstaTerminado (PartidoDTO partido, JugadorDTO jugador) throws RemoteException;
 
+	public void cerrarSesion(JugadorDTO jg) throws RemoteException;
 }

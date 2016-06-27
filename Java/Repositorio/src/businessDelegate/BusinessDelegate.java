@@ -155,4 +155,10 @@ public class BusinessDelegate {
 		}
 	}
 	
+	public void cerrarSesion(JugadorDTO jg) throws RemoteException {
+		// TODO Auto-generated method stub
+		objetoRemoto.cerrarSesion(jg);
+	}
+
+	
 }

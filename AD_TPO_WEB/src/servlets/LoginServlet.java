@@ -75,43 +75,9 @@ public class LoginServlet extends HttpServlet {
 		try {
 			jg = bd.login(jg);
 
-			PartidoDTO miPartido = bd.jugarLibreIndividual(jg);
-//			session.setAttribute("user", jg);
-//			session.setAttribute("userId", jg.getApodo());
-
-			request.setAttribute("jugador", jg);
-
-			RequestDispatcher rd;
-			if (miPartido == null) {
-				// aun no se armo el partido en esa modalidad
-				PartidoDTO ultimoPartido = bd.obtenerUltimoPartidoPendienteModalidad(TipoPartido.LibreIndividual, jg);
-				// enviamos el ultimo identificador de partido para que pueda obtener el partido nuevo!
-				request.setAttribute("idUltimoPartido", ultimoPartido == null ? 0 : ultimoPartido.getId());
-				request.setAttribute("tipoPartido", TipoPartido.LibreIndividual);
-				rd = request.getRequestDispatcher("/ventanaEsperandoPartido.jsp");
-			} else {
-				// le pasamos a la pagina todos los parametros de juego que se necesitan
-				JugadorDTO jugadorActual = bd.obtenerJugadorActual(miPartido, jg);
-				List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(miPartido, jg);
-				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(miPartido, jg);
-				
-				request.setAttribute("miPartido", miPartido);
-				request.setAttribute("jugadorActual", jugadorActual);
-				request.setAttribute("parejas", miPartido.getParejas());
-				request.setAttribute("misCartas", misCartas);
-				request.setAttribute("puntajes", puntajes);
-				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
-				
-				//La inicio vacia ya que no hay envites por jugar apenas comienza
-				
-				List<TipoEnvite> envites = new ArrayList<TipoEnvite>();
-				request.setAttribute("envites", envites);
-
-				rd = request.getRequestDispatcher("/ventanaJuego.jsp");
-			}
-
-			rd.forward(request, response);
-//			response.sendRedirect("main.jsp");
+			session.setAttribute("user", jg);
+			session.setAttribute("userId", jg.getApodo());
+			response.sendRedirect("main.jsp");
 
 		} catch (Exception e) {
 			session.setAttribute("resultadoLogin", false);
