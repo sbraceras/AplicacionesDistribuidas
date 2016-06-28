@@ -77,11 +77,11 @@ public class RegistroServlet extends HttpServlet {
 			bd.registrarJugador(jg);
 			session.setAttribute("user", jg);
 			session.setAttribute("userId", jg.getApodo());
-			response.sendRedirect("crearGrupo.jsp");
+			response.sendRedirect("main.jsp");
 		} catch (Exception e) {
 			session.setAttribute("resultadoRegistro", false);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
 			rd.forward(request, response);
 		}
 	}

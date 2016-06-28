@@ -15,6 +15,7 @@ import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
+import dtos.MovimientoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
@@ -81,6 +82,9 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
 			ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(partido, jugador);
 			List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
+			List<MovimientoDTO> movimientos = bd.obtenerMovimientosUltimaBaza(partido, jugador);
+			
+
 	
 			request.setAttribute("miPartido", partido);
 			request.setAttribute("jugador", jugador);
@@ -91,6 +95,7 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 			request.setAttribute("bazas", ultimaMano.getBazas());
 			request.setAttribute("ganadoresBazas", ganadoresBazas);
+			request.setAttribute("movimientos", movimientos);
 
 			if(idJugador== jugadorActual.getId()) {
 				//Es el Turno de este jugador

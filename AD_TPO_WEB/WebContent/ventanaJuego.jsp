@@ -84,6 +84,13 @@ body {
 	border-right-color: #FFC;
 	border-bottom-color: #FFC;
 	border-left-color: #FFC;
+	color: #FFF;
+}
+.estiloTabla {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 10px;
+	font-weight: bold;
+	color: #FFF;
 }
 </style>
 
@@ -108,6 +115,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	List<PuntajeParejaDTO> puntajes = (List<PuntajeParejaDTO>) request.getAttribute("puntajes");
 	List<JugadorDTO> ganadoresBazas = (List<JugadorDTO>) request.getAttribute("ganadoresBazas");
 	List<MovimientoDTO> movimientosBazas = (List<MovimientoDTO>) request.getAttribute("movimientos");
+	
 
 	List<TipoEnvite> envites = new ArrayList<TipoEnvite>();	
 	if(jugadorActual.getId()== yo.getId()) {
@@ -385,16 +393,20 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 <div id="contenedorCarta2" ondrop="drop2(event)" ondragover="allowDrop(event)"></div>
 <div id="contenedorCarta3" ondrop="drop3(event)" ondragover="allowDrop(event)"></div>
 
+<br />
+<br />
 
 	<div  align="left" class="tableStyle" height= "200"="Tabla">
-	  <table width="496" id="t01" class="tablaMovimientos">
+	  <table width="900" id="t01" class="tablaMovimientos">
   <tr>
-    <th width="153">TipoMovimiento</th>
-    <th width="178">Carta / Envite</th>
-    <th width="128">Fecha / Hora</th>
+    <th width="153" align="left">TipoMovimiento</th>
+    <th width="178" align="left">Carta / Envite</th>
+    <th width="128" align="left">Fecha / Hora</th>
   </tr>
   
-  <% for(MovimientoDTO movimiento: movimientosBazas)
+  <% 
+  for(BazaDTO baza: bazas){
+  	for(MovimientoDTO movimiento: baza.getTurnosBaza())
   	{
 	  %>
 	  <tr>
@@ -415,12 +427,13 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		  	
 		  	<td><%=movimiento.getFechaHora()%></td>
 		  	</tr>  
-	<%} %>
+	<%}
+  	}%>
 	  	
   
 
 </table>
-	</div>
+</div>
 
 
 

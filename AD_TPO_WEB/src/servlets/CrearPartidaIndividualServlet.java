@@ -17,6 +17,7 @@ import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
+import dtos.MovimientoDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.EstadoPartido;
@@ -79,7 +80,7 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 				request.setAttribute("idUltimoPartido", ultimoPartido == null ? 0 : ultimoPartido.getId());
 				request.setAttribute("tipoPartido", TipoPartido.LibreIndividual);
 				
-				rd = request.getRequestDispatcher("ventanaEsperandoPartido.jsp");
+				rd = request.getRequestDispatcher("/ventanaEsperandoPartido.jsp");
 			} else {
 				// le pasamos a la pagina todos los parametros de juego que se necesitan
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(miPartido, jg);
@@ -87,6 +88,8 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(miPartido, jg);
 				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(miPartido, jg);
 				ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(miPartido, jg);
+				List<MovimientoDTO> movimientos = bd.obtenerMovimientosUltimaBaza(miPartido, jg);
+
 				
 				request.setAttribute("miPartido", miPartido);
 				request.setAttribute("jugadorActual", jugadorActual);
@@ -96,6 +99,7 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 				request.setAttribute("bazas", ultimaMano.getBazas());
 				request.setAttribute("ganadoresBazas", ganadoresBazas);
+				request.setAttribute("movimientos", movimientos);
 
 				List<TipoEnvite> envites = new ArrayList<TipoEnvite>();
 				request.setAttribute("envites", envites);

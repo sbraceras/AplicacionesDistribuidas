@@ -83,8 +83,8 @@ public class Jugador {
 		dto.setGrupos(gruposDto);
 		dto.setMail(this.mail);
 		dto.setPassword(this.password);
-//		dto.setRanking(this.ranking.toDTO());
-		dto.setRanking(new RankingDTO());
+		dto.setRanking(this.ranking.toDTO());
+//		dto.setRanking(new RankingDTO());
 		return dto;
 	}
 

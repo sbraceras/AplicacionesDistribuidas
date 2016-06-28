@@ -73,10 +73,10 @@ public class CrearGrupoServlet extends HttpServlet {
 			
 			bd.crearGrupo(dto, jugador);
 
-			response.sendRedirect("administrarGrupo.jsp");
+			response.sendRedirect("/administrarGrupo.jsp");
 		} catch (Exception e) {
 			session.setAttribute("error", e.getMessage());
-			RequestDispatcher rd = request.getRequestDispatcher("crearGrupo.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/crearGrupo.jsp");
 			rd.forward(request, response);
 		}
 		

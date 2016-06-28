@@ -16,6 +16,7 @@ import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
+import dtos.MovimientoDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.EstadoPartido;
@@ -75,6 +76,7 @@ public class EsperandoPartidoServlet extends HttpServlet {
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(ultimoPartido, jugador);
 				ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(ultimoPartido, jugador);
 				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(ultimoPartido, jugador);
+				List<MovimientoDTO> movimientos = bd.obtenerMovimientosUltimaBaza(ultimoPartido, jugador);
 				
 				request.setAttribute("miPartido", ultimoPartido);
 				request.setAttribute("jugador", jugador);
@@ -85,6 +87,7 @@ public class EsperandoPartidoServlet extends HttpServlet {
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 				request.setAttribute("ganadoresBazas", ganadoresBazas);
 				request.setAttribute("bazas", ultimaMano.getBazas());
+				request.setAttribute("movimientos", movimientos);
 
 				//La inicio vacia ya que no hay envites por jugar apenas comienza
 				request.setAttribute("envites", new ArrayList<TipoEnvite>());
