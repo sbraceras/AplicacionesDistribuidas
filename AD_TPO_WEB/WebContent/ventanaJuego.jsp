@@ -1,15 +1,11 @@
-<%@page import="enums.EstadoPartido"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="enums.TipoEnvite"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-
-<%@ page import="dtos.CartaJugadorDTO"%>
+<%@ page import="enums.EstadoPartido"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="enums.TipoEnvite"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page import="java.util.List"%>
 
 <!-- IMPORTO LOS DTOS -->
-
-<%@ page import= "dtos.*"%>
-<%@ page import= "java.util.List"%>
+<%@ page import="dtos.*"%>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -96,9 +92,8 @@ body {
 
 </head>
 
-<!-- <body onload="refrescarCartas();"/> -->
+<!-- <body> onload="refrescarCartas()" -->
 
-<body>
 
 <%
 
@@ -106,7 +101,6 @@ JugadorDTO yo = (JugadorDTO) request.getAttribute("jugador");
 JugadorDTO jugadorActual = (JugadorDTO) request.getAttribute("jugadorActual");
 PartidoDTO miPartido = (PartidoDTO) request.getAttribute("miPartido");
 EstadoPartido estadoPartido = (EstadoPartido) request.getAttribute("estadoPartido");
-List<BazaDTO> bazas = (List<BazaDTO>) request.getAttribute("bazas");
 
 if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	
@@ -233,9 +227,9 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
 
-// 		document.getElementById(carta).draggable = false;
-// 		document.getElementById("contenedorCarta1").ondrop = '';
-// 		document.getElementById("contenedorCarta2").style.visibility = 'visible';
+		document.getElementById(carta).draggable = false;
+		document.getElementById("contenedorCarta1").ondrop = '';
+		document.getElementById("contenedorCarta2").style.visibility = 'visible';
 
 		window.location.href='gestionarMovimiento?idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&movimiento=ct&idPartido=<%=miPartido.getId()%>&idCartaTirada=' + carta;
 	} 
@@ -245,9 +239,9 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
 
-// 		document.getElementById(carta).draggable = false;
-// 		document.getElementById("contenedorCarta2").ondrop = '';
-// 		document.getElementById("contenedorCarta3").style.visibility = 'visible';
+		document.getElementById(carta).draggable = false;
+		document.getElementById("contenedorCarta2").ondrop = '';
+		document.getElementById("contenedorCarta3").style.visibility = 'visible';
 	} 
 
 	function drop3(ev) {
@@ -255,51 +249,12 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		var carta = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(carta));
 
-// 		document.getElementById(carta).draggable = false;
-// 		document.getElementById("contenedorCarta3").ondrop = '';
+		document.getElementById(carta).draggable = false;
+		document.getElementById("contenedorCarta3").ondrop = '';
 	}
 	
-	function refrescarCartas() {
-		// recorremos TODOS los movimientos en TODAS las bazas y vamos colocando las cartas en la mesa que tiraron
-		<%
-		for (int i=0; i < bazas.size(); i++) {
-			for (MovimientoDTO movimiento: bazas.get(i).getTurnosBaza()) {
-				if (movimiento instanceof CartaTiradaDTO) {
-					CartaTiradaDTO cartaTirada = (CartaTiradaDTO) movimiento;
-					if (cartaTirada.getCartaJugador().getJugador().getId() == yo.getId()) {
-						// encontre una carta que tire yo!
-						if (bazas.get(i).getNumeroBaza() == 1) { %>
-							// la debo colocar en el primer div container
-							document.getElementById("contenedorCarta1").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
 
-							document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>).draggable = false;
-							document.getElementById("contenedorCarta1").ondrop = '';
-							document.getElementById("contenedorCarta2").style.visibility = 'visible';
-						<%
-						} else if (bazas.get(i).getNumeroBaza() == 2) { %>
-							// la debo colocar en el segundo div container
-							document.getElementById("contenedorCarta2").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
-
-					 		document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>).draggable = false;
-					 		document.getElementById("contenedorCarta2").ondrop = '';
-					 		document.getElementById("contenedorCarta3").style.visibility = 'visible';
-						<%
-						} else if (bazas.get(i).getNumeroBaza() == 3) { %>
-							// la debo colocar en el tercer div container
-							document.getElementById("contenedorCarta3").appendChild(document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>));
-
-					 		document.getElementById(<%=cartaTirada.getCartaJugador().getCarta().getId()%>).draggable = false;
-					 		document.getElementById("contenedorCarta3").ondrop = '';
-						<%
-						}
-					}
-				}
-			}
-		}
-		%>
-	}
-
-	window.onload = refrescarCartas();
+// 	window.onload = refrescarCartas();
 
 </script>
 

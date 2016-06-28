@@ -19,6 +19,7 @@ import dtos.CartaJugadorDTO;
 import dtos.CartaTiradaDTO;
 import dtos.EnviteDTO;
 import dtos.JugadorDTO;
+import dtos.ManoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
@@ -121,7 +122,8 @@ public class gestionarMovimientoServlet extends HttpServlet {
 				//Se termino el partido, True es 1
 				request.setAttribute("estadoPartido", EstadoPartido.Terminado);
 				
-				//OBTENER QUIEN GANO EL PARTIDO
+//				request.setAttribute("parejaGanadora", );
+				// OBTENER QUIEN GANO EL PARTIDO
 			}
 			else
 			{
@@ -135,8 +137,8 @@ public class gestionarMovimientoServlet extends HttpServlet {
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(partido, jugador);
 				List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
 				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
+				ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(partido, jugador);
 
-		
 				request.setAttribute("miPartido", partido);
 				request.setAttribute("jugador", jugador);
 				request.setAttribute("jugadorActual", jugadorActual);
@@ -144,6 +146,7 @@ public class gestionarMovimientoServlet extends HttpServlet {
 				request.setAttribute("misCartas", misCartas);
 				request.setAttribute("puntajes", puntajes);
 				request.setAttribute("ganadoresBazas", ganadoresBazas);
+				request.setAttribute("bazas", ultimaMano.getBazas());
 				
 				if(idJugador== jugadorActual.getId())
 				{
@@ -155,7 +158,6 @@ public class gestionarMovimientoServlet extends HttpServlet {
 					request.setAttribute("envites", new ArrayList<TipoEnvite>());
 				}
 			}
-
 			
 			rd = getServletContext().getRequestDispatcher("/ventanaJuego.jsp");
 			rd.forward(request, response);

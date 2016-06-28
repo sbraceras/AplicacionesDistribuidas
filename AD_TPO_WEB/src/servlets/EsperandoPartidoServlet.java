@@ -105,7 +105,8 @@ public class EsperandoPartidoServlet extends HttpServlet {
 			}
 
 		} catch (RemoteException e) {
-			
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }

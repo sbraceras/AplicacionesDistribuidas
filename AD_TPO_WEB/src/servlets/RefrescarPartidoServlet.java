@@ -107,7 +107,6 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			rd.forward(request, response);
 		
 	  } catch (RemoteException e) {
-		
 		  e.printStackTrace();
 	 }
 		
