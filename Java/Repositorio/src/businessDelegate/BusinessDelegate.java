@@ -252,6 +252,17 @@ public class BusinessDelegate {
 		}
 	}
 
+	public PartidoDTO jugarLibreParejas(ParejaDTO pareja){
+		// TODO Auto-generated method stub
+		try {
+			return objetoRemoto.jugarLibreParejas(pareja);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 
 	

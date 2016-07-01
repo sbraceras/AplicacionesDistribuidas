@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -64,7 +65,11 @@ public class LogoutServlet extends HttpServlet {
 			
 				bd.cerrarSesion(jg);
 				session.invalidate();
-				response.sendRedirect("index.jsp");
+				RequestDispatcher rd= null;
+				request.setAttribute("jugador", jg);
+				rd = request.getRequestDispatcher("/main.jsp");
+				rd.forward(request, response);
+				
 			
 		}else{
 			response.sendRedirect("index.jsp");

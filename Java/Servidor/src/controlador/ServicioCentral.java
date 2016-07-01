@@ -392,7 +392,7 @@ public class ServicioCentral {
 		TipoCategoria categoriaSuperior = parejasPosibles.get(0).obtenerCategoriaSuperior();
 		
 		for (Pareja p : esperandoLibreParejas){
-			if (p.obtenerCategoriaSuperior().equals(categoriaSuperior)){
+			if (p.obtenerCategoriaSuperior().equals(categoriaSuperior) && !parejasPosibles.contains(p)){
 				//Encontre pareja, armo el partido//
 				parejasPosibles.add(p);
 				partido = new Partido(parejasPosibles, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreParejas);
@@ -888,7 +888,7 @@ public class ServicioCentral {
 			Partido part = obtenerPartido(partido);
 			if (part == null)
 			{
-				//no está en memoria
+				//no estï¿½ en memoria
 				
 				part = PartidoDAO.getInstance().buscarPartido(partido);
 				if(part == null)
@@ -1042,7 +1042,7 @@ public class ServicioCentral {
 			Partido part = obtenerPartido(partido);
 			if (part == null)
 			{
-				//no está en memoria
+				//no estï¿½ en memoria
 				
 				part = PartidoDAO.getInstance().buscarPartido(partido);
 				if(part == null)
@@ -1057,9 +1057,53 @@ public class ServicioCentral {
 			throw new ControladorException("El jugador no ha iniciado sesion");
 		}
 	}
-	
-	
-	
+
+	public PartidoDTO jugarLibreParejas(ParejaDTO parejaDTO) {
+		// TODO Auto-generated method stub
+		Pareja p = estanEsperando(parejaDTO);
+		// Si no estÃ¡n esperando
+		if (p == null){
+						
+			//los agrego//
+			p = new Pareja();
+			JugadorDTO jug1 = new JugadorDTO();
+			jug1.setApodo(parejaDTO.getJugador1());
+			JugadorDTO jug2 = new JugadorDTO();
+			jug2.setApodo(parejaDTO.getJugador2());
+			
+			p.setJugador1(JugadorDAO.getinstance().buscarJugadorPorApodo(jug1));
+			p.setJugador2(JugadorDAO.getinstance().buscarJugadorPorApodo(jug2));
+			
+						
+			int idPareja = ParejaDAO.getinstance().guardarPareja(p);
+			p.setId(idPareja);
+			esperandoLibreParejas.add(p);
+		}
+		//intento armar el partido
+		return armarPartidoParejas();
+	}
+
+	private Pareja estanEsperando(ParejaDTO pareja) {
+		// TODO Auto-generated method stub
+		if(!esperandoLibreParejas.isEmpty()){
+			
+			JugadorDTO jug1 = new JugadorDTO();
+			jug1.setApodo(pareja.getJugador1());
+			jug1 = obtenerJugador(jug1).toDTO();
+			JugadorDTO jug2 = new JugadorDTO();
+			jug2.setApodo(pareja.getJugador2());
+			jug2 = obtenerJugador(jug2).toDTO();
+			for (Pareja p : esperandoLibreParejas){
+				if (p.getJugador1().sosJugador(jug1) && p.getJugador2().sosJugador(jug2)){
+					return p;
+				}else if (p.getJugador2().sosJugador(jug1) && p.getJugador1().sosJugador(jug2)){
+					return p;
+				}
+			}
+			
+		}
+		return null;
+	}
 }
 
 

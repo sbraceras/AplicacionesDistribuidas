@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import dtos.ParejaDTO;
 
 import bean.Pareja;
+import bean.Partido;
 
 
 public class ParejaDAO {
@@ -18,7 +19,7 @@ public class ParejaDAO {
 	protected Session s = null;
 	
 	
-	public ParejaDAO getinstance (){
+	public static ParejaDAO getinstance (){
 		
 		if(instancia ==null){
 			sf = HibernateUtil.getSessionFactory();
@@ -35,24 +36,25 @@ public class ParejaDAO {
 		return s;
 	}
 	
-	public void guardarPareja (Pareja pareja){
-		
+	public Integer guardarPareja(Pareja pareja) {
 		Transaction t = null;
-		Session s = this.getSession();
-		try{
-			
-			t= s.beginTransaction();
-			s.save(pareja);
-			System.out.println("Pareja Guardada");
+		Session s = sf.openSession();
+		
+		try {
+			t = s.beginTransaction();
+			Integer id = (Integer) s.save(pareja);
 			s.flush();
 			t.commit();
 			s.close();
-		}
-		catch(Exception e){
-			System.out.println("Error al guardar Parejas");
+
+			return id;
+		} catch (Exception e) {
+			t.rollback();
+			s.close();
 			e.printStackTrace();
+			System.out.println("Error al guardar Partido");
 		}
-		
+		return null;
 	}
 	
 	public Pareja buscarPareja (ParejaDTO pareja){

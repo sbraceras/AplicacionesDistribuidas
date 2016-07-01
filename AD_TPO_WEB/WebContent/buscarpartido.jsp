@@ -43,7 +43,7 @@
 </form>
 </div> 
 <div class="verticalCentro">
-<input type="image" src="images/iconoPartidaParejas.png" onclick="location.href='seleccionarPareja.jsp'"/>
+<input type="image" src="images/iconoPartidaParejas.png" onclick="location.href='seleccionarPareja.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 <p class="textoBoton">Libre Parejas</p>
 </div>
 <div class="verticalDerecho">
@@ -51,7 +51,7 @@
 <p class="textoBoton">Cerrada</p>
 </div>
 <div class="abajoCentro">   
-<input type="submit" class="boton" value="Cerrar Sesion" onclick="location.href='main.jsp'"/>
+<input type="submit" class="boton" value="Volver al Menu" onclick="location.href='main.jsp'"/>
 </div>
 </div>
 </body>
