@@ -4,9 +4,11 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dtos.CartaJugadorDTO;
+import dtos.ChicoDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
@@ -180,9 +182,76 @@ public class BusinessDelegate {
 	}
 
 	public void cerrarSesion(JugadorDTO jg) throws RemoteException {
-		// TODO Auto-generated method stub
 		objetoRemoto.cerrarSesion(jg);
 	}
+	
+	
+	public List<MovimientoDTO> obtenerProximoMovimientoPartido(JugadorDTO jugador, PartidoDTO partido,MovimientoDTO ultimoMovimiento) 
+	throws RemoteException{
+		
+		try {
+			return objetoRemoto.obtenerProximoMovimientoPartido(jugador, partido, ultimoMovimiento);
+		} catch (RemoteException e) {
+			
+			throw new RemoteException("Se produjo un error al Obtener el proximo Movimiento del Partido " + e.getMessage());
+
+		}
+	}
+	
+	
+	public List<PartidoDTO> levantarPartidosTerminadosJugador(JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return objetoRemoto.levantarPartidosTerminadosJugador(jugador);
+		} catch (RemoteException e) {
+			
+			throw new RemoteException("Se produjo un error al Obtener los Partidos Terminados del Jugador " + e.getMessage());
+		}
+	}
+	
+	public JugadorDTO obtenerJugadorCompleto(JugadorDTO jugador) throws RemoteException {
+		
+		try {
+			return objetoRemoto.obtenerJugadorCompleto(jugador);
+		} catch (RemoteException e) {
+			throw new RemoteException("Se produjo un error al Obtener los un Jugador Completo " + e.getMessage());
+
+		}
+	}
+	
+	public List<ChicoDTO> obtenerResultadoFinalPartido(JugadorDTO jugador, PartidoDTO partido) throws RemoteException{
+		
+		try {
+			return objetoRemoto.obtenerResultadoFinalPartido(jugador, partido);
+		} catch (RemoteException e) {
+			
+			throw new RemoteException("Se produjo un error al Obtener el Resultado de un Partido Terminado" + e.getMessage());
+		}
+	}
+	
+	
+	public List<CartaJugadorDTO> obtenerCartasJugadorMano(JugadorDTO jugador, PartidoDTO partido, MovimientoDTO movimiento) throws RemoteException{
+		
+		try {
+			
+				return objetoRemoto.obtenerCartasJugadorMano(jugador, partido, movimiento);
+			
+		} catch (RemoteException e) {
+
+			throw new RemoteException("Se produjo un error al Obtener las Cartas de un Partido Terminado" + e.getMessage());
+		}
+	}
+	
+	public ParejaDTO obtenerParejaGanadoraPartido(JugadorDTO jugador, PartidoDTO partido) throws RemoteException{
+		
+		try {
+			return objetoRemoto.obtenerParejaGanadoraPartido(jugador, partido);
+		} catch (RemoteException e) {
+			
+			throw new RemoteException("Se produjo un error al Obtener la Pareja Ganadora de un Partido" + e.getMessage());
+		}
+	}
+
 
 
 	

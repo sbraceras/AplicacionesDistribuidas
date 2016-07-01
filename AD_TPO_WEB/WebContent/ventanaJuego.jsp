@@ -101,6 +101,7 @@ JugadorDTO yo = (JugadorDTO) request.getAttribute("jugador");
 JugadorDTO jugadorActual = (JugadorDTO) request.getAttribute("jugadorActual");
 PartidoDTO miPartido = (PartidoDTO) request.getAttribute("miPartido");
 EstadoPartido estadoPartido = (EstadoPartido) request.getAttribute("estadoPartido");
+List<BazaDTO> bazas = (List<BazaDTO>) request.getAttribute("bazas");
 
 if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	
@@ -204,7 +205,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 
 <script type="text/javascript">
 
-	setInterval(function() { actualizar() }, 15000); // 4000
+	setInterval(function() { actualizar() }, 10000); 
 
 	function actualizar() {
 		window.location.href='RefrescarPartido?idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&idPartido=<%=miPartido.getId()%>'

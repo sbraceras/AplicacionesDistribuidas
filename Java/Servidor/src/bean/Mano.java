@@ -3,7 +3,16 @@ package bean;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -1003,6 +1012,35 @@ public class Mano {
 		
 		return ganadores;
 		
+	}
+
+	public boolean tenesMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		for(Baza baza: bazas)
+		{
+			if(baza.tenesMovimiento(ultimoMovimiento))
+				return true;
+		}
+		return false;
+	}
+
+	public List<Movimiento> getProximoMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		List<Movimiento> devolver = new ArrayList<Movimiento>();
+		//no va a entrar aqui sin saber que tiene el movimiento
+		for(Baza baza: bazas)
+		{
+			if(baza.tenesMovimiento(ultimoMovimiento)==true){
+				devolver.addAll(baza.getProximoMovimiento(ultimoMovimiento));
+				return devolver;
+			}
+			else
+			{
+				devolver.addAll(baza.getTurnosBaza());
+			}
+		}
+		
+		return devolver;
 	}
 
 }

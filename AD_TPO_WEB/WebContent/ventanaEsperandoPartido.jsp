@@ -33,7 +33,7 @@
 %>
 
 <script type="text/javascript">
-	setInterval(function() { actualizar() }, 30000); // 4000
+	setInterval(function() { actualizar() }, 2000); // 4000
 
 	function actualizar() {
 		window.location.href='EsperandoPartido?tipoPartido=<%=tipoPartido.name()%>&idJugador=<%=jugador.getId()%>&apodoJugador=<%= jugador.getApodo()%>&idUltimoPartido=<%=idUltimoPartido.intValue()%>'

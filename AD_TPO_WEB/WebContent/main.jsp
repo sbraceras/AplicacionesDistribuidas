@@ -53,6 +53,10 @@
 <form method="post" action="LogoutServlet">   
 <input type="submit" class="boton" value="Cerrar Sesion"/>
 </form>
+
+<div class="botonRanking">
+<input type="submit" class="verRanking" value="Ver Ranking" onclick="location.href='VisualizarRanking?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
+</div>
 </div>
 </div>
     

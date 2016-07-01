@@ -10,6 +10,7 @@ import controlador.ServicioCentral;
 import dtos.CartaDTO;
 import dtos.CartaJugadorDTO;
 import dtos.CartaTiradaDTO;
+import dtos.ChicoDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
@@ -20,8 +21,10 @@ import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
 import enums.TipoPartido;
 import exceptions.BazaException;
+import exceptions.ChicoException;
 import exceptions.ControladorException;
 import exceptions.JugadorException;
+import exceptions.ManoException;
 import exceptions.PartidoException;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
@@ -173,7 +176,6 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 	
 	@Override
 	public void cerrarSesion(JugadorDTO jg) throws RemoteException {
-		// TODO Auto-generated method stub
 		controlador.cerrarSesion(jg);
 	}
 
@@ -195,6 +197,73 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 		try {
 			return controlador.obtenerUltimaManoActiva(partido, jugador);
 		} catch (ControladorException | PartidoException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+	public List<MovimientoDTO> obtenerProximoMovimientoPartido(JugadorDTO jugador, PartidoDTO partido,MovimientoDTO ultimoMovimiento) 
+	throws RemoteException {
+		
+		try {
+			return controlador.obtenerProximoMovimientoPartido(jugador, partido, ultimoMovimiento);
+		} catch (ControladorException | PartidoException | ChicoException | ManoException e) {
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+	
+	public List<PartidoDTO> levantarPartidosTerminadosJugador(JugadorDTO jugador) throws RemoteException {
+	
+		try {
+			return controlador.levantarPartidosTerminadosJugador(jugador);
+		} catch (ControladorException e) {
+			
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+	public JugadorDTO obtenerJugadorCompleto(JugadorDTO jugador) throws RemoteException {
+
+		return controlador.obtenerJugadorCompleto(jugador);
+	}
+
+	public List<ChicoDTO> obtenerResultadoFinalPartido(JugadorDTO jugador, PartidoDTO partido) throws RemoteException {
+		
+		
+		try {
+			return controlador.obtenerResultadoFinalPartido(jugador, partido);
+		} catch (ControladorException | PartidoException e) {
+	
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+	public List<CartaJugadorDTO> obtenerCartasJugadorMano(JugadorDTO jugador, PartidoDTO partido, MovimientoDTO movimiento) throws RemoteException {
+		
+		try {
+			return controlador.obtenerCartasJugadorMano(jugador, partido, movimiento);
+		} catch (ControladorException | PartidoException | ChicoException e) {
+			
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+	public ParejaDTO obtenerParejaGanadoraPartido(JugadorDTO jugador, PartidoDTO partido) throws RemoteException {
+		
+		try {
+			return controlador.obtenerParejaGanadoraPartido(jugador, partido);
+			
+		} catch (PartidoException | ControladorException e) {
 			throw new RemoteException(e.getMessage());
 			
 			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */

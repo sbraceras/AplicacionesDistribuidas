@@ -5,16 +5,35 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import daos.PartidoDAO;
-import dtos.*;
-import enums.*;
+import dtos.ChicoDTO;
+import dtos.JugadorDTO;
+import dtos.MovimientoDTO;
+import dtos.ParejaDTO;
+import dtos.PartidoDTO;
+import enums.EstadoPartido;
+import enums.TipoCategoria;
+import enums.TipoEnvite;
+import enums.TipoPartido;
 import exceptions.BazaException;
+import exceptions.ChicoException;
 import exceptions.JugadorException;
+import exceptions.ManoException;
 import exceptions.PartidoException;
 
 
@@ -297,7 +316,7 @@ public class Partido {
 
 				actualizarRankingJugadores();
 
-				PartidoDAO.getInstance().guardarPartido(this);
+				PartidoDAO.getInstance().update(this);
 			} else
 			{
 				//No se termino el partido, aun faltan chicos por jugar
@@ -373,6 +392,52 @@ public class Partido {
 		return true;
 	}
 
+	@SuppressWarnings("unused")
+	public List<Movimiento> obtenerProximoMovimiento (MovimientoDTO ultimoMovimiento) throws ChicoException, ManoException {
 	
+		//le sumo 1 al movimiento ya que el proximo a analizar será el que necesita
+		
+		
+		
+		if(ultimoMovimiento == null)
+		{//Es el primer Movimiento el que tengo que devolver
+			List<Movimiento> movimientos = new ArrayList<Movimiento>();
+			
+			movimientos.add(chicos.get(0).getManos().get(0).getBazas().get(0).getTurnosBaza().get(0));
+			return movimientos;
+		}
+		else
+		{
+			//Me dio un movimiento, tengo que conseguir el proximo y devolver los anteriores
+			ultimoMovimiento.setId(ultimoMovimiento.getId()+1);
+			for(Chico chico: chicos)
+			{
+				if(chico.tenesMovimiento(ultimoMovimiento))
+					return chico.getProximoMovimiento(ultimoMovimiento);
+			}
+		}
+		
+		//no hay proximo movimiento, devuelvo una lista vacia para avisar que el partido termino 
+		
+		return new ArrayList<Movimiento>();
+		
+	}
+
+	public List<CartaJugador> getCartasJugadores(MovimientoDTO movimiento) throws ChicoException, PartidoException {
+		
+		
+		for(Chico chico: chicos){
+			
+			if(chico.tenesMovimiento(movimiento))
+			{
+				return chico.getCartasJugadoresPartido(movimiento);
+			}
+		}
+		
+		throw new PartidoException("Error grave: Nunca puede pedir cartas de un movimiento que no Existe");
+		
+	}
+	
+
 
 }

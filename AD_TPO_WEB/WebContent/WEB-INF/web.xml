@@ -39,4 +39,24 @@
     <servlet-name>gestionarMovimientoServlet</servlet-name>
     <url-pattern>/gestionarMovimientoServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>VisualizarRankingServlet</display-name>
+    <servlet-name>VisualizarRankingServlet</servlet-name>
+    <servlet-class>servlets.VisualizarRankingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VisualizarRankingServlet</servlet-name>
+    <url-pattern>/VisualizarRankingServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ReproducirPartidoServlet</display-name>
+    <servlet-name>ReproducirPartidoServlet</servlet-name>
+    <servlet-class>servlets.ReproducirPartidoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReproducirPartidoServlet</servlet-name>
+    <url-pattern>/ReproducirPartidoServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

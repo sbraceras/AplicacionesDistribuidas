@@ -152,4 +152,32 @@ public class PartidoDAO {
 		}
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	public List<Partido> levantarPartidosTerminadosJugador(JugadorDTO jugador) throws PartidoException {
+	Session s = sf.openSession();
+	List<Partido> devolver = null; 
+	try{
+		//No es necesario los inners por la estrategia de EAGER!!!!
+		devolver = s.createQuery(
+						"select p from Partido p inner join p.parejas par" +
+//						"inner join p.chicos chicos " +
+//						"inner join p.parejas parejas " +
+//						"inner join chicos.manos manos " +
+//						"inner join manos.bazas bazas " +
+						" where p.estadoPartido =:estadoPartido and (par.jugador1.id =:idJugador or par.jugador2.id =:idJugador)").setParameter("estadoPartido", EstadoPartido.Terminado).setParameter("idJugador", jugador.getId()).list();
+//						+ "and (p.parejas.jugador1 =:idJugador or p.parejas.jugador2 =:idJugador")
+				
+//				.setParameter("idJugador", jugador.getId())
+				
+		s.close();
+		return devolver;
+		
+	}
+	catch(Exception e){
+		e.printStackTrace();
+		throw new PartidoException("Error al Obtener Partidos Pendientes de la Base de Datos");
+	}
+}
+
 }

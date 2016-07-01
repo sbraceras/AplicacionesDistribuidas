@@ -115,6 +115,11 @@ public class ServicioCentral {
 
 		return jug;
 	}
+	
+	public JugadorDTO obtenerJugadorCompleto (JugadorDTO jugador){
+		
+		return obtenerJugador(jugador).toDTO();
+	}
 
 	public boolean existeGrupo(GrupoDTO dto) {
 		if (obtenerGrupo(dto) != null)
@@ -870,6 +875,185 @@ public class ServicioCentral {
 
 			
 		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
+	
+	
+	public List<MovimientoDTO> obtenerProximoMovimientoPartido (JugadorDTO jugador, PartidoDTO partido, MovimientoDTO ultimoMovimiento) 
+	throws ControladorException, PartidoException, ChicoException, ManoException{
+		
+		if (estaLogueado(jugador)) {
+			
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+			{
+				//no está en memoria
+				
+				part = PartidoDAO.getInstance().buscarPartido(partido);
+				if(part == null)
+					//tampoco esta en la BD
+					throw new ControladorException("No existe el partido Buscado");
+				else
+					//lo agrego a memoria
+					partidos.add(part);
+					
+			}
+
+			
+			if(part.estasTerminado()){	
+				
+				//verifico si realmente el partido esta terminado 
+				
+				List<MovimientoDTO> devolver = new ArrayList<MovimientoDTO>();
+				List<Movimiento> movimientos = part.obtenerProximoMovimiento(ultimoMovimiento);
+				for(Movimiento mov: movimientos){
+					devolver.add(mov.toDTO());
+				}
+				return devolver;
+			}
+			else
+			{
+				throw new ControladorException("No se puede Reproducir un Partido en Juego");
+			}
+
+			
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
+	
+	
+	public List<PartidoDTO>  levantarPartidosTerminadosJugador (JugadorDTO jugador) throws ControladorException{
+		
+		if (estaLogueado(jugador)) {
+			
+			List<PartidoDTO> devolver = new ArrayList<PartidoDTO>();
+			List<Partido> partidosLevantados;
+			try {
+				partidosLevantados = PartidoDAO.getInstance().levantarPartidosTerminadosJugador(jugador);
+				for(Partido part: partidosLevantados){
+					partidos.add(part);
+					devolver.add(part.toDTO());
+				}
+				
+				return devolver;
+			} catch (PartidoException e) {
+				throw new ControladorException("Error al levantar los Partidos Terminados de un Jugador de la Base de Datos");
+			}
+		
+			
+		} else {
+			throw new ControladorException("Error al levantar los Partidos Terminados de un Jugador");
+		}
+		
+		
+	}
+	
+	
+	public List<ChicoDTO> obtenerResultadoFinalPartido (JugadorDTO jugador, PartidoDTO partido) throws ControladorException, PartidoException{
+		
+		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+			
+			if(part.estasTerminado()){
+				List<ChicoDTO> devolver = new ArrayList<ChicoDTO>();
+				ChicoDTO agregar = null;
+				List<PuntajeParejaDTO> puntajesAgregar = null;
+				for(Chico chico: part.getChicos()){
+				
+					agregar = new ChicoDTO();
+					puntajesAgregar = new ArrayList<PuntajeParejaDTO>();
+					for(PuntajePareja puntaje: chico.getPuntajes())
+					{
+						puntajesAgregar.add(puntaje.toDTO());
+					}
+					agregar.setPuntajes(puntajesAgregar);
+					devolver.add(agregar);
+					
+					
+				}
+				return devolver;
+
+			}
+			else
+			{
+				throw new ControladorException("No ha finalizado el Partido");
+			}
+			
+			
+			
+		} else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
+	
+	public List<CartaJugadorDTO> obtenerCartasJugadorMano(JugadorDTO jugador, PartidoDTO partido, MovimientoDTO movimiento) 
+	throws ControladorException, PartidoException, ChicoException{
+		
+		
+		if (estaLogueado(jugador)) {
+			Partido part = obtenerPartido(partido);
+			List<CartaJugadorDTO> devolver = new ArrayList<CartaJugadorDTO>();
+			if (part == null)
+				throw new ControladorException("No existe el partido");
+			
+			if(part.estasTerminado()){
+				
+				List<CartaJugador> cartas;
+				
+				if(movimiento == null)
+				{
+					//serian las primeras cartas del partido
+					
+					cartas = part.getChicos().get(0).getManos().get(0).getCartasJugador();
+							
+				}				
+				else
+				{
+					//no es el primer movimiento
+					cartas = part.getCartasJugadores(movimiento);
+								
+				}
+				
+				for(CartaJugador carta: cartas){
+					devolver.add(carta.toDTO());
+				}
+				return devolver;
+
+			}
+			else
+			{
+				throw new ControladorException("No ha finalizado el Partido");
+			}
+		}			
+		else {
+			throw new ControladorException("El jugador no ha iniciado sesion");
+		}
+	}
+	
+	
+	public ParejaDTO obtenerParejaGanadoraPartido (JugadorDTO jugador, PartidoDTO partido) throws PartidoException, ControladorException{
+		
+		if (estaLogueado(jugador)) {
+			
+			Partido part = obtenerPartido(partido);
+			if (part == null)
+			{
+				//no está en memoria
+				
+				part = PartidoDAO.getInstance().buscarPartido(partido);
+				if(part == null)
+					//tampoco esta en la BD
+					throw new ControladorException("No existe el partido Buscado");
+				
+			}
+			
+			return part.getParejaGanadora().toDTO();
+		}
+		else {
 			throw new ControladorException("El jugador no ha iniciado sesion");
 		}
 	}

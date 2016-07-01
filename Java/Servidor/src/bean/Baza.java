@@ -2,7 +2,9 @@ package bean;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.*;
+
 import dtos.*;
 import exceptions.*;
 
@@ -228,6 +230,36 @@ public class Baza {
 			return false;
 		return true;
 		
+	}
+
+	public boolean tenesMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		for(Movimiento movimiento: turnosBaza)
+		{
+			if(movimiento.getId() == ultimoMovimiento.getId())
+				return true;
+		}
+		return false;
+	}
+
+	public List<Movimiento> getProximoMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		List<Movimiento> devolver = new ArrayList<Movimiento>();
+		
+		for(Movimiento movimiento: turnosBaza){
+			//voy agregando los movimientos anteriores hasta incluir el nuevo
+			if(movimiento.getId()>ultimoMovimiento.getId())
+			{
+				//ya me pase en el movimiento
+				return devolver;
+			}
+			else
+			{
+				devolver.add(movimiento);
+			}
+		}
+		
+		return devolver;
 	}
 
 }

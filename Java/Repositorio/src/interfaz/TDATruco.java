@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import dtos.CartaJugadorDTO;
+import dtos.ChicoDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
@@ -14,8 +15,6 @@ import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
 import enums.TipoPartido;
-import exceptions.ControladorException;
-import exceptions.PartidoException;
 
 
 public interface TDATruco extends Remote {
@@ -54,4 +53,15 @@ public interface TDATruco extends Remote {
 
 	public void cerrarSesion(JugadorDTO jg) throws RemoteException;
 
+	public List<MovimientoDTO> obtenerProximoMovimientoPartido (JugadorDTO jugador, PartidoDTO partido, MovimientoDTO ultimoMovimiento) throws RemoteException;
+	
+	public List<PartidoDTO>  levantarPartidosTerminadosJugador (JugadorDTO jugador) throws RemoteException;
+	
+	public JugadorDTO obtenerJugadorCompleto (JugadorDTO jugador) throws RemoteException;
+	
+	public List<ChicoDTO> obtenerResultadoFinalPartido (JugadorDTO jugador, PartidoDTO partido) throws RemoteException;
+	
+	public ParejaDTO obtenerParejaGanadoraPartido (JugadorDTO jugador, PartidoDTO partido) throws RemoteException;
+	
+	public List<CartaJugadorDTO> obtenerCartasJugadorMano(JugadorDTO jugador, PartidoDTO partido, MovimientoDTO movimiento) throws RemoteException;
 }

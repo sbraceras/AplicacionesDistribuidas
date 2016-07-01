@@ -1,10 +1,16 @@
 package gui;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import businessDelegate.BusinessDelegate;
+import dtos.CartaTiradaDTO;
+import dtos.ChicoDTO;
+import dtos.EnviteDTO;
 import dtos.JugadorDTO;
+import dtos.MovimientoDTO;
+import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 
 public class TestSegundaEntrega {
@@ -152,77 +158,138 @@ public class TestSegundaEntrega {
 		}	
 
 		// ************** Controlamos si se armo Partido ************** //
-		System.out.println("");
-
-		PartidoDTO part1 = null;
-		PartidoDTO part2 = null;
-		PartidoDTO part3 = null;
-		PartidoDTO part4 = null;
-
-		try {
-			part1 = businessDelegate.jugarLibreIndividual(jugador1);
-			part2 = businessDelegate.jugarLibreIndividual(jugador2);
-			part3 = businessDelegate.jugarLibreIndividual(jugador3);
-			part4 = businessDelegate.jugarLibreIndividual(jugador4);
+//		System.out.println("");
+//
+//		PartidoDTO part1 = null;
+//		PartidoDTO part2 = null;
+//		PartidoDTO part3 = null;
+//		PartidoDTO part4 = null;
+//
+//		try {
+//			part1 = businessDelegate.jugarLibreIndividual(jugador1);
+//			part2 = businessDelegate.jugarLibreIndividual(jugador2);
+//			part3 = businessDelegate.jugarLibreIndividual(jugador3);
+//			part4 = businessDelegate.jugarLibreIndividual(jugador4);
+//		}
+//		catch (RemoteException e) {
+//			System.err.println("Error al Intentar Jugar Libre Individual: " + e.getMessage());
+//		}
+//				
+//		if (part4 != null) {
+//			System.out.println("Se armo un partido! Inicio: " + part4.getFechaInicio());
+//			System.out.println("El partido nuevo es: " + part4.getId());
+//		}
+//
+//		if (part3 == null) {
+//			List<PartidoDTO> partidosPendientes;
+//			try {
+//				partidosPendientes = businessDelegate.tengoPartido(jugador3);
+//				if (!partidosPendientes.isEmpty()){
+//					part3 = partidosPendientes.get(partidosPendientes.size()-1);
+//					System.out.println("El partido nuevo es: " + part3.getId());
+//				}
+//			} catch (RemoteException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		if (part2 == null) {
+//			List<PartidoDTO> partidosPendientes;
+//			try {
+//				partidosPendientes = businessDelegate.tengoPartido(jugador2);
+//				if (!partidosPendientes.isEmpty()){
+//					part2 = partidosPendientes.get(partidosPendientes.size()-1);
+//					System.out.println("El partido nuevo es: " + part2.getId());
+//				}
+//			} catch (RemoteException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		if (part1 == null) {
+//			List<PartidoDTO> partidosPendientes;
+//			try {
+//				partidosPendientes = businessDelegate.tengoPartido(jugador1);
+//				if (!partidosPendientes.isEmpty()){
+//					part1 = partidosPendientes.get(partidosPendientes.size()-1);
+//					System.out.println("El partido nuevo es: " + part1.getId());
+//				}
+//			} catch (RemoteException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		// ejecutamos las 4 ventanas de juego
+//		try {
+//			VentanaPrueba ventana1 = new VentanaPrueba(part1, jugador1);
+//			VentanaPrueba ventana2 = new VentanaPrueba(part2, jugador2);
+//			VentanaPrueba ventana3 = new VentanaPrueba(part3, jugador3);
+//			VentanaPrueba ventana4 = new VentanaPrueba(part4, jugador4);
+//		}
+//		catch(RemoteException e){
+//			System.out.println("Error al crear las Ventanas de Prueba: " + e.getMessage());
+//		}
+		
+		JugadorDTO jugadorBuscar = new JugadorDTO();
+		jugadorBuscar.setId(11);
+		
+		List<PartidoDTO> partidosLevantados = businessDelegate.levantarPartidosTerminadosJugador(jugadorBuscar);
+		
+		if(partidosLevantados!= null)
+		{
+			for(PartidoDTO part: partidosLevantados)
+				System.out.println("Se levanto el Partido: " + part.getId());
 		}
-		catch (RemoteException e) {
-			System.err.println("Error al Intentar Jugar Libre Individual: " + e.getMessage());
-		}
-				
-		if (part4 != null) {
-			System.out.println("Se armo un partido! Inicio: " + part4.getFechaInicio());
-			System.out.println("El partido nuevo es: " + part4.getId());
-		}
-
-		if (part3 == null) {
-			List<PartidoDTO> partidosPendientes;
-			try {
-				partidosPendientes = businessDelegate.tengoPartido(jugador3);
-				if (!partidosPendientes.isEmpty()){
-					part3 = partidosPendientes.get(partidosPendientes.size()-1);
-					System.out.println("El partido nuevo es: " + part3.getId());
-				}
-			} catch (RemoteException e) {
-				e.printStackTrace();
+		
+		PartidoDTO partidoBuscar = new PartidoDTO();
+		MovimientoDTO mov = new MovimientoDTO();
+		mov.setId(496);
+		partidoBuscar.setId(233);
+		
+		List<MovimientoDTO> movimientos = new ArrayList<MovimientoDTO>();
+		
+		movimientos = businessDelegate.obtenerProximoMovimientoPartido(jugadorBuscar, partidoBuscar, mov);
+		
+		
+		System.out.println("Quiero obtener el Proximo Movimiento del Id: " + mov.getId());
+		
+		
+		for(MovimientoDTO movimiento: movimientos)
+		{
+			if(movimiento instanceof EnviteDTO)
+			{
+				System.out.println("IdMovimiento: "+ movimiento.getId() +" Del Movimiento es" + movimiento.getId() + " y es el Envite:" + ((EnviteDTO)movimiento).getTipoEnvite());
+			}
+			else
+			{
+				System.out.println("IdMovimiento: "+ movimiento.getId()+" Del Jugador" + ((CartaTiradaDTO)movimiento).getCartaJugador().getJugador().toString() + " tiro la Carta " + ((CartaTiradaDTO)movimiento).getCartaJugador().getCarta().toString());
 			}
 		}
-
-		if (part2 == null) {
-			List<PartidoDTO> partidosPendientes;
-			try {
-				partidosPendientes = businessDelegate.tengoPartido(jugador2);
-				if (!partidosPendientes.isEmpty()){
-					part2 = partidosPendientes.get(partidosPendientes.size()-1);
-					System.out.println("El partido nuevo es: " + part2.getId());
-				}
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		
+		
+		ParejaDTO ganadora = businessDelegate.obtenerParejaGanadoraPartido(jugadorBuscar, partidoBuscar);
+		
+		System.out.println("La Pareja Ganadora es: " + ganadora.getJugador1() + " y " + ganadora.getJugador2());
+		
+		List<ChicoDTO> puntajes = businessDelegate.obtenerResultadoFinalPartido(jugadorBuscar, partidoBuscar);
+		
+		for(ChicoDTO chico: puntajes)
+		{
+			System.out.println("El chico N°" + chico.getNumeroChico() + " Salio: ");
+			System.out.println("                  "+ chico.getPuntajes().get(0).getPareja().getJugador1()+ " y " + chico.getPuntajes().get(0).getPareja().getJugador2());
+			System.out.println("                  " + chico.getPuntajes().get(0).getPuntaje());
+			System.out.println();
+			System.out.println();
+			System.out.println("                  "+ chico.getPuntajes().get(1).getPareja().getJugador1()+ " y " + chico.getPuntajes().get(1).getPareja().getJugador2());
+			System.out.println("                  " + chico.getPuntajes().get(1).getPuntaje());
 		}
-
-		if (part1 == null) {
-			List<PartidoDTO> partidosPendientes;
-			try {
-				partidosPendientes = businessDelegate.tengoPartido(jugador1);
-				if (!partidosPendientes.isEmpty()){
-					part1 = partidosPendientes.get(partidosPendientes.size()-1);
-					System.out.println("El partido nuevo es: " + part1.getId());
-				}
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
-
-		// ejecutamos las 4 ventanas de juego
-		try {
-			VentanaPrueba ventana1 = new VentanaPrueba(part1, jugador1);
-			VentanaPrueba ventana2 = new VentanaPrueba(part2, jugador2);
-			VentanaPrueba ventana3 = new VentanaPrueba(part3, jugador3);
-			VentanaPrueba ventana4 = new VentanaPrueba(part4, jugador4);
-		}
-		catch(RemoteException e){
-			System.out.println("Error al crear las Ventanas de Prueba: " + e.getMessage());
-		}
+		
+		
 	
 
 		
