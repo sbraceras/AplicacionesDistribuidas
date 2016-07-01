@@ -8,107 +8,13 @@
 <html>
 <head>
 
-<style type="text/css">
-
-.EstiloTabla {
-	
-	position: absolute;
-	top: 100px;
-	left: 50px;
-	font-family: cursive;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: bold;
-	text-transform: uppercase;
-	text-align: center;
-	color: white;
-	text-decoration: underline;
-}
-.TablaPartidos {
-	position: absolute;
-	top: 100px;
-	left: 350px;
-	font-family: cursive;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: bold;
-	text-transform: uppercase;
-	text-align: center;
-	color: white;
-	width: 472px;
-}
-.TituloRanking {
-	position: absolute;
-	top: 65px;
-	left: 110px;
-	font-family: Tahoma, Geneva, sans-serif;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: bold;
-	font-variant: normal;
-	text-transform: uppercase;
-	color: #369;
-	text-decoration: underline;
-}
-.PartidosFinalizados {
-	position: absolute;
-	top: 65px;
-	left: 500px;
-	font-family: Tahoma, Geneva, sans-serif;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: bold;
-	font-variant: normal;
-	color: #93C;
-	text-decoration: underline;
-}
-
-
-.boton1 {
-	width: 200px;
-	height: 40px;
-	position: absolute;
-	left: 50px;
-	top: 400px;
-	text-transform: uppercase;
-	font-weight: bold;
-	outline: 0;
-	background: #ee0b0d;
-	border: 0;
-	padding: 15px;
-	color: #FFFFFF;
-	font-size: 14px;
-	-webkit-transition: all 0.3 ease;
-	transition: all 0.3 ease;
-	cursor: pointer;
-	text-align: center;
-}
-
-.boton2 {
-	width: 400x;
-	height: 40px;
-	text-transform: uppercase;
-	outline: 0;
-	font-weight: bold;
-	background: #06F;
-	border: 0;
-	padding: 15px;
-	color: #FFFFFF;
-	font-size: 14px;
-	-webkit-transition: all 0.3 ease;
-	transition: all 0.3 ease;
-	text-align: center;
-}
-
-
-</style>
-
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 
 <link type="text/css" rel="stylesheet" href="css/styles.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
-	
+		
 <link rel="icon" href="images/dice.png">
 	
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -186,7 +92,7 @@
 
 
 <div></div>
-<input type="submit" class="boton1" value="Volver al Menu" onclick="location.href='main.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
+<input class="botonVolver" type="submit" value="Volver al Menu" onclick="location.href='main.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
     
 </body>
 </html>
