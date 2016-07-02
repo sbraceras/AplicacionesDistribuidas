@@ -1090,13 +1090,20 @@ public class ServicioCentral {
 			JugadorDTO jug1 = new JugadorDTO();
 			jug1.setApodo(pareja.getJugador1());
 			
-			jug1 = JugadorDAO.getinstance().buscarJugadorPorApodo(jug1).toDTO();
-			
+			Jugador jugador1 = JugadorDAO.getinstance().buscarJugadorPorApodo(jug1);
+			if (jugador1 != null) {
+				jug1 = jugador1.toDTO();
+			} else
+				jug1 = null;
+
 			JugadorDTO jug2 = new JugadorDTO();
 			jug2.setApodo(pareja.getJugador2());
-			
-			
-			jug2 = JugadorDAO.getinstance().buscarJugadorPorApodo(jug2).toDTO();
+
+			Jugador jugador2 = JugadorDAO.getinstance().buscarJugadorPorApodo(jug2);
+			if (jugador2 != null)
+				jug2 = jugador2.toDTO();
+			else
+				jug2 = null;
 			
 			if (jug1 != null && jug2 != null){
 				for (Pareja p : esperandoLibreParejas){

@@ -33,13 +33,19 @@ request.setAttribute("jugador", jugador);
 %>
 
 <script>
+
 	function buscarPartidoPareja() {
 		var apodoJugador2 = document.getElementById("ApodoJugador2").value;
-		
-		
-		location.href='CrearPartidaParejasServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&apodoJugador2='+apodoJugador2;
+
+		location.href='CrearPartidaParejasServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&apodoJugador2=' + apodoJugador2;
 		return false;
 	}
+
+	function volverAlMenu(pagina) {
+		document.agregarMiembro.action = pagina;
+		document.agregarMiembro.submit();
+	}
+
 </script>
 
 </head>
@@ -52,22 +58,23 @@ request.setAttribute("jugador", jugador);
 <!-- EL ACTION, MANDA LA INFORMACION DEL FORM A UN ARCHIVO DESEADO -->
 <!-- ONSUBMIT, LO QUE HACE ES EJECUTAR UNA FUNCION JAVASCRIPT CUANDO SE HACE SUBMIT -->
   	
-  	<form class="agregar miembro" id="agregarMiembro" onsubmit="return buscarPartidoPareja(this);">
-      <input type="text" value="<%=jugador.getApodo()%>" id="ApodoJugador" name="ApodoJugador" readonly/>
-      <input type="text" value="<%=jugador.getId()%>" id="IdJugador" name="IdJugador" readonly/>
-      <input type="text" placeholder="Apodo del otro jugador" id="ApodoJugador2" name="ApodoJugador2"/>
-           <input type="submit" value="Aceptar Pareja" class="botonAceptar"/>
-      
+  	<form class="agregar miembro" name="agregarMiembro" id="agregarMiembro" method="post">
+		<input type="text" value="<%=jugador.getApodo()%>" id="ApodoJugador" name="ApodoJugador" readonly/>
+		<input type="text" value="<%=jugador.getId()%>" id="IdJugador" name="IdJugador" readonly/>
+		<input type="text" placeholder="Apodo del otro jugador" id="ApodoJugador2" name="ApodoJugador2"/>
+		<input type="button" value="Aceptar Pareja" class="botonAceptar" onclick="return buscarPartidoPareja();"/>
 
 		<div id="divErrorLoginIncompleto">
-		<br><br>
+			<br>
+			<br>
 			<span id="mensajeErrorLoginIncompleto">Ingrese un nombre valido para el otro jugador de la pareja.</span>
-	    </div>
-	    <br><br>
-    
-     	  <button onclick="location.href='buscarpartido.jsp">Volver al Menu</button>
-     	  <%//?idJugador=<%=jugador.getId()%><% //&apodoJugador=<%=jugador.getApodo()%>
-     	 
+		</div>
+
+		<br>
+		<br>
+
+		<input type="button" class="boton" value="Volver al Menu" onclick="volverAlMenu('buscarpartido.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>')"/>
+
      </form>
   </div>
   
