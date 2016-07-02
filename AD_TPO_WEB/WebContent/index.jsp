@@ -15,7 +15,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Truco Web - Aplicaciones Distribuidas</title>
 
-<h1>Truco Web - Aplicaciones Distribuidas - 2016</h1>
 <script type="text/javascript">
 
 	window.onload = mostrarInicioSesion;
@@ -62,6 +61,9 @@
 </script>
 </head>
 <body>
+
+<h1>Truco Web - Aplicaciones Distribuidas - 2016</h1>
+
 <div class="pagina-login">
   <div class="form">
   	<form class="inicio de sesion" id="formInicio" action="LoginServlet" method=post onsubmit="return inicioValido()">
