@@ -11,7 +11,8 @@ public class PuntajePareja {
 	@Column(name = "id_puntaje", nullable = false)
 	@GeneratedValue
 	private int id;
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_pareja")
 	private Pareja pareja;
 	@Column

@@ -18,7 +18,7 @@ import enums.Palo;
 public class Carta {
 	@Id
 	@Column(name = "id_carta", nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Column(columnDefinition = "tinyint")

@@ -43,7 +43,8 @@ public class Ranking {
 		dto.setPuntos(this.puntos);
 		ArrayList<PartidoDTO>partidosDto = new ArrayList<PartidoDTO>();
 		
-		for(int i=0; i < getPartidos().size();i++)
+		getPartidos();
+		for(int i=0; i < partidos.size();i++)
 		{
 			partidosDto.add(partidos.get(i).toDTO());
 		}

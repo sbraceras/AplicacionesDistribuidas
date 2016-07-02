@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 	
-<link rel="icon" href="dice.png">
+<link rel="icon" href="images/dice.png">
 	
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Truco Web - Aplicaciones Distribuidas</title>
@@ -66,6 +66,11 @@
 
 <div class="pagina-login">
   <div class="form">
+  
+<!--   DECLARO EL FORMULARIO CON SUS COMPONENTES -->
+<!-- EL ACTION, MANDA LA INFORMACION DEL FORM A UN ARCHIVO DESEADO -->
+<!-- ONSUBMIT, LO QUE HACE ES EJECUTAR UNA FUNCION JAVASCRIPT CUANDO SE HACE SUBMIT -->
+  	
   	<form class="inicio de sesion" id="formInicio" action="LoginServlet" method=post onsubmit="return inicioValido()">
       <input type="text" placeholder="Apodo" id="campoApodo" name="apodo"/>
       <input type="password" placeholder="Contraseña" id="campoContrasena" name="contrasena"/>

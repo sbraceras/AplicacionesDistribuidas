@@ -2,6 +2,7 @@ package bean;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.*;
 
 import org.hibernate.annotations.Fetch;
@@ -9,7 +10,9 @@ import org.hibernate.annotations.FetchMode;
 
 import dtos.*;
 import exceptions.BazaException;
+import exceptions.ChicoException;
 import exceptions.JugadorException;
+import exceptions.ManoException;
 import exceptions.PartidoException;
 
 /**
@@ -253,6 +256,41 @@ public class Chico {
 		orden.add(partido.getParejas().get(1).getJugador2());
 		
 		return orden;
+	}
+
+	public boolean tenesMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		for(Mano mano: manos){
+			
+			if(mano.tenesMovimiento(ultimoMovimiento))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public List<Movimiento> getProximoMovimiento(MovimientoDTO ultimoMovimiento) throws ChicoException, ManoException {
+		//no va a entrar aca sin saber que tiene el movimiento
+		for(Mano mano: manos){
+			if(mano.tenesMovimiento(ultimoMovimiento)==true)
+				return mano.getProximoMovimiento(ultimoMovimiento);
+		}
+		
+		throw new ChicoException("Error al obtener el Proximo Movimiento en Chico");
+	}
+
+	public List<CartaJugador> getCartasJugadoresPartido(MovimientoDTO movimiento) throws ChicoException {
+		
+		
+		for(Mano mano: manos){
+			
+			if(mano.tenesMovimiento(movimiento)){
+				return mano.getCartasJugador();
+			}
+		}
+		
+		throw new ChicoException("Error grave: Nunca puede pedir cartas de un movimiento que no Existe");
 	}
 		
 }

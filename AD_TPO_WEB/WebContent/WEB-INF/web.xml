@@ -1,7 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>AD_TPO_WEB</display-name>
   <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>esperandoPartido</display-name>
+    <servlet-name>esperandoPartido</servlet-name>
+    <servlet-class>Servlets.esperandoPartido</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>esperandoPartido</servlet-name>
+    <url-pattern>/esperandoPartido</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RefrescarPartidoServlet</display-name>
+    <servlet-name>RefrescarPartidoServlet</servlet-name>
+    <servlet-class>servlets.RefrescarPartidoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RefrescarPartidoServlet</servlet-name>
+    <url-pattern>/RefrescarPartidoServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>gestionarMovimientoServlet</display-name>
+    <servlet-name>gestionarMovimientoServlet</servlet-name>
+    <servlet-class>servlets.gestionarMovimientoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>gestionarMovimientoServlet</servlet-name>
+    <url-pattern>/gestionarMovimientoServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>VisualizarRankingServlet</display-name>
+    <servlet-name>VisualizarRankingServlet</servlet-name>
+    <servlet-class>servlets.VisualizarRankingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VisualizarRankingServlet</servlet-name>
+    <url-pattern>/VisualizarRankingServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ReproducirPartidoServlet</display-name>
+    <servlet-name>ReproducirPartidoServlet</servlet-name>
+    <servlet-class>servlets.ReproducirPartidoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReproducirPartidoServlet</servlet-name>
+    <url-pattern>/ReproducirPartidoServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

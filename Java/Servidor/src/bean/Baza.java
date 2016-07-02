@@ -2,7 +2,9 @@ package bean;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.*;
+
 import dtos.*;
 import exceptions.*;
 
@@ -31,7 +33,8 @@ public class Baza {
 	@Transient
 	private Mano mano; //se utiliza para reemplazar los observers	
 
-	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+//	@OneToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+	@OneToOne /* fetch = FetchType.EAGER)*/
 	@JoinColumn (name = "id_jugador")
 	private Jugador ganador;
 	
@@ -219,6 +222,44 @@ public class Baza {
 	public Jugador cerrarBaza() throws BazaException {
 		definirGanador();
 		return ganador;
+	}
+
+	public boolean esEmpate() {
+		
+		if(cantidadCartasTiradas<4)
+			return false;
+		return true;
+		
+	}
+
+	public boolean tenesMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		for(Movimiento movimiento: turnosBaza)
+		{
+			if(movimiento.getId() == ultimoMovimiento.getId())
+				return true;
+		}
+		return false;
+	}
+
+	public List<Movimiento> getProximoMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		List<Movimiento> devolver = new ArrayList<Movimiento>();
+		
+		for(Movimiento movimiento: turnosBaza){
+			//voy agregando los movimientos anteriores hasta incluir el nuevo
+			if(movimiento.getId()>ultimoMovimiento.getId())
+			{
+				//ya me pase en el movimiento
+				return devolver;
+			}
+			else
+			{
+				devolver.add(movimiento);
+			}
+		}
+		
+		return devolver;
 	}
 
 }

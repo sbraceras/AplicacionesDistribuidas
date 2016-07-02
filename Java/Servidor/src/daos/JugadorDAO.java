@@ -103,7 +103,7 @@ public class JugadorDAO {
 			s.close();
 
 			// OJO, la consulta anterior no es case sensitive, por lo tanto
-			// no tiene en cuenta las mayúsculas y minúsculas de la Password,
+			// no tiene en cuenta las mayï¿½sculas y minï¿½sculas de la Password,
 			// valido entonces que sean exactamente iguales!
 			
 			if(jug != null)
@@ -123,13 +123,11 @@ public class JugadorDAO {
 	@SuppressWarnings("unchecked")
 	public ArrayList<Grupo> obtenerGruposJugador(Jugador jugador) {
 		Session s = this.getSession();
-		ArrayList<Grupo> devolver;
+		ArrayList<Grupo> devolver = null;
 		try {
-
-			devolver = (ArrayList<Grupo>) s
-					.createQuery(
+			devolver = (ArrayList<Grupo>) s.createQuery(
 							"select g from Jugador j inner join j.grupos g where j.id =:id")
-					.setParameter("id", jugador.getId()).list();
+							.setParameter("id", jugador.getId()).list();
 			s.close();
 			return devolver;
 		} catch (Exception e) {
@@ -156,5 +154,20 @@ public class JugadorDAO {
 		}
 	}
 
+	public Jugador buscarJugadorPorApodo(JugadorDTO jugador) {
+		Session s = this.getSession();
+		try {
+			Jugador devolver = (Jugador) s.createQuery(
+					"select j from Jugador j inner join j.ranking  left join j.grupos where j.apodo =:apodo")
+					.setParameter("apodo", jugador.getApodo()).uniqueResult();
+
+			s.close();
+			return devolver;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error al buscar jugador");
+			return null;
+		}
+	}
 
 }

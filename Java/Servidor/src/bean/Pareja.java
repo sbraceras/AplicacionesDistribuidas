@@ -20,11 +20,13 @@ public class Pareja {
 	@GeneratedValue
 	private int id;
 
-	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn (name = "id_jugador1")
 	private Jugador jugador1;
 
-	@ManyToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+//	@ManyToOne (cascade = CascadeType.ALL) /* fetch = FetchType.EAGER)*/
+	@ManyToOne
 	@JoinColumn (name = "id_jugador2")
 	private Jugador jugador2;
 

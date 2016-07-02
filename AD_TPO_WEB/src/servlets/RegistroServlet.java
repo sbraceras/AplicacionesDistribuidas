@@ -1,5 +1,6 @@
 package servlets;
 
+
 import java.io.IOException;
 import java.rmi.RemoteException;
 
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import businessDelegate.BusinessDelegate;
 import dtos.JugadorDTO;
-import exceptions.JugadorException;
 
 /**
  * Servlet implementation class Login
@@ -70,16 +70,18 @@ public class RegistroServlet extends HttpServlet {
 		
 		
 		HttpSession session = request.getSession(true);
-		session.removeAttribute("resultado");
+		System.out.println(session.getMaxInactiveInterval());
 		
-		try {
+		session.removeAttribute("resultado");
+			try {
 			bd.registrarJugador(jg);
 			session.setAttribute("user", jg);
 			session.setAttribute("userId", jg.getApodo());
 			response.sendRedirect("main.jsp");
 		} catch (Exception e) {
 			session.setAttribute("resultadoRegistro", false);
-			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
 			rd.forward(request, response);
 		}
 	}

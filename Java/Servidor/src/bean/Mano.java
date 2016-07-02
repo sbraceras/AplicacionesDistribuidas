@@ -3,12 +3,25 @@ package bean;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import dtos.*;
+import dtos.BazaDTO;
+import dtos.CartaJugadorDTO;
+import dtos.JugadorDTO;
+import dtos.ManoDTO;
+import dtos.MovimientoDTO;
 import enums.TipoEnvite;
 import exceptions.BazaException;
 import exceptions.JugadorException;
@@ -400,6 +413,19 @@ public class Mano {
 			}
 		}
 		return null;
+	}
+
+	public List<MovimientoDTO> obtenerTodosLosMovimientos() {
+		List<MovimientoDTO> movimientosBazas = new ArrayList<MovimientoDTO>();
+		
+		for (int i=0; i < bazas.size(); i++) {
+			for (int j=0; j < bazas.get(i).getTurnosBaza().size(); j++) {
+				// acumulo TODOS los movimientos de la mano!
+				movimientosBazas.add(bazas.get(i).getTurnosBaza().get(j).toDTO());
+			}
+		}
+
+		return movimientosBazas;
 	}
 
 	public boolean puedoEnvido() {
@@ -960,6 +986,61 @@ public class Mano {
 			/* FALTA REARMAR LAS BAZAS */
 		}
 		
+	}
+	
+	public List<JugadorDTO>  obtenerGanadoresBazas (){
+		
+		List<JugadorDTO> ganadores = new ArrayList<JugadorDTO>();
+		
+		JugadorDTO aux;
+		for(Baza baza: bazas){
+			
+			if(baza.getGanador() != null)
+			{
+				ganadores.add(baza.getGanador().toDTO());
+			}
+			else
+			{
+				if(baza.esEmpate())
+				{
+					aux = new JugadorDTO();
+					aux.setApodo("Empate");
+					ganadores.add(aux);
+				}
+			}
+		}
+		
+		return ganadores;
+		
+	}
+
+	public boolean tenesMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		for(Baza baza: bazas)
+		{
+			if(baza.tenesMovimiento(ultimoMovimiento))
+				return true;
+		}
+		return false;
+	}
+
+	public List<Movimiento> getProximoMovimiento(MovimientoDTO ultimoMovimiento) {
+		
+		List<Movimiento> devolver = new ArrayList<Movimiento>();
+		//no va a entrar aqui sin saber que tiene el movimiento
+		for(Baza baza: bazas)
+		{
+			if(baza.tenesMovimiento(ultimoMovimiento)==true){
+				devolver.addAll(baza.getProximoMovimiento(ultimoMovimiento));
+				return devolver;
+			}
+			else
+			{
+				devolver.addAll(baza.getTurnosBaza());
+			}
+		}
+		
+		return devolver;
 	}
 
 }
