@@ -73,12 +73,13 @@ public class CrearPartidaParejasServlet extends HttpServlet {
 		
 		RequestDispatcher rd = null;
 		request.setAttribute("jugador", jugador);
+		request.setAttribute("jugador2", jugador2);
 		
 		try {
 			
 			System.out.println("Llamo al business delegate");
-			request.setAttribute("jugador", jugador);
-			request.setAttribute("jugador2", jugador2);
+		
+			
 			PartidoDTO miPartido = bd.jugarLibreParejas(pareja);
 			
 			if (miPartido == null) {
@@ -87,7 +88,7 @@ public class CrearPartidaParejasServlet extends HttpServlet {
 				// enviamos el ultimo identificador de partido para que pueda obtener el partido nuevo!
 				request.setAttribute("idUltimoPartido", ultimoPartido == null ? 0 : ultimoPartido.getId());
 				request.setAttribute("tipoPartido", TipoPartido.LibreParejas);
-				rd = request.getRequestDispatcher("ventanaEsperandoPartido.jsp");
+				rd = request.getRequestDispatcher("/ventanaEsperandoPartido.jsp");
 			} else {
 				// le pasamos a la pagina todos los parametros de juego que se necesitan
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(miPartido, jugador);

@@ -1089,15 +1089,22 @@ public class ServicioCentral {
 			
 			JugadorDTO jug1 = new JugadorDTO();
 			jug1.setApodo(pareja.getJugador1());
-			jug1 = obtenerJugador(jug1).toDTO();
+			
+			jug1 = JugadorDAO.getinstance().buscarJugadorPorApodo(jug1).toDTO();
+			
 			JugadorDTO jug2 = new JugadorDTO();
 			jug2.setApodo(pareja.getJugador2());
-			jug2 = obtenerJugador(jug2).toDTO();
-			for (Pareja p : esperandoLibreParejas){
-				if (p.getJugador1().sosJugador(jug1) && p.getJugador2().sosJugador(jug2)){
-					return p;
-				}else if (p.getJugador2().sosJugador(jug1) && p.getJugador1().sosJugador(jug2)){
-					return p;
+			
+			
+			jug2 = JugadorDAO.getinstance().buscarJugadorPorApodo(jug2).toDTO();
+			
+			if (jug1 != null && jug2 != null){
+				for (Pareja p : esperandoLibreParejas){
+					if (p.getJugador1().sosJugador(jug1) && p.getJugador2().sosJugador(jug2)){
+						return p;
+					}else if (p.getJugador2().sosJugador(jug1) && p.getJugador1().sosJugador(jug2)){
+						return p;
+					}
 				}
 			}
 			
