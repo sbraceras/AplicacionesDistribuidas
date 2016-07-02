@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import bean.Grupo;
-import bean.Jugador;
 import bean.Partido;
 import dtos.GrupoDTO;
 import hibernate.HibernateUtil;

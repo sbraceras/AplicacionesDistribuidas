@@ -7,9 +7,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import controlador.ServicioCentral;
-import dtos.CartaDTO;
 import dtos.CartaJugadorDTO;
-import dtos.CartaTiradaDTO;
 import dtos.ChicoDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;

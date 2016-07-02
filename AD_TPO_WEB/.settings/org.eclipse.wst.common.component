@@ -5,7 +5,7 @@
         <dependent-module archiveName="AD_TPO_Repositorio.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/AD_TPO_Repositorio/AD_TPO_Repositorio">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="java-output-path" value="/AD_TPO_WEB/build/classes"/>
         <property name="context-root" value="AD_TPO_WEB"/>
+        <property name="java-output-path" value="/AD_TPO_WEB/build/classes"/>
     </wb-module>
 </project-modules>

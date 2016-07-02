@@ -16,7 +16,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import daos.JugadorDAO;
-import daos.PartidoDAO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.RankingDTO;

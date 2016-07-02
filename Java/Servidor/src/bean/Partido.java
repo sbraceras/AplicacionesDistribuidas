@@ -392,7 +392,6 @@ public class Partido {
 		return true;
 	}
 
-	@SuppressWarnings("unused")
 	public List<Movimiento> obtenerProximoMovimiento (MovimientoDTO ultimoMovimiento) throws ChicoException, ManoException {
 	
 		//le sumo 1 al movimiento ya que el proximo a analizar será el que necesita

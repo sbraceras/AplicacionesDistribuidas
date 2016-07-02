@@ -9,7 +9,6 @@ import org.hibernate.Transaction;
 import dtos.ParejaDTO;
 
 import bean.Pareja;
-import bean.Partido;
 
 
 public class ParejaDAO {
@@ -52,7 +51,7 @@ public class ParejaDAO {
 			t.rollback();
 			s.close();
 			e.printStackTrace();
-			System.out.println("Error al guardar Partido");
+			System.out.println("Error al guardar la Pareja");
 		}
 		return null;
 	}

@@ -2,8 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,12 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import businessDelegate.BusinessDelegate;
 import dtos.JugadorDTO;
-import dtos.PartidoDTO;
-import dtos.CartaJugadorDTO;
-import dtos.PuntajeParejaDTO;
-import enums.EstadoPartido;
-import enums.TipoEnvite;
-import enums.TipoPartido;
 
 /**
  * Servlet implementation class Login
