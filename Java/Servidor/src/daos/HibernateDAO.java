@@ -20,16 +20,16 @@ public class HibernateDAO {
 		return instancia;
 	}
 	
-	public Session getSession(){
-		if (session ==null || !session.isOpen()){
+	public Session getSession() {
+		if (session ==null || !session.isOpen()) {
 			session = sf.openSession();
 		}
 		return session;
 	}
 	
-	public void closeSession(){
-		if ( session.isOpen()) session.close();
+	public void closeSession() {
+		if (session.isOpen())
+			session.close();
 	}
-	
 
 }

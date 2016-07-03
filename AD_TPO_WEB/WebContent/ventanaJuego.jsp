@@ -103,7 +103,7 @@ PartidoDTO miPartido = (PartidoDTO) request.getAttribute("miPartido");
 EstadoPartido estadoPartido = (EstadoPartido) request.getAttribute("estadoPartido");
 List<BazaDTO> bazas = (List<BazaDTO>) request.getAttribute("bazas");
 
-if(!estadoPartido.equals(EstadoPartido.Terminado)){
+if (!estadoPartido.equals(EstadoPartido.Terminado)) {
 	
 	List<ParejaDTO> parejas = (List<ParejaDTO>) request.getAttribute("parejas");
 	List<CartaJugadorDTO> misCartas = (List<CartaJugadorDTO>) request.getAttribute("misCartas");
@@ -116,29 +116,28 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 	if(jugadorActual.getId()== yo.getId()) {
 		envites = (List<TipoEnvite>) request.getAttribute("envites");
 	}
-	
-	//Cargamos Nuestras Cartas
-	
+
 	String j1c1,j1c2,j1c3;
 
-	j1c1 = "images/cartas/" + misCartas.get(0).getCarta().getPalo() + misCartas.get(0).getCarta().getNumero() + ".png";	
-	j1c2 = "images/cartas/" + misCartas.get(1).getCarta().getPalo() + misCartas.get(1).getCarta().getNumero() + ".png";
-	j1c3 = "images/cartas/" + misCartas.get(2).getCarta().getPalo() + misCartas.get(2).getCarta().getNumero() + ".png";
-	
-	String j2c1 = "images/cartas/" + "dorso" + ".png";
-	String j2c2 = "images/cartas/" + "dorso" + ".png";
-	String j2c3 = "images/cartas/" + "dorso" + ".png";
-	
-	String j3c1 = "images/cartas/" + "dorso" + ".png";
-	String j3c2 = "images/cartas/" + "dorso" + ".png";
-	String j3c3 = "images/cartas/" + "dorso" + ".png";
-	
-	String j4c1 = "images/cartas/" + "dorso" + ".png";
-	String j4c2 = "images/cartas/" + "dorso" + ".png";
-	String j4c3 = "images/cartas/" + "dorso" + ".png";
+	// cargamos Nuestras Cartas
+	j1c1 = "images/cartas/" + misCartas.get(0).getCarta().getPalo().name().toUpperCase() + misCartas.get(0).getCarta().getNumero() + ".PNG";	
+	j1c2 = "images/cartas/" + misCartas.get(1).getCarta().getPalo().name().toUpperCase() + misCartas.get(1).getCarta().getNumero() + ".PNG";
+	j1c3 = "images/cartas/" + misCartas.get(2).getCarta().getPalo().name().toUpperCase() + misCartas.get(2).getCarta().getNumero() + ".PNG";
+
+	String j2c1 = "images/cartas/" + "dorso" + ".PNG";
+	String j2c2 = "images/cartas/" + "dorso" + ".PNG";
+	String j2c3 = "images/cartas/" + "dorso" + ".PNG";
+
+	String j3c1 = "images/cartas/" + "dorso" + ".PNG";
+	String j3c2 = "images/cartas/" + "dorso" + ".PNG";
+	String j3c3 = "images/cartas/" + "dorso" + ".PNG";
+
+	String j4c1 = "images/cartas/" + "dorso" + ".PNG";
+	String j4c2 = "images/cartas/" + "dorso" + ".PNG";
+	String j4c3 = "images/cartas/" + "dorso" + ".PNG";
 	%>
-	
-	
+
+
 	<!-- Declaro las variables Nombre de jugadores -->
 	<%
 	
@@ -164,7 +163,6 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		// Pertenezco a la Pareja 1
 		puntosNuestros = puntajes.get(0).getPuntaje();
 		puntosEllos = puntajes.get(1).getPuntaje();
-		
 	} else if (jugador1.equals((parejas.get(1).getJugador1()))) {
 		// soy el jugador 1 de la pareja 2
 		// 'jugador2' es mi jugador a la derecha
@@ -173,6 +171,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		jugador3 = parejas.get(1).getJugador2();
 		// es mi jugador a la izquierda
 		jugador4 = parejas.get(0).getJugador1();
+
 		// Pertenezco a la Pareja 2
 		puntosNuestros = puntajes.get(1).getPuntaje();
 		puntosEllos = puntajes.get(0).getPuntaje();
@@ -184,6 +183,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		jugador3 = parejas.get(0).getJugador1();
 		// es mi jugador a la izquierda
 		jugador4 = parejas.get(1).getJugador1();
+
 		// Pertenezco a la Pareja 1
 		puntosNuestros = puntajes.get(0).getPuntaje();
 		puntosEllos = puntajes.get(1).getPuntaje();
@@ -195,6 +195,7 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
 		jugador3 = parejas.get(1).getJugador1();
 		// es mi jugador a la izquierda
 		jugador4 = parejas.get(0).getJugador2();
+
 		// Pertenezco a la Pareja 2
 		puntosNuestros = puntajes.get(1).getPuntaje();
 		puntosEllos = puntajes.get(0).getPuntaje();
@@ -265,28 +266,43 @@ if(!estadoPartido.equals(EstadoPartido.Terminado)){
     <td colspan="2"><div align="center" class="Estilo1"><strong>TRUCO</strong> <span class="Estilo1">DELUXE</span>  </div></td>
     <td width="222" rowspan="2"><div align="left" class="Estilo2">
       <p><em>PUNTAJES</em></p>
-      <p>NOS (<%=jugador1%>/<%=jugador3%>) : <%=puntosNuestros%> <br/>
-        ELLOS: (<%=jugador2%>/<%=jugador4%>) <%=puntosEllos%></p>
+      <p>
+		NOS (<%=jugador1%>/<%=jugador3%>) : <%=puntosNuestros%>
+      <br/>
+      	ELLOS (<%=jugador2%>/<%=jugador4%>) : <%=puntosEllos%>
+      </p>
     </div>      
     <div align="left"></div></td>
   </tr>
 
   <tr>
-    <td height="108"><div align="left"></div></td>
-        <td colspan="2"><div align="center"><font color="white"><strong>Jugador 3: <%=jugador3%></strong></font><br />
-  <%--     <img src=<%=j3c1%> width="69" height="104" alt="j3c1" /><img src=<%=j3c2%> width="69" height="104" alt="j3c2" /><img src=<%=j3c3%> width="69" height="104" alt="j3c3" />  --%>
+	<td height="108"><div align="left"></div></td>
+	<td colspan="2"><div align="center"><font color="white"><strong>Jugador 3: <%=jugador3%></strong></font><br />
+
+	<img src=<%=j3c1%> width="69" height="96" alt="j3c1" draggable="false"/>
+	<img src=<%=j3c2%> width="69" height="96" alt="j3c2" draggable="false"/>
+	<img src=<%=j3c3%> width="69" height="96" alt="j3c3" draggable="false"/>
+
     </div></td>
   </tr>
   <tr>
     <td><br />
       <font color="white"> <strong>Jugador 4: <%=jugador4%></strong></font>
     <div align="left">
-<%--     <img src=<%=j4c1%> width="69" height="104" alt="j4c1" /><img src=<%=j4c2%> width="69" height="104" alt="j4c2" /><img src=<%=j4c3%> width="69" height="104" alt="j4c3" /> --%>
+
+	<img src=<%=j4c1%> width="69" height="96" alt="j4c1" draggable="false"/>
+	<img src=<%=j4c2%> width="69" height="96" alt="j4c2" draggable="false"/>
+	<img src=<%=j4c3%> width="69" height="96" alt="j4c3" draggable="false"/>
+
     </div></td>
     <td colspan="2"><div align="center"><img src="images/mesa.png" width="568" height="297" align="absmiddle" /></div></td>
     <td><font color="white"> <strong>Jugador 2: <%=jugador2%></strong></font><br />
     <div align="left">
-<%--     <img src=<%=j2c1%> width="69" height="104" alt="j2c1" /><img src=<%=j2c2%> width="69" height="104" alt="j2c2" /><img src=<%=j2c3%> width="69" height="104" alt="j2c3" /> --%>
+
+    <img src=<%=j2c1%> width="69" height="96" alt="j2c1" draggable="false"/>
+    <img src=<%=j2c2%> width="69" height="96" alt="j2c2" draggable="false"/>
+    <img src=<%=j2c3%> width="69" height="96" alt="j2c3" draggable="false"/>
+
     </div></td>
   </tr>
   

@@ -18,11 +18,8 @@
 <title>Truco Web - Aplicaciones Distribuidas</title>
 
 <%
+	JugadorDTO jugador = (JugadorDTO) request.getAttribute("jugador");
 
-	JugadorDTO jugador = (JugadorDTO) session.getAttribute("user");
-	
-// 	(JugadorDTO) request.getAttribute("jugador");
-	
 // 	JugadorDTO jugador = new JugadorDTO();
 	
 // 	jugador.setApodo(apodoJugador);

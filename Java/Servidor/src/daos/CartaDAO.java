@@ -44,7 +44,10 @@ public class CartaDAO {
 		Session s = this.getSession();
 		Carta devolver = new Carta();
 		try {
-			devolver =  (Carta) s.createQuery("select c from Carta c where c.id =:idcarta").setParameter("idcarta", carta.getId()).uniqueResult();
+			devolver = (Carta) s.createQuery("select c from Carta c where c.id =:idcarta")
+					.setParameter("idcarta", carta.getId()).uniqueResult();
+			closeSession();
+
 			return devolver;
 		} catch(Exception e) {
 			System.out.println("Error al obtener carta");
@@ -75,7 +78,8 @@ public class CartaDAO {
 			t = s.beginTransaction();
 			s.save(c);
 			System.out.println("Carta Guardada");
-			t.commit();			
+			t.commit();
+			closeSession();
 		} catch(Exception e) {
 			System.out.println("ERROR AL GUARDAR CARTA");
 		}

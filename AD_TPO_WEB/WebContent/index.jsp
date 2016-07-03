@@ -23,8 +23,6 @@
 		document.getElementById("formRegistro").style.display = 'none';
 		document.getElementById("formInicio").style.display = '';
 	    document.getElementById("divErrorLoginIncompleto").style.display = 'none';
-		
-		
 	}
 	
 	function mostrarRegistro(){

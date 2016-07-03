@@ -56,20 +56,23 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
     
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		JugadorDTO jg = new JugadorDTO();
-		
 		HttpSession session = request.getSession(true);
-		
-		//devuelve la session asociada a la session http o una nueva session 
-		//si no hay ningun identificador en la session http.
-		
-		jg = (JugadorDTO) session.getAttribute("user");
-		
+
+		String apodoJugador = request.getParameter("apodoJugador");
+		int idJugador = Integer.valueOf(request.getParameter("idJugador")).intValue();
+
+		JugadorDTO jg = new JugadorDTO();
+
+		jg.setApodo(apodoJugador);
+		jg.setId(idJugador);
+
 		try {
 			RequestDispatcher rd;
-			System.out.println("Llamo al business delegate");
+
 			PartidoDTO miPartido = bd.jugarLibreIndividual(jg);
+
+//			session.setAttribute("user", jg);
+//			session.setAttribute("userId", jg.getApodo());
 
 			request.setAttribute("jugador", jg);
 			
@@ -103,13 +106,16 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 
 				List<TipoEnvite> envites = new ArrayList<TipoEnvite>();
 				request.setAttribute("envites", envites);
+
 				rd = request.getRequestDispatcher("/ventanaJuego.jsp");
 			}
 			
 			rd.forward(request, response);
 
 		} catch (Exception e) {
-			
+
+			// OJO!!! Aca debe enviarnos a "ventanaEsperandoPartido.jsp"  ?????
+
 			RequestDispatcher rd = request.getRequestDispatcher("/ventanaEsperandoPartido.jsp");
 			rd.forward(request, response);
 		}

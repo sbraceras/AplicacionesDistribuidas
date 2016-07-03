@@ -48,7 +48,6 @@ public class JugadorDAO {
 			s.flush();
 			t.commit();
 			s.close();
-
 		} catch (Exception e) {
 			System.out.println("Error al Guardar Jugador");
 		}
@@ -103,7 +102,7 @@ public class JugadorDAO {
 			s.close();
 
 			// OJO, la consulta anterior no es case sensitive, por lo tanto
-			// no tiene en cuenta las may�sculas y min�sculas de la Password,
+			// no tiene en cuenta las mayusculas y minusculas de la Password,
 			// valido entonces que sean exactamente iguales!
 			
 			if(jug != null)
@@ -142,7 +141,6 @@ public class JugadorDAO {
 		Session s = this.getSession();
 		ArrayList<Jugador> jugadores;
 		try {
-
 			jugadores = (ArrayList<Jugador>) s.createQuery(
 					"Select j from Jugador j left join j.grupos").list();
 			s.close();

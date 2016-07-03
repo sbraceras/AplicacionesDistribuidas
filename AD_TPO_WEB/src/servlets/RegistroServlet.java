@@ -58,7 +58,6 @@ public class RegistroServlet extends HttpServlet {
 	 */
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String apodo = request.getParameter("apodoR");
 		String contrasena = request.getParameter("contrasenaR");
 		String mail = request.getParameter("mailR");
@@ -67,17 +66,21 @@ public class RegistroServlet extends HttpServlet {
 		jg.setApodo(apodo);
 		jg.setPassword(contrasena);
 		jg.setMail(mail);
-		
-		
+
 		HttpSession session = request.getSession(true);
 		System.out.println(session.getMaxInactiveInterval());
 		
 		session.removeAttribute("resultado");
-			try {
+
+		try {
 			bd.registrarJugador(jg);
-			session.setAttribute("user", jg);
-			session.setAttribute("userId", jg.getApodo());
-			response.sendRedirect("main.jsp");
+
+			request.setAttribute("jugador", jg);
+
+//			response.sendRedirect("main.jsp");
+
+			RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
+			rd.forward(request, response);
 		} catch (Exception e) {
 			session.setAttribute("resultadoRegistro", false);
 			

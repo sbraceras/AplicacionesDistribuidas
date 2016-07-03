@@ -115,10 +115,9 @@ public class gestionarMovimientoServlet extends HttpServlet {
 		}
 
 		RequestDispatcher rd = null;
-		// Obtengo La Información para actualizar la informacion ve la ventana
+
 		try {
-			if(bd.partidoEstaTerminado(partido, jugador)==true)
-			{
+			if (bd.partidoEstaTerminado(partido, jugador)) {
 				//Se termino el partido, True es 1
 				request.setAttribute("estadoPartido", EstadoPartido.Terminado);
 				
@@ -128,9 +127,9 @@ public class gestionarMovimientoServlet extends HttpServlet {
 			else
 			{
 				//El partido continua le vuelvo a pasar información, refresco su informacion 
-				
+
 				//NO SE TERMINO EL PARTIDO, FALSE ES 0
-				
+
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(partido, jugador);
@@ -148,12 +147,10 @@ public class gestionarMovimientoServlet extends HttpServlet {
 				request.setAttribute("ganadoresBazas", ganadoresBazas);
 				request.setAttribute("bazas", ultimaMano.getBazas());
 				
-				if(idJugador== jugadorActual.getId())
-				{
-					//Es el Turno de El
+				if (idJugador == jugadorActual.getId()) {
+					// le toca jugar a quien envio la peticion!
 					List<TipoEnvite> envites = bd.obtenerEnvitesDisponibles(partido, jugador);
 					request.setAttribute("envites", envites);
-					
 				} else {
 					request.setAttribute("envites", new ArrayList<TipoEnvite>());
 				}

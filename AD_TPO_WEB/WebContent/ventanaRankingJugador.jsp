@@ -28,10 +28,6 @@
 </head>
 <body>
 <%
-
-// 	JugadorDTO jugador = (JugadorDTO) session.getAttribute("user");
-
-
 	JugadorDTO jugador = (JugadorDTO) request.getAttribute("jugador");
 	
 	List<PartidoDTO> partidosTerminados = (List<PartidoDTO>)request.getAttribute("partidosTerminados");

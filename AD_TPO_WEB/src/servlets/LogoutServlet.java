@@ -57,21 +57,19 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);
-		JugadorDTO jg = (JugadorDTO) session.getAttribute("user");
+
+		JugadorDTO jg = (JugadorDTO) request.getAttribute("jugador");
 		
-		if (jg!=null){
-			
-				bd.cerrarSesion(jg);
-				session.invalidate();
-				RequestDispatcher rd= null;
-				request.setAttribute("jugador", jg);
-				rd = request.getRequestDispatcher("/main.jsp");
-				rd.forward(request, response);
-				
-			
-		}else{
+		if (jg!=null) {			
+			bd.cerrarSesion(jg);
+			session.invalidate();
+
+			RequestDispatcher rd= null;
+			request.setAttribute("jugador", jg);
+			rd = request.getRequestDispatcher("/main.jsp");
+			rd.forward(request, response);
+		} else {
 			response.sendRedirect("index.jsp");
 		}
 	}	

@@ -17,9 +17,7 @@ public class ParejaDAO {
 	protected static ParejaDAO instancia;
 	protected Session s = null;
 	
-	
-	public static ParejaDAO getinstance (){
-		
+	public static ParejaDAO getinstance() {
 		if(instancia ==null){
 			sf = HibernateUtil.getSessionFactory();
 			instancia = new ParejaDAO();
@@ -27,11 +25,10 @@ public class ParejaDAO {
 		return instancia;
 	}
 	
-	
-	public Session getSession (){
-		
-		if(s ==null || !s.isOpen())
-			s= sf.openSession();
+	public Session getSession() {
+		if(s == null || !s.isOpen())
+			s = sf.openSession();
+
 		return s;
 	}
 	
@@ -57,16 +54,15 @@ public class ParejaDAO {
 	}
 	
 	public Pareja buscarPareja (ParejaDTO pareja){
-		
 		Session s = this.getSession();
 		Pareja devolver;
-		try{
-			
-			devolver = (Pareja) s.createQuery("select p from Pareja p inner join p.jugador1 p1 inner join p.jugador2 p2 where p.id=:id").setParameter("id",pareja.getId()).uniqueResult();
+		try {
+			devolver = (Pareja) s.createQuery("select p from Pareja p inner join p.jugador1 p1 inner join p.jugador2 p2 where p.id=:id")
+					.setParameter("id",pareja.getId()).uniqueResult();
+
+			s.close();
 			return devolver;
-		}
-		catch(Exception e)
-		{
+		} catch(Exception e) {
 			System.out.println("Error al obtener Pareja");
 			e.printStackTrace();
 			return null;

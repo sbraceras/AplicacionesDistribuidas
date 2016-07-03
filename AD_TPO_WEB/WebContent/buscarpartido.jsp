@@ -21,7 +21,7 @@
 	jugador.setApodo(apodoJugador);
 	jugador.setId(idJugador);
 	
-	request.setAttribute("jugador", jugador);
+// 	request.setAttribute("jugador", jugador);
 
 %>
 	
@@ -37,10 +37,14 @@
 </div>
 <div class="menu">
 <div class="verticalIzquierdo">
-<form id="fPartidaIndividualLibre" action="CrearPartidaIndividualServlet" method=post>
-<input type="image" src="images/iconoIndividual.png" id="buscarIndividualLibre" value="Buscar Partido"/>
+
+<!-- <form id="fPartidaIndividualLibre" action="CrearPartidaIndividualServlet" method=post> -->
+
+<input type="image" src="images/iconoIndividual.png" onclick="location.href='CrearPartidaIndividualServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 <p class="textoBoton">Libre Individual</p>
-</form>
+
+<!-- </form> -->
+
 </div> 
 <div class="verticalCentro">
 <input type="image" src="images/iconoPartidaParejas.png" onclick="location.href='seleccionarPareja.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>

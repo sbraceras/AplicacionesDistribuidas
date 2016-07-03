@@ -60,10 +60,10 @@ public class CrearGrupoServlet extends HttpServlet {
 		
 		// seteamos el tiempo maximo de vida de la session (tambien se puede hacer en el descriptor de la aplicacion -web.xml-)
 //		session.setMaxInactiveInterval(20*60);
-		System.out.println(session.getAttribute("userId"));
-		
-		JugadorDTO jugador = (JugadorDTO) session.getAttribute("user");
+
+		JugadorDTO jugador = (JugadorDTO) request.getAttribute("jugador");
 		String nombre = request.getParameter("nombreGrupo");
+
 		// finalizamos voluntariamente una sesion!
 //		session.invalidate();
 		
