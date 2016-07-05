@@ -36,9 +36,6 @@
 
 <script type="text/javascript">
 
-	function volverMenu(){
-	    window.location = "main.jsp";
-	}
 
 	function mostrarError(error) {
 		document.write(error);
@@ -54,7 +51,8 @@
 <!-- EL ACTION, MANDA LA INFORMACION DEL FORM A UN ARCHIVO DESEADO -->
 <!-- ONSUBMIT, LO QUE HACE ES EJECUTAR UNA FUNCION JAVASCRIPT CUANDO SE HACE SUBMIT -->
   	
-  	<form class="creacion del grupo" id="creacionGrupo" action="crearGrupoServlet" method=post>
+  	
+  	<form class="creacion del grupo" id="creacionGrupo" action="crearGrupoServlet?apodoJugador=<%=jugador.getApodo()%>&idJugador=<%=jugador.getId()%>" method=post>
       <input type="text" placeholder="Nombre del Grupo" id="campoNombreGrupo" name="nombreGrupo"/>
       <input type="submit" value="Crear Grupo" class="botonCrearGrupo"/>
       
@@ -72,7 +70,7 @@
 	    </div>
 	    <br><br>
     </form>
-     	  <button onclick="volverMenu()">VOLVER AL MENU</button>     	  
+     	  <button onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'">VOLVER AL MENU</button> 
 	</div>
 </div>
 

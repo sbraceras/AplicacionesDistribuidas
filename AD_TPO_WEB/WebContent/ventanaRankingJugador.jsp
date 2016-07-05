@@ -88,7 +88,6 @@
 
 
 <div></div>
-<input class="botonVolver" type="submit" value="Volver al Menu" onclick="location.href='main.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
-    
+<input class="botonVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>    
 </body>
 </html>

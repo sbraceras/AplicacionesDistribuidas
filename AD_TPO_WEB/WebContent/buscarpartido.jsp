@@ -55,7 +55,7 @@
 <p class="textoBoton">Cerrada</p>
 </div>
 <div class="abajoCentro">   
-<input type="submit" class="boton" value="Volver al Menu" onclick="location.href='main.jsp'"/>
+<input class="botonVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 </div>
 </div>
 </body>

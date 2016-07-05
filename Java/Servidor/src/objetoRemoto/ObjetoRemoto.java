@@ -12,6 +12,7 @@ import dtos.ChicoDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
+import dtos.MiembroGrupoDTO;
 import dtos.MovimientoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
@@ -268,9 +269,36 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 		}
 	}
 	
-	@Override
 	public PartidoDTO jugarLibreParejas(ParejaDTO pareja) throws RemoteException{
 		return controlador.jugarLibreParejas(pareja);
 	}
+
+	
+	public List<MiembroGrupoDTO> obtenerMiembrosGrupo(GrupoDTO grupo) throws RemoteException {
+
+		try {
+			return controlador.obtenerMiembrosGrupo(grupo);
+			
+		} catch (ControladorException e) {
+			
+			throw new RemoteException(e.getMessage());
+			
+			/* DISCUTIR SI ESTA ES LA MEJOR MANERA DE RE-LANZAR LA EXCEPTION */
+		}
+	}
+
+	public void agregarJugadorGrupo(List<JugadorDTO> agregar, GrupoDTO dto, JugadorDTO administrador) throws RemoteException {
+	
+		controlador.agregarJugadorGrupo(agregar, dto, administrador);
+		
+	}
+
+	
+	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo, JugadorDTO administrador) throws RemoteException {
+		
+		controlador.eliminarMiembroGrupo(jugador, grupo, administrador);
+	}
+
+
 
 }

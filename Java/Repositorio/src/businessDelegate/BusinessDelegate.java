@@ -11,6 +11,7 @@ import dtos.ChicoDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
+import dtos.MiembroGrupoDTO;
 import dtos.MovimientoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
@@ -252,14 +253,43 @@ public class BusinessDelegate {
 	}
 
 	public PartidoDTO jugarLibreParejas(ParejaDTO pareja){
-		// TODO Auto-generated method stub
 		try {
 			return objetoRemoto.jugarLibreParejas(pareja);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<MiembroGrupoDTO> obtenerMiembrosGrupo(GrupoDTO grupo) throws RemoteException {
+		
+		try {
+			return objetoRemoto.obtenerMiembrosGrupo(grupo);
+		} catch (RemoteException e) {
+			
+			throw new RemoteException("Se produjo un error al Obtener los Miembros de un Grupo" + e.getMessage());
+
+		}
+		
+	}
+	
+	public void agregarJugadorGrupo(List<JugadorDTO> agregar, GrupoDTO dto, JugadorDTO administrador) throws RemoteException{
+		
+		try {
+			objetoRemoto.agregarJugadorGrupo(agregar, dto, administrador);
+		} catch (RemoteException e) {
+			throw new RemoteException("Se produjo un error al Agregar Miembros a un Grupo" + e.getMessage());
+		}
+	}
+	
+	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo, JugadorDTO administrador) throws RemoteException {
+		
+		try {
+			objetoRemoto.eliminarMiembroGrupo(jugador, grupo, administrador);
+		} catch (RemoteException e) {
+			
+			throw new RemoteException("Se produjo un error al Eliminar un Miembro de un Grupo" + e.getMessage());
+		}
 	}
 
 
