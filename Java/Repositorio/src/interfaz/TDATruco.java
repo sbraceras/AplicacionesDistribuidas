@@ -66,4 +66,5 @@ public interface TDATruco extends Remote {
 	public List<CartaJugadorDTO> obtenerCartasJugadorMano(JugadorDTO jugador, PartidoDTO partido, MovimientoDTO movimiento) throws RemoteException;
 
 	public PartidoDTO jugarLibreParejas(ParejaDTO pareja) throws RemoteException;
+
 }

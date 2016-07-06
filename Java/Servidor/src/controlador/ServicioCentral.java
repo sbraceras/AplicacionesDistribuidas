@@ -395,9 +395,21 @@ public class ServicioCentral {
 			if (p.obtenerCategoriaSuperior().equals(categoriaSuperior) && !parejasPosibles.contains(p)){
 				//Encontre pareja, armo el partido//
 				parejasPosibles.add(p);
+
+				parejasPosibles.get(0).setNumeroPareja(1);
+				parejasPosibles.get(1).setNumeroPareja(2);
+
 				partido = new Partido(parejasPosibles, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreParejas);
-				
 				partido.setId(PartidoDAO.getInstance().guardarPartido(partido).intValue());
+				partidos.add(partido);
+
+
+
+				// PREGUNTA: ACA MISMO NO HABRIA QUE QUITARLOS DE LA LISTA DE ESPERA?
+				// algo asi?  "esperandoLibreParejas.remove(...)"
+
+
+
 				return partido.toDTO();
 			}
 		}
@@ -1059,27 +1071,26 @@ public class ServicioCentral {
 	}
 
 	public PartidoDTO jugarLibreParejas(ParejaDTO parejaDTO) {
-		// TODO Auto-generated method stub
 		Pareja p = estanEsperando(parejaDTO);
-		// Si no están esperando
-		if (p == null){
-						
-			//los agrego//
-			p = new Pareja();
+		// Si no estan esperando
+		if (p == null) {
+			// los agrego
 			JugadorDTO jug1 = new JugadorDTO();
 			jug1.setApodo(parejaDTO.getJugador1());
 			JugadorDTO jug2 = new JugadorDTO();
 			jug2.setApodo(parejaDTO.getJugador2());
-			
+
+			p = new Pareja();
 			p.setJugador1(JugadorDAO.getinstance().buscarJugadorPorApodo(jug1));
-			p.setJugador2(JugadorDAO.getinstance().buscarJugadorPorApodo(jug2));
-			
-						
+
+			// QUE PASA SI NO EXISTE 'jug2' ??? OJO! Se guarda la pareja igual!
+			p.setJugador2(JugadorDAO.getinstance().buscarJugadorPorApodo(jug2)); 
+
 			int idPareja = ParejaDAO.getinstance().guardarPareja(p);
 			p.setId(idPareja);
 			esperandoLibreParejas.add(p);
 		}
-		//intento armar el partido
+		// intento armar el partido
 		return armarPartidoParejas();
 	}
 

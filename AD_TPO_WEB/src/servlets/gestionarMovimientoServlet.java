@@ -96,6 +96,9 @@ public class gestionarMovimientoServlet extends HttpServlet {
 			// obtengo el DTO de la carta que acaba de tirar (con todos sus datos)
 			for (CartaJugadorDTO miCarta: misCartas) {
 				if (miCarta.getCarta().getId() == idCartaTirada) {
+					miCarta.setTirada(true);// ya seteo que esta tirada para no tener que llamar de nuevo 
+											// al metodo 'obtenerCartasJugador' del BusinessDelegate! De esta manera
+											// ya le paso a la pagina 'ventanaJuego.jsp' la List 'misCartas' actualizada!!! 
 					cartaJugador = miCarta;
 					break;
 				}
@@ -126,9 +129,7 @@ public class gestionarMovimientoServlet extends HttpServlet {
 			}
 			else
 			{
-				//El partido continua le vuelvo a pasar información, refresco su informacion 
-
-				//NO SE TERMINO EL PARTIDO, FALSE ES 0
+				// El partido continua! Le vuelvo a pasar toda la información, refrescada 
 
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 

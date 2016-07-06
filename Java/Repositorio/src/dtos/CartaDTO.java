@@ -48,6 +48,10 @@ public class CartaDTO implements Serializable {
 		this.posicionValor = posicionValor;
 	}
 
+	public String getNombreImagen() {
+		return palo.name().toUpperCase() + numero + ".PNG";
+	}
+
 	@Override
 	public String toString() {
 		return numero + " de " + palo.name();
@@ -59,7 +63,6 @@ public class CartaDTO implements Serializable {
 		result = prime * result + id;
 		return result;
 	}
-
 
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -73,7 +76,5 @@ public class CartaDTO implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }
