@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
+import dtos.MiembroGrupoDTO;
 import businessDelegate.BusinessDelegate;
 
 
@@ -43,11 +46,9 @@ public class CrearGrupoServlet extends HttpServlet {
 		}
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	doPost(request, response);
 	}
 
 	/**
@@ -59,21 +60,36 @@ public class CrearGrupoServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		
 		// seteamos el tiempo maximo de vida de la session (tambien se puede hacer en el descriptor de la aplicacion -web.xml-)
-//		session.setMaxInactiveInterval(20*60);
-
-		JugadorDTO jugador = (JugadorDTO) request.getAttribute("jugador");
+		// session.setMaxInactiveInterval(20*60);
+		// JugadorDTO jugador = (JugadorDTO) request.getAttribute("jugador");
+		
 		String nombre = request.getParameter("nombreGrupo");
+		String apodo = request.getParameter("apodoJugador");
+		int idJugador = Integer.valueOf(request.getParameter("idJugador")).intValue();
+		JugadorDTO jugador = new JugadorDTO();
+		jugador.setApodo(apodo);
+		jugador.setId(idJugador);
 
 		// finalizamos voluntariamente una sesion!
-//		session.invalidate();
+		// session.invalidate();
 		
 		try {
 			GrupoDTO dto = new GrupoDTO();
 			dto.setNombre(nombre);
 			
 			bd.crearGrupo(dto, jugador);
-
-			response.sendRedirect("/administrarGrupo.jsp");
+			
+			RequestDispatcher rd = null;
+			List<MiembroGrupoDTO> miembrosMandar = bd.obtenerMiembrosGrupo(dto);
+			request.setAttribute("jugador", jugador);
+			request.setAttribute("grupo", dto);
+			
+			request.setAttribute("miembrosGrupo", miembrosMandar);
+			
+			rd = getServletContext().getRequestDispatcher("/ventanaGrupo.jsp");
+			rd.forward(request, response);
+			
+			
 		} catch (Exception e) {
 			session.setAttribute("error", e.getMessage());
 			RequestDispatcher rd = request.getRequestDispatcher("/crearGrupo.jsp");

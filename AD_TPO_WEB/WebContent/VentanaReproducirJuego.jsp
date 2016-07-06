@@ -361,6 +361,7 @@ List<ParejaDTO> parejas = (List<ParejaDTO>) request.getAttribute("parejas");
 		ParejaDTO ganadora = (ParejaDTO) request.getAttribute("parejaGanadora");
 		
 		
+		
 		%>
 		
 		<h1 class="Despedida">El Partido ha finalizado</h1>
@@ -397,7 +398,7 @@ List<ParejaDTO> parejas = (List<ParejaDTO>) request.getAttribute("parejas");
  		}
 	
  	%>	
- 	<input type="submit" class="botonVolver" value="Volver al Menu" onclick="location.href='main.jsp'"/>
+ 	<input class="botonVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>'"/>  
  		
  <%}%>
  

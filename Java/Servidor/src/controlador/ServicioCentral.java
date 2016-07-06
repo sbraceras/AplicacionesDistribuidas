@@ -170,7 +170,7 @@ public class ServicioCentral {
 
 					for (int i = 0; i < agregar.size(); i++) {
 
-						jug2 = obtenerJugador(agregar.get(i));
+						jug2 = obtenerJugadorApodo(agregar.get(i));
 						if (jug2 != null) {
 							grupo.agregarMiembro(jug2);
 							jug2.agregarGrupo(grupo);
@@ -185,6 +185,20 @@ public class ServicioCentral {
 
 	}
 
+
+	private Jugador obtenerJugadorApodo(JugadorDTO jugadorDTO) {
+		for (Jugador jugador: jugadores) {
+			if (jugador.getApodo().equals(jugadorDTO.getApodo()))
+				return jugador;
+		}
+		jugadores= JugadorDAO.getinstance().obtenerJugadores();
+		for (Jugador jugador: jugadores) {
+			if (jugador.getApodo().equals(jugadorDTO.getApodo()))
+				return jugador;
+		}	
+		
+		return null;
+	}
 
 	public void armarParejaGrupo(ArrayList<JugadorDTO> integrantes,
 			GrupoDTO dto, JugadorDTO administrador) {
@@ -466,10 +480,9 @@ public class ServicioCentral {
 	}
 	
 	
-	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo,
-			JugadorDTO administrador) {
+	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo, JugadorDTO administrador) {
 
-		Jugador aux = obtenerJugador(jugador);
+		Jugador aux = obtenerJugadorApodo(jugador);
 		Grupo grup;
 		Jugador administradorReal;
 		if (aux != null) {
@@ -1129,6 +1142,31 @@ public class ServicioCentral {
 		}
 		return null;
 	}
+	
+	public List<MiembroGrupoDTO> obtenerMiembrosGrupo (GrupoDTO grupo) throws ControladorException{
+		
+		List<MiembroGrupoDTO> devolver = new ArrayList<MiembroGrupoDTO>();
+		
+		Grupo grup = obtenerGrupo(grupo);
+			
+		if(grup !=null)
+		{
+			for(MiembroGrupo miembro: grup.getMiembros()){
+					
+				devolver.add(miembro.toDTO());
+			}
+			return devolver;
+		}
+		else
+		{
+			throw new ControladorException("El Grupo Solicitado No Existe");
+		}
+		
+		
+
+	}
+	
+	
 }
 
 

@@ -59,4 +59,14 @@
     <servlet-name>ReproducirPartidoServlet</servlet-name>
     <url-pattern>/ReproducirPartidoServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>VolverAlMenuServlet</display-name>
+    <servlet-name>VolverAlMenuServlet</servlet-name>
+    <servlet-class>servlets.VolverAlMenuServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VolverAlMenuServlet</servlet-name>
+    <url-pattern>/VolverAlMenuServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

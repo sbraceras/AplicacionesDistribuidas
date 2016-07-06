@@ -9,6 +9,7 @@ import dtos.ChicoDTO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
+import dtos.MiembroGrupoDTO;
 import dtos.MovimientoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
@@ -66,5 +67,11 @@ public interface TDATruco extends Remote {
 	public List<CartaJugadorDTO> obtenerCartasJugadorMano(JugadorDTO jugador, PartidoDTO partido, MovimientoDTO movimiento) throws RemoteException;
 
 	public PartidoDTO jugarLibreParejas(ParejaDTO pareja) throws RemoteException;
+	
+	public List<MiembroGrupoDTO> obtenerMiembrosGrupo (GrupoDTO grupo) throws RemoteException;
+	
+	public void agregarJugadorGrupo(List<JugadorDTO> agregar, GrupoDTO dto, JugadorDTO administrador) throws RemoteException;
+	
+	public void eliminarMiembroGrupo(JugadorDTO jugador, GrupoDTO grupo, JugadorDTO administrador) throws RemoteException;
 
 }
