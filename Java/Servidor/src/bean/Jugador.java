@@ -35,7 +35,6 @@ public class Jugador {
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 	@JoinColumn(name = "id_ranking")
-	//@LazyCollection (LazyCollectionOption.FALSE)
 	private Ranking ranking;
 
 	@Column(columnDefinition = "varchar(50)")
@@ -45,11 +44,10 @@ public class Jugador {
 	@Column(columnDefinition = "tinyint")
 	private TipoCategoria categoria;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // FetchType.LAZY)
 	@JoinTable(name = "Grupo_Jugador",
 		joinColumns = { @JoinColumn(name = "id_jugador") },
 		inverseJoinColumns = { @JoinColumn(name = "id_grupo") })
-//	@LazyCollection (LazyCollectionOption.FALSE)
 	private List<Grupo> grupos;
 
 	public Jugador() {
@@ -73,7 +71,7 @@ public class Jugador {
 		ArrayList<GrupoDTO> gruposDto = new ArrayList<GrupoDTO>();
 
 		getGrupos();
-		if (grupos!=null) {
+		if (grupos != null) {
 			for (int i = 0; i < grupos.size(); i++) {
 				gruposDto.add(grupos.get(i).toDto());
 			}
@@ -136,7 +134,7 @@ public class Jugador {
 	}
 
 	public List<Grupo> getGrupos() {
-		grupos = JugadorDAO.getinstance().obtenerGruposJugador(this);
+//		grupos = JugadorDAO.getinstance().obtenerGruposJugador(this);
 		return grupos;
 	}
 

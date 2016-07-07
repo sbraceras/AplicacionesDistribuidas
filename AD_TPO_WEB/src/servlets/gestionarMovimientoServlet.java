@@ -134,10 +134,11 @@ public class gestionarMovimientoServlet extends HttpServlet {
 				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 
 				JugadorDTO jugadorActual = bd.obtenerJugadorActual(partido, jugador);
+				misCartas = bd.obtenerCartasJugador(partido, jugador); // pido de nuevo mis Cartas ya que quizas se creo una nueva mano!
 				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(partido, jugador);
 				List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
-				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
 				ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(partido, jugador);
+				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
 
 				request.setAttribute("miPartido", partido);
 				request.setAttribute("jugador", jugador);

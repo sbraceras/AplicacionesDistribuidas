@@ -120,6 +120,14 @@
 		width: 69px;
 		height: 96px;
 /* 		transform: rotate(-90deg); */
+
+		transition: all .6s ease-in-out;
+/* 		transition: width 2s, height 2s, transform 2s; */
+	}
+
+	#cartaBaza1Jugador2:HOVER {
+		transform: rotate(360deg);
+/* 		transform : scale(2); */
 	}
 
 	#cartaBaza2Jugador2 {
@@ -224,7 +232,7 @@ if (!estadoPartido.equals(EstadoPartido.Terminado)) {
 	List<CartaJugadorDTO> misCartas = (List<CartaJugadorDTO>) request.getAttribute("misCartas");
 	List<PuntajeParejaDTO> puntajes = (List<PuntajeParejaDTO>) request.getAttribute("puntajes");
 	List<JugadorDTO> ganadoresBazas = (List<JugadorDTO>) request.getAttribute("ganadoresBazas");
-	List<MovimientoDTO> movimientosBazas = (List<MovimientoDTO>) request.getAttribute("movimientos");
+// 	List<MovimientoDTO> movimientosBazas = (List<MovimientoDTO>) request.getAttribute("movimientos");
 
 	List<TipoEnvite> envites = new ArrayList<TipoEnvite>();	
 	if(jugadorActual.getId()== yo.getId()) {
@@ -410,7 +418,7 @@ for (int i=0; i < bazas.size(); i++) {
 
 <table class="Datos" width="1091" height="499" border="0">
   <tr>
-    <td width="208" height="55"><div align="left" class="Estilo1"><strong>Turno:</strong>: <%=jugadorActual.getApodo()%></div></td>
+    <td width="208" height="55"><div align="left" class="Estilo1"><strong>Turno:</strong> <%=jugadorActual.getApodo()%></div></td>
     <td colspan="2"><div align="center" class="Estilo1"><strong>TRUCO</strong> <span class="Estilo1">DELUXE</span>  </div></td>
     <td width="222" rowspan="2"><div align="left" class="Estilo2">
       <p><em>PUNTAJES</em></p>
@@ -459,7 +467,7 @@ for (int i=0; i < bazas.size(); i++) {
 	    </div>
     </td>
 
-    <td><font color="white"> <strong>Jugador 2: <%=jugador2%></strong></font><br />
+    <td><font color=<%=jugadorActual.getApodo().equals(jugador2) ? "#D5190F" : "white"%>> <strong>Jugador 2: <%=jugador2%></strong></font><br />
     <div align="left">
 
 		<%

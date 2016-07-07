@@ -82,10 +82,8 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
 			ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(partido, jugador);
 			List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
-			List<MovimientoDTO> movimientos = bd.obtenerMovimientosUltimaBaza(partido, jugador);
-			
+//			List<MovimientoDTO> movimientos = bd.obtenerMovimientosUltimaBaza(partido, jugador);
 
-	
 			request.setAttribute("miPartido", partido);
 			request.setAttribute("jugador", jugador);
 			request.setAttribute("jugadorActual", jugadorActual);
@@ -95,7 +93,7 @@ public class RefrescarPartidoServlet extends HttpServlet {
 			request.setAttribute("estadoPartido", EstadoPartido.Empezado);
 			request.setAttribute("bazas", ultimaMano.getBazas());
 			request.setAttribute("ganadoresBazas", ganadoresBazas);
-			request.setAttribute("movimientos", movimientos);
+//			request.setAttribute("movimientos", movimientos);
 
 			if(idJugador== jugadorActual.getId()) {
 				//Es el Turno de este jugador
