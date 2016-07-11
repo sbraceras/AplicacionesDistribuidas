@@ -195,6 +195,30 @@
 	}
 
 
+	@keyframes blink {
+	  from { opacity: 1; }
+	  to   { opacity: 0; }
+	}
+
+	@-webkit-keyframes blink {
+	  from { opacity: 1; }
+	  to   { opacity: 0; }
+	}
+
+	#jugadorActual {
+		color: #AAFF00;
+
+		animation-name: blink;
+		animation-duration: 1s;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+		-webkit-animation-name: blink;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-timing-function: ease-in-out;
+		-webkit-animation-iteration-count: infinite;
+	}
+
+
 	.tableStyle {
 		height: 400px;
 	}
@@ -215,6 +239,7 @@
 		font-weight: bold;
 		color: #FFF;
 	}
+
 
 </style>
 
@@ -316,24 +341,26 @@ if (!estadoPartido.equals(EstadoPartido.Terminado)) {
 
 <script type="text/javascript">
 
-	setInterval(function() { actualizar() }, 10000); 
+	setInterval(function() { actualizar() }, 10000);
+// 	setInterval(blinker, 1000);
 
 	function actualizar() {
 		window.location.href='RefrescarPartido?idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&idPartido=<%=miPartido.getId()%>'
 	}
 
-	function cantarEnvite(parametros){
-		window.location.href=parametros
-	}
+//     function blinker() {
+//     	$('.blinking').fadeOut(500);
+//     	$('.blinking').fadeIn(500);
+//     }
 
 	function allowDrop(ev) {
 		ev.preventDefault();
 	}
-	
+
 	function drag(ev) {
 		ev.dataTransfer.setData("text", ev.target.id);
 	}
-	
+
 	function drop(ev) {
 		ev.preventDefault();
 		var carta = ev.dataTransfer.getData("text");
@@ -418,7 +445,7 @@ for (int i=0; i < bazas.size(); i++) {
 
 <table class="Datos" width="1091" height="499" border="0">
   <tr>
-    <td width="208" height="55"><div align="left" class="Estilo1"><strong>Turno:</strong> <%=jugadorActual.getApodo()%></div></td>
+    <td width="220" height="55"><div align="left" class="Estilo1"><strong>Turno:</strong> <%=jugadorActual.getApodo()%></div></td>
     <td colspan="2"><div align="center" class="Estilo1"><strong>TRUCO</strong> <span class="Estilo1">DELUXE</span>  </div></td>
     <td width="222" rowspan="2"><div align="left" class="Estilo2">
       <p><em>PUNTAJES</em></p>
@@ -432,9 +459,15 @@ for (int i=0; i < bazas.size(); i++) {
   </tr>
 
   <tr>
-	<td height="108"><div align="left"></div></td>
+	<td height="108"></td>
 	<td colspan="2">
-	<div align="center"><font color="white"><strong>Jugador 3: <%=jugador3%></strong></font><br />
+	<div align="center">
+
+	<font color="white" id=<%=jugadorActual.getApodo().equals(jugador3) ? "jugadorActual" : ""%>> <strong>Jugador 3: <%=jugador3%></strong>
+
+	</div>
+
+	<div align="center">
 
 		<%
 		for (int i=0; i < (3-cantidadCartasTiradasJugador3); i++) {
@@ -447,9 +480,13 @@ for (int i=0; i < bazas.size(); i++) {
     </div>
     </td>
   </tr>
+
   <tr>
-    <td><br />
-      <font color="white"> <strong>Jugador 4: <%=jugador4%></strong></font>
+    <td>
+    <br/>
+
+	<font color="white" id=<%=jugadorActual.getApodo().equals(jugador4) ? "jugadorActual" : ""%>> <strong>Jugador 4: <%=jugador4%></strong>
+
     <div align="left">
 
 		<%
@@ -463,11 +500,17 @@ for (int i=0; i < bazas.size(); i++) {
     </div></td>
     <td colspan="2">
 	    <div align="center">
-	    	<img src="images/mesa.png" width="568" height="297" align="absmiddle" />
+	    	<img src="images/mesa.png" width="568" height="297" align="absmiddle" />	    	
 	    </div>
     </td>
 
-    <td><font color=<%=jugadorActual.getApodo().equals(jugador2) ? "#D5190F" : "white"%>> <strong>Jugador 2: <%=jugador2%></strong></font><br />
+    <td>
+
+    <font color="white" id=<%=jugadorActual.getApodo().equals(jugador2) ? "jugadorActual" : ""%>> <strong>Jugador 2: <%=jugador2%></strong>
+
+<!--     	<marquee width="150">aguarde por favor...</marquee>  -->
+
+    <br/>
     <div align="left">
 
 		<%
@@ -478,12 +521,19 @@ for (int i=0; i < bazas.size(); i++) {
 	    }
 	    %>
 
-    </div></td>
+    </div>
+    </td>
   </tr>
 
   <tr>
     <td><div align="left"></div></td>
-    <td colspan="2"><div align="center" ><font color="white"> <strong>YO: <%=jugador1%></strong></font></div></td>
+    <td colspan="2">
+	<div align="center" >
+
+	<font color="white" id=<%=jugadorActual.getApodo().equals(jugador1) ? "jugadorActual" : ""%>> <strong>YO: <%=jugador1%></strong>
+
+	</div>
+    </td>
     <td><div align="left"></div></td>
   </tr>
   <tr>
@@ -518,19 +568,19 @@ for (int i=0; i < bazas.size(); i++) {
     	</div>
     </td>
 
-    <td width="210"><div align="right">
-      <form id="form1" name="form1" method="post" action="">
+    <td width="210"><div align="center">
         <label>
         <% // cargo los Envites para cantar
-        	for (TipoEnvite envite: envites) { %>
-        		<a href="gestionarMovimiento?movimiento=env&nombreEnvite=<%=envite.name()%>&idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&idPartido=<%=miPartido.getId()%>" target="_self"><%=envite%></a>
-<%--         		<button onclick=cantarEnvite('gestionarMovimiento?movimiento=env&nombreEnvite=<%=envite.name()%>&idJugador=<%=yo.getId()%>&idPartido=<%=miPartido.getId()%>>)<%=envite%></button> --%>
-            <br />        	
+        for (TipoEnvite envite: envites) {
+        %>
+			<input type="submit" value=<%=envite%> onclick="location.href='gestionarMovimiento?movimiento=env&nombreEnvite=<%=envite.name()%>&idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>&idPartido=<%=miPartido.getId()%>'"
+				style="width:100px; height:25px;">
+			<br/>
         <%
-        	}
+        }
         %>
         </label>
-      </form>
+
       </div></td>
     <td><div align="left">
 
@@ -602,7 +652,7 @@ for (int i=0; i < bazas.size(); i++) {
 		  	<td><%=movimiento.getFechaHora()%></td>
 		  	</tr>  
 	<%}
-  	}%>
+  }%>
 	  	
   
 
