@@ -269,7 +269,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 		}
 	}
 	
-	public PartidoDTO jugarLibreParejas(ParejaDTO pareja) throws RemoteException{
+	public PartidoDTO jugarLibreParejas(ParejaDTO pareja) throws RemoteException, ControladorException{
 		return controlador.jugarLibreParejas(pareja);
 	}
 

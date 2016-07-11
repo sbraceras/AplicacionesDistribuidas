@@ -1083,52 +1083,65 @@ public class ServicioCentral {
 		}
 	}
 
-	public PartidoDTO jugarLibreParejas(ParejaDTO parejaDTO) {
+	public PartidoDTO jugarLibreParejas(ParejaDTO parejaDTO) throws ControladorException {
 		Pareja p = estanEsperando(parejaDTO);
 		// Si no estan esperando
 		if (p == null) {
 			// los agrego
-			JugadorDTO jug1 = new JugadorDTO();
-			jug1.setApodo(parejaDTO.getJugador1());
-			JugadorDTO jug2 = new JugadorDTO();
-			jug2.setApodo(parejaDTO.getJugador2());
+			JugadorDTO jugDTO1 = new JugadorDTO();
+			jugDTO1.setApodo(parejaDTO.getJugador1());
+			JugadorDTO jugDTO2 = new JugadorDTO();
+			jugDTO2.setApodo(parejaDTO.getJugador2());
 
-			p = new Pareja();
-			p.setJugador1(JugadorDAO.getinstance().buscarJugadorPorApodo(jug1));
+			Jugador jugador1 = obtenerJugadorApodo(jugDTO1);
+			Jugador jugador2 = obtenerJugadorApodo(jugDTO2);
+			
+			//Esta condicion es TRUE solamente cuando ambos jugadores existen//
+			if (jugador1 != null && jugador2 != null){
 
-			// QUE PASA SI NO EXISTE 'jug2' ??? OJO! Se guarda la pareja igual!
-			p.setJugador2(JugadorDAO.getinstance().buscarJugadorPorApodo(jug2)); 
-
-			int idPareja = ParejaDAO.getinstance().guardarPareja(p);
-			p.setId(idPareja);
-			esperandoLibreParejas.add(p);
+				p = new Pareja();
+				p.setJugador1(jugador1);
+				p.setJugador2(jugador2);
+				int idPareja = ParejaDAO.getinstance().guardarPareja(p);
+				p.setId(idPareja);
+				esperandoLibreParejas.add(p);
+			}else{
+				throw new ControladorException("Uno de los dos jugadores de la pareja inscripta no existe");
+			}
 		}
-		// intento armar el partido
+		// intento armar el partido, ya sea si los encontre como si los meti en la lista de espera recien//
+			
 		return armarPartidoParejas();
 	}
 
 	private Pareja estanEsperando(ParejaDTO pareja) {
 		// TODO Auto-generated method stub
+		//No entro a verificar si estan esperando si no tengo nada en la lista//
 		if(!esperandoLibreParejas.isEmpty()){
 			
+			//Seteo el apodo del DTO//
 			JugadorDTO jug1 = new JugadorDTO();
 			jug1.setApodo(pareja.getJugador1());
 			
-			Jugador jugador1 = JugadorDAO.getinstance().buscarJugadorPorApodo(jug1);
+			//Voy a buscar a los jugadores, si no lo encuentro lo seteo null para luego salir del metodo//
+			Jugador jugador1 = obtenerJugadorApodo(jug1);
 			if (jugador1 != null) {
 				jug1 = jugador1.toDTO();
-			} else
+			} else{
 				jug1 = null;
-
+			}
+			
 			JugadorDTO jug2 = new JugadorDTO();
 			jug2.setApodo(pareja.getJugador2());
 
-			Jugador jugador2 = JugadorDAO.getinstance().buscarJugadorPorApodo(jug2);
-			if (jugador2 != null)
+			Jugador jugador2 = obtenerJugadorApodo(jug2);
+			if (jugador2 != null){
 				jug2 = jugador2.toDTO();
-			else
+			} else{
 				jug2 = null;
+			}
 			
+			//Si encontre ambos jugadores, me fijo que no esten en la lista de espera. Si no estan los agrego como pareja//
 			if (jug1 != null && jug2 != null){
 				for (Pareja p : esperandoLibreParejas){
 					if (p.getJugador1().sosJugador(jug1) && p.getJugador2().sosJugador(jug2)){

@@ -18,6 +18,7 @@ import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
 import enums.TipoPartido;
+import exceptions.ControladorException;
 import interfaz.TDATruco;
 
 public class BusinessDelegate {
@@ -252,13 +253,12 @@ public class BusinessDelegate {
 		}
 	}
 
-	public PartidoDTO jugarLibreParejas(ParejaDTO pareja){
+	public PartidoDTO jugarLibreParejas(ParejaDTO pareja) throws ControladorException, RemoteException{
 		try {
 			return objetoRemoto.jugarLibreParejas(pareja);
 		} catch (RemoteException e) {
-			e.printStackTrace();
+			throw new RemoteException("Se produjo un error al intentar inscribir la pareja." + e.getMessage());
 		}
-		return null;
 	}
 	
 	public List<MiembroGrupoDTO> obtenerMiembrosGrupo(GrupoDTO grupo) throws RemoteException {

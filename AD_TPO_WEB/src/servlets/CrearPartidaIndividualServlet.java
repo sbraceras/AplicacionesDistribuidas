@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
@@ -56,7 +55,7 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
     
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(true);
+		
 
 		String apodoJugador = request.getParameter("apodoJugador");
 		int idJugador = Integer.valueOf(request.getParameter("idJugador")).intValue();

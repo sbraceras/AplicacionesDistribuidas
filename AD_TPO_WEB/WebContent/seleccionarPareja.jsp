@@ -35,9 +35,13 @@ request.setAttribute("jugador", jugador);
 <script>
 
 	function buscarPartidoPareja() {
+		var apodoJugador1 = document.getElementById("ApodoJugador").value;
 		var apodoJugador2 = document.getElementById("ApodoJugador2").value;
-
-		location.href='CrearPartidaParejasServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&apodoJugador2=' + apodoJugador2;
+		
+		if (apodoJugador1 != apodoJugador2){
+				location.href='CrearPartidaParejasServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&apodoJugador2=' + apodoJugador2;
+		}
+		
 		return false;
 	}
 
