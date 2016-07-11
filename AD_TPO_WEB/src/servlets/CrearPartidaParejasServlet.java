@@ -79,8 +79,6 @@ public class CrearPartidaParejasServlet extends HttpServlet {
 		
 		try {
 			
-			System.out.println("Llamo al business delegate");
-		
 			
 			PartidoDTO miPartido = bd.jugarLibreParejas(pareja);
 			
@@ -119,10 +117,7 @@ public class CrearPartidaParejasServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			
-			
-			// OJO: ACA HAY QUE LLAMAR A 'ventanaEsperandoPartido' ??? supuestamente hubo un error!
-
-			rd = request.getRequestDispatcher("/ventanaEsperandoPartido.jsp");
+			rd = request.getRequestDispatcher("/main.jsp");
 			rd.forward(request, response);
 		}
 		

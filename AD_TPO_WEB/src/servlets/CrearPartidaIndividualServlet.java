@@ -110,8 +110,6 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 
 		} catch (Exception e) {
 
-			// OJO!!! Aca debe enviarnos a "ventanaEsperandoPartido.jsp"  ?????
-
 			RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
 			rd.forward(request, response);
 		}

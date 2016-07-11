@@ -34,14 +34,21 @@ request.setAttribute("jugador", jugador);
 
 <script>
 
+	window.onload = esconderErrores;
+
+	function esconderErrores(){
+		document.getElementById("divError").style.display = 'none';
+	}
+	
 	function buscarPartidoPareja() {
 		var apodoJugador1 = document.getElementById("ApodoJugador").value;
 		var apodoJugador2 = document.getElementById("ApodoJugador2").value;
 		
-		if (apodoJugador1 != apodoJugador2){
+		if (apodoJugador1 != apodoJugador2 && apodoJugador2){
 				location.href='CrearPartidaParejasServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&apodoJugador2=' + apodoJugador2;
 		}
 		
+		document.getElementById("divError").style.display = ''
 		return false;
 	}
 
@@ -64,11 +71,20 @@ request.setAttribute("jugador", jugador);
   	
   	<form class="agregar miembro" name="agregarMiembro" id="agregarMiembro" method="post">
 		<input type="text" value="<%=jugador.getApodo()%>" id="ApodoJugador" name="ApodoJugador" readonly/>
-		<input type="text" value="<%=jugador.getId()%>" id="IdJugador" name="IdJugador" readonly/>
+		<input type="text" value="<%=jugador.getId()%>" id="IdJugador" name="IdJugador" hidden readonly/>
 		<input type="text" placeholder="Apodo del otro jugador" id="ApodoJugador2" name="ApodoJugador2"/>
 		<input type="button" value="Aceptar Pareja" class="botonAceptar" onclick="return buscarPartidoPareja();"/>
 
-		<div id="divErrorLoginIncompleto">
+
+		<%
+		   if (session.getAttribute("error") != null) {
+			   String error = (String) session.getAttribute("error");
+			   out.write(error);
+			   session.removeAttribute("error");
+			}
+		%>
+		
+		<div id="divError">
 			<br>
 			<br>
 			<span id="mensajeErrorLoginIncompleto">Ingrese un nombre valido para el otro jugador de la pareja.</span>
