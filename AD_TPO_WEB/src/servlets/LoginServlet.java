@@ -67,12 +67,6 @@ public class LoginServlet extends HttpServlet {
 
 			request.setAttribute("jugador", jg);
 
-			// OJO!!! NO VAMOS A ENVIAR MAS PARAMETROS A TRAVES DEL 'session'
-
-//			session.setAttribute("user", jg);
-//			session.setAttribute("userId", jg.getApodo());
-
-//			response.sendRedirect("main.jsp");
 
 			RequestDispatcher rd = null;
 			rd = request.getRequestDispatcher("/main.jsp");

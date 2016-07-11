@@ -174,7 +174,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 	}
 	
 	@Override
-	public void cerrarSesion(JugadorDTO jg) throws RemoteException {
+	public void cerrarSesion(JugadorDTO jg) throws RemoteException, JugadorException {
 		controlador.cerrarSesion(jg);
 	}
 

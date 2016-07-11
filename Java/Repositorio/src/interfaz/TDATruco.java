@@ -17,6 +17,7 @@ import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
 import enums.TipoPartido;
 import exceptions.ControladorException;
+import exceptions.JugadorException;
 
 
 public interface TDATruco extends Remote {
@@ -53,7 +54,7 @@ public interface TDATruco extends Remote {
 
 	public ManoDTO obtenerUltimaManoActiva (PartidoDTO partido, JugadorDTO jugador) throws RemoteException;
 
-	public void cerrarSesion(JugadorDTO jg) throws RemoteException;
+	public void cerrarSesion(JugadorDTO jg) throws RemoteException, JugadorException;
 
 	public List<MovimientoDTO> obtenerProximoMovimientoPartido (JugadorDTO jugador, PartidoDTO partido, MovimientoDTO ultimoMovimiento) throws RemoteException;
 	

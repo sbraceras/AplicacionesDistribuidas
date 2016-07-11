@@ -47,9 +47,8 @@
 <input type="submit" class="boton" value="Crear Grupo" onclick="location.href='crearGrupo.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 </div>
 <div class="abajoCentro">
-<form method="post" action="LogoutServlet">   
-<input type="submit" class="boton" value="Cerrar Sesion"/>
-</form>
+<input type="submit" class="boton" value="Cerrar Sesion" onclick="location.href='LogoutServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
+
 
 <div class="botonRanking">
 <input type="submit" class="verRanking" value="Ver Ranking" onclick="location.href='VisualizarRanking?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>

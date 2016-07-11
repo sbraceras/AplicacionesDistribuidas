@@ -57,19 +57,30 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		processRequest(request, response);
+		}	
+	
+	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(true);
+	
+		String apodoJugador = request.getParameter("apodoJugador");
+		int idJugador = Integer.valueOf(request.getParameter("idJugador")).intValue();
+
+		JugadorDTO jg = new JugadorDTO();
+		jg.setApodo(apodoJugador);
+		jg.setId(idJugador);
 		
-		JugadorDTO jg = (JugadorDTO) request.getAttribute("jugador");
+		RequestDispatcher rd= null;
 		
-		if (jg!=null) {			
+		try{
 			bd.cerrarSesion(jg);
-			
-			RequestDispatcher rd= null;
-			
-			rd = request.getRequestDispatcher("/main.jsp");
-			rd.forward(request, response);
-		} else {
-			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-			rd.forward(request, response);
+			session.invalidate();
+					
+			request.setAttribute("jugador", null);
+			rd = request.getRequestDispatcher("/index.jsp");
+		} catch (Exception e){
+			rd = request.getRequestDispatcher("/index.jsp");
 		}
-	}	
+		rd.forward(request, response);
+	}
 }

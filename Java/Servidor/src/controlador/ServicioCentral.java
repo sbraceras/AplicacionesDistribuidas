@@ -539,12 +539,22 @@ public class ServicioCentral {
 		}
 	}
 
-	public void cerrarSesion(JugadorDTO jugador) {
-		for (int i = 0; i < sesiones.size(); i++) {
-			if (sesiones.get(i).sosJugador(jugador))
-				sesiones.remove(i);
+	public void cerrarSesion(JugadorDTO jugador) throws JugadorException {
+		Jugador remover = null;
+		
+		for (Jugador jug : sesiones){
+			if(jug.getApodo().equalsIgnoreCase(jugador.getApodo())){
+				remover = jug;
+			}
 		}
-
+		
+		if (remover != null){
+			sesiones.remove(remover);
+			System.out.println("Cierre de sesión correcto");
+		}else{
+			throw new JugadorException("Cierre de sesion no valido. " + jugador.getApodo());
+		}
+		return;
 	}
 
 	/* DESARROLLAR CON HQL */
