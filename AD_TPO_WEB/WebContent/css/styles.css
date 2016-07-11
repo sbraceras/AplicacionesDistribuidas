@@ -463,3 +463,9 @@ h1 {
   cursor: pointer;
 
 }
+
+#busquedaVolver{
+  position : fixed;
+  left: 125px;
+  top: 500px;
+}

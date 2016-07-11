@@ -77,9 +77,9 @@ request.setAttribute("jugador", jugador);
 		<br>
 		<br>
 
-		<input type="button" class="boton" value="Volver al Menu" onclick="volverAlMenu('buscarpartido.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>')"/>
-
+		
      </form>
+     <button onclick="volverAlMenu('buscarpartido.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>')">VOLVER AL MENU</button>
   </div>
   
 

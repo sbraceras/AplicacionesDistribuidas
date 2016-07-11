@@ -70,9 +70,6 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 
 			PartidoDTO miPartido = bd.jugarLibreIndividual(jg);
 
-//			session.setAttribute("user", jg);
-//			session.setAttribute("userId", jg.getApodo());
-
 			request.setAttribute("jugador", jg);
 			
 			if (miPartido == null) {
@@ -115,7 +112,7 @@ public class CrearPartidaIndividualServlet extends HttpServlet {
 
 			// OJO!!! Aca debe enviarnos a "ventanaEsperandoPartido.jsp"  ?????
 
-			RequestDispatcher rd = request.getRequestDispatcher("/ventanaEsperandoPartido.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
 			rd.forward(request, response);
 		}
 		
