@@ -1,5 +1,7 @@
 <%@page import="javax.xml.bind.ParseConversionEvent"%>
 <%@page import="dtos.JugadorDTO"%>
+<%@page import="dtos.GrupoDTO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -53,6 +55,11 @@
 <div class="botonRanking">
 <input type="submit" class="verRanking" value="Ver Ranking" onclick="location.href='VisualizarRanking?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 </div>
+
+<div class="verticalDerecho">
+<input type="submit" class="boton" value="Crear Partidos Grupo" onclick="location.href='SeleccionarGrupo?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
+</div>
+
 </div>
 </div>
     

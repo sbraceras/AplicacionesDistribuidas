@@ -55,5 +55,14 @@ public class GrupoDTO implements Serializable {
 	public void setPartidos(List<PartidoDTO> partidos) {
 		this.partidos = partidos;
 	}
+	
+	public boolean tenesAdministrador(JugadorDTO admin){
+		for (MiembroGrupoDTO miembro : miembros){
+			if (miembro.getJugador().equalsIgnoreCase(admin.getApodo()) && miembro.isActivo()){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

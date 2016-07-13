@@ -19,7 +19,6 @@ import dtos.PuntajeParejaDTO;
 import enums.TipoEnvite;
 import enums.TipoPartido;
 import exceptions.ControladorException;
-import exceptions.JugadorException;
 import interfaz.TDATruco;
 
 public class BusinessDelegate {
@@ -183,7 +182,7 @@ public class BusinessDelegate {
 		}
 	}
 
-	public void cerrarSesion(JugadorDTO jg) throws RemoteException, JugadorException {
+	public void cerrarSesion(JugadorDTO jg) throws RemoteException {
 		objetoRemoto.cerrarSesion(jg);
 	}
 	

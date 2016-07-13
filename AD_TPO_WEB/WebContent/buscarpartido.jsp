@@ -35,28 +35,25 @@
 <h1>Truco Web - Aplicaciones Distribuidas - 2016</h1>
 <div class="superior">
 </div>
+
 <div class="menu">
-<div class="verticalIzquierdo">
+	<div class="verticalIzquierdo">
 
-<!-- <form id="fPartidaIndividualLibre" action="CrearPartidaIndividualServlet" method=post> -->
-
-<input type="image" src="images/iconoIndividual.png" onclick="location.href='CrearPartidaIndividualServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
-<p class="textoBoton">Libre Individual</p>
-
-<!-- </form> -->
-
-</div> 
-<div class="verticalCentro">
-<input type="image" src="images/iconoPartidaParejas.png" onclick="location.href='seleccionarPareja.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
-<p class="textoBoton">Libre Parejas</p>
-</div>
-<div class="verticalDerecho">
-<input type="image" src="images/iconoPartidaGrupo.png" onclick="location.href='buscarPartidaGrupo.jsp'"/>
-<p class="textoBoton">Cerrada</p>
-</div>
-<div class="abajoCentro">   
-<input class="botonVolver" id="busquedaVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
-</div>
+		<input type="image" src="images/iconoIndividual.png" onclick="location.href='CrearPartidaIndividualServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
+		<p class="textoBoton">Libre Individual</p>
+	
+	</div> 
+		<div class="verticalCentro">
+			<input type="image" src="images/iconoPartidaParejas.png" onclick="location.href='seleccionarPareja.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
+			<p class="textoBoton">Libre Parejas</p>
+		</div>
+		<div class="verticalDerecho">
+			<input type="image" src="images/iconoPartidaGrupo.png" onclick="location.href='buscarPartidaGrupo.jsp'"/>
+			<p class="textoBoton">Cerrada</p>
+		</div>
+		<div class="abajoCentro">   
+			<input class="botonVolver" id="busquedaVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
+		</div>
 </div>
 </body>
 </html>
