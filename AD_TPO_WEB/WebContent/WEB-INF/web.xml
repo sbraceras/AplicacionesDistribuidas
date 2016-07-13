@@ -79,4 +79,14 @@
     <servlet-name>SeleccionarGrupoServlet</servlet-name>
     <url-pattern>/SeleccionarGrupoServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SeleccionarJugadoresCerradoServlet</display-name>
+    <servlet-name>SeleccionarJugadoresCerradoServlet</servlet-name>
+    <servlet-class>servlets.SeleccionarJugadoresCerradoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SeleccionarJugadoresCerradoServlet</servlet-name>
+    <url-pattern>/SeleccionarJugadoresCerradoServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

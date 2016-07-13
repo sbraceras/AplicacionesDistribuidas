@@ -45,20 +45,14 @@
 		document.getElementById("divError").style.display = 'none';
 	}
 	
-	/* Depreco este metodo de obtener el item seleccionado de la lista.// 
-	function cambieSeleccion(selector){
-		var seleccion = selector.options[selector.selectedIndex].text;
-	}
-	*/
-	
 	function confirmarSeleccionGrupo() {
 		var selector = document.getElementById("grupoSelectField");
 		var nombreGrupo = selector.options[selector.selectedIndex].text;
 		var idGrupo = selector.options[selector.selectedIndex].value;
 				
 		if (nombreGrupo){
-			//TODO: Redireccionar a la proxima pantalla//
-				location.href='main.jsp?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&idGrupo=' + idGrupo;
+			
+				location.href='SeleccionarJugadoresCerrado?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&idGrupo=' + idGrupo + '&nombreGrupo=' + nombreGrupo;
 		}
 		
 		document.getElementById("divError").style.display = ''
