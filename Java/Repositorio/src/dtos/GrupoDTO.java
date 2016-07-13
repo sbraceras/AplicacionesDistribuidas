@@ -3,6 +3,8 @@ package dtos;
 import java.io.Serializable;
 import java.util.List;
 
+import enums.TipoMiembro;
+
 public class GrupoDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -58,7 +60,7 @@ public class GrupoDTO implements Serializable {
 	
 	public boolean tenesAdministrador(JugadorDTO admin){
 		for (MiembroGrupoDTO miembro : miembros){
-			if (miembro.getJugador().equalsIgnoreCase(admin.getApodo()) && miembro.isActivo()){
+			if (miembro.getJugador().equalsIgnoreCase(admin.getApodo()) && miembro.getTipoMiembro().equals(TipoMiembro.Administrador) && miembro.isActivo()){
 				return true;
 			}
 		}

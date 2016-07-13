@@ -69,4 +69,14 @@
     <servlet-name>VolverAlMenuServlet</servlet-name>
     <url-pattern>/VolverAlMenuServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SeleccionarGrupoServlet</display-name>
+    <servlet-name>SeleccionarGrupoServlet</servlet-name>
+    <servlet-class>servlets.SeleccionarGrupoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SeleccionarGrupoServlet</servlet-name>
+    <url-pattern>/SeleccionarGrupoServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
