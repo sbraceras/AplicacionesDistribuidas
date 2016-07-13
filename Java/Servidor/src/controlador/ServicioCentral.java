@@ -256,6 +256,7 @@ public class ServicioCentral {
 						Partido partido = new Partido(ingresan,
 								(Timestamp) date, TipoPartido.Grupo);
 						grupo.agregarPartido(partido);
+						partido.setEstadoPartido(EstadoPartido.Pendiente);
 						partidos.add(partido);
 						
 						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
