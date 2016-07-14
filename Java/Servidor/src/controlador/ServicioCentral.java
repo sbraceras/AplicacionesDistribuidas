@@ -440,14 +440,22 @@ public class ServicioCentral {
 	
 					// PREGUNTA: ACA MISMO NO HABRIA QUE QUITARLOS DE LA LISTA DE ESPERA?
 					// algo asi?  "esperandoLibreParejas.remove(...)"
+					List<Pareja> parejasBorrar = new ArrayList<Pareja>();
 					for (Pareja parejaBorrar : esperandoLibreParejas){
 						if (!esperandoLibreParejas.isEmpty()){
-							if( (parejaBorrar.tenesJugador(parejasPosibles.get(0).getJugador1()) && parejaBorrar.tenesJugador(parejasPosibles.get(0).getJugador2()) ) || (parejaBorrar.tenesJugador(parejasPosibles.get(1).getJugador1()) && parejaBorrar.tenesJugador(parejasPosibles.get(1).getJugador2()))){
-								esperandoLibreParejas.remove(parejaBorrar);
+							if( (parejaBorrar.tenesJugador(parejasPosibles.get(0).getJugador1()) && parejaBorrar.tenesJugador(parejasPosibles.get(0).getJugador2()) )
+									|| (parejaBorrar.tenesJugador(parejasPosibles.get(1).getJugador1()) && parejaBorrar.tenesJugador(parejasPosibles.get(1).getJugador2()))){
+								parejasBorrar.add(parejaBorrar);
 							}
 						}
 					}
+					
+					for (Pareja parejaBorrando : parejasBorrar){
+						esperandoLibreParejas.remove(parejaBorrando);
+					}
+					
 					return partido.toDTO();
+					
 				}
 			}
 		}
