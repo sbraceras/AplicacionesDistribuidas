@@ -99,6 +99,38 @@
 		height: 80px;
 	}
 	
+	h1.Despedida {
+
+	position: absolute;
+    top: 10px;
+    left: 10px;
+    
+    height: 100px;
+    color: white;
+
+	}
+
+	h2.Resultado {
+
+	position: absolute;
+    top: 65px;
+    left: 10px;
+    
+    height: 100px;
+    color: white;
+
+	}
+
+	h3.TituloTabla{
+
+	position: absolute;
+    top: 100px;
+    left: 10px;
+    
+    height: 100px;
+    color: red;
+	}
+	
 	#divReceptorCartaTirada {
 		width: 200px;
 		height: 150px;
