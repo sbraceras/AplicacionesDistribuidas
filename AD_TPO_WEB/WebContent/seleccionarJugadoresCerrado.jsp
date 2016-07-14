@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 	
-<link rel="icon" href="dice.png">
+<link rel="icon" href="images/dice.png">
 	
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Truco Web - Aplicaciones Distribuidas</title>
@@ -188,11 +188,8 @@
 				<br>
 			</form>
 			<input type="button" value="Aceptar Jugadores" class="botonAceptar" onclick="return confirmarSeleccionJugadores();"/>
+			<button onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'">VOLVER AL MENU</button>
 		</div>
-</div>
-	
-<div class="abajoCentro">   
-		<input class="botonVolver" id="busquedaVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 </div>
 		    
 </body>

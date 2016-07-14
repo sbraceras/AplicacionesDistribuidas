@@ -12,11 +12,11 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
+<link rel="icon" href="images/dice.png">
+
 <link type="text/css" rel="stylesheet" href="css/styles.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
-	
-<link rel="icon" href="dice.png">
 	
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Truco Web - Aplicaciones Distribuidas</title>
@@ -77,6 +77,7 @@
 		<div class="form">
 			<form class="seleccionarGrupo" id="seleccionarGrupo">
 					<div class="col-sm-10">
+						<h4>Seleccione Grupo</h4>
 						<select class="selector-grupo-jugador" name="idGrupo" id="grupoSelectField">
 							
 							<%if (jugador.getGrupos().isEmpty()){ %>
@@ -106,11 +107,8 @@
 				
 			</form>
 			<input type="button" value="Seleccionar Grupo" class="botonAceptar" onclick="return confirmarSeleccionGrupo();"/>
+			<button onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'">VOLVER AL MENU</button>
 		</div>
-</div>
-	
-<div class="abajoCentro">   
-		<input class="botonVolver" id="busquedaVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 </div>
 		    
 </body>

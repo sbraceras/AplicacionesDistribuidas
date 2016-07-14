@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 	
-<link rel="icon" href="dice.png">
+<link rel="icon" href="images/dice.png">
 	
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Truco Web - Aplicaciones Distribuidas</title>
@@ -76,6 +76,7 @@
 		<div class="form">
 			<form class="seleccionarPartidoCerrado" id="seleccionarPartidoCerrado">
 					<div class="col-sm-10">
+						<h4>Seleccione Partido Cerrado</h4>
 						<select class="selector-grupo-jugador" name="idPartido" id="selectorPartido">
 							<%if (partidosGrupo.isEmpty()){ %>
 							<option value=0>
@@ -104,11 +105,8 @@
 				
 			</form>
 			<input type="button" value="Seleccionar Grupo" class="botonAceptar" onclick="return confirmarSeleccionPartido();"/>
+			<button onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'">VOLVER AL MENU</button>
 		</div>
-</div>
-	
-<div class="abajoCentro">   
-		<input class="botonVolver" id="busquedaVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>'"/>
 </div>
 		    
 </body>

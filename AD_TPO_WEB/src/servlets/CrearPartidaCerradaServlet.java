@@ -51,13 +51,10 @@ public class CrearPartidaCerradaServlet extends HttpServlet {
 		
 
 		String apodoJugador1 = request.getParameter("apodoJugador1");
-		int idJugador1 = Integer.valueOf(request.getParameter("idJugador1")).intValue();
+		int idJugador1 = Integer.valueOf(request.getParameter("idJugador")).intValue();
 		String apodoJugador2 = request.getParameter("apodoJugador2");
-		int idJugador2 = Integer.valueOf(request.getParameter("idJugador2")).intValue();
 		String apodoJugador3 = request.getParameter("apodoJugador3");
-		int idJugador3 = Integer.valueOf(request.getParameter("idJugador3")).intValue();
 		String apodoJugador4 = request.getParameter("apodoJugador4");
-		int idJugador4 = Integer.valueOf(request.getParameter("idJugador4")).intValue();
 		
 		JugadorDTO jg1 = new JugadorDTO();
 		JugadorDTO jg2 = new JugadorDTO();
@@ -68,11 +65,8 @@ public class CrearPartidaCerradaServlet extends HttpServlet {
 		jg1.setApodo(apodoJugador1);
 		jg1.setId(idJugador1);
 		jg1.setApodo(apodoJugador2);
-		jg1.setId(idJugador2);
 		jg1.setApodo(apodoJugador3);
-		jg1.setId(idJugador3);
 		jg1.setApodo(apodoJugador4);
-		jg1.setId(idJugador4);
 		
 		GrupoDTO grupo = (GrupoDTO) request.getAttribute("grupo");
 		
@@ -85,11 +79,7 @@ public class CrearPartidaCerradaServlet extends HttpServlet {
 		
 		List<ParejaDTO> parejas = new ArrayList<ParejaDTO>();
 		parejas.add(pareja1);
-		parejas.add(pareja2);
-		
-		
-		
-		
+		parejas.add(pareja2);	
 
 		try {
 		
@@ -101,6 +91,14 @@ public class CrearPartidaCerradaServlet extends HttpServlet {
 			PartidoDTO miPartido = bd.armarPartidoGrupo(parejas, grupo, admin);
 
 			request.setAttribute("jugador", admin);
+			
+			if(miPartido!=null){
+				request.setAttribute("partidoCreado", "SI");
+			}else{
+				request.setAttribute("partidoCreado", "NO");
+			}
+			
+			rd = request.getRequestDispatcher("/main.jsp");
 			
 			/*
 			 * Falta ver esta parte. La seccion en la que va a buscar ultimopartido la vamos 
