@@ -4,6 +4,7 @@ import interfaz.TDATruco;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 
 import controlador.ServicioCentral;
@@ -309,6 +310,12 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 	public PartidoDTO armarPartidoGrupo(List<ParejaDTO> parejas, GrupoDTO grupo, JugadorDTO admin) throws RemoteException {
 		// TODO Auto-generated method stub
 		return controlador.crearPartidaGrupo(parejas, grupo, admin);
+	}
+
+	@Override
+	public List<PartidoDTO> obtenerPartidosGrupo(GrupoDTO grupoSeleccionado, JugadorDTO jugador) throws RemoteException {
+		// TODO Auto-generated method stub
+		return controlador.obtenerPartidosGrupo(grupoSeleccionado, jugador);
 	}
 
 

@@ -2,6 +2,7 @@ package interfaz;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dtos.CartaJugadorDTO;
@@ -79,5 +80,7 @@ public interface TDATruco extends Remote {
 	public void armarParejaGrupo(ParejaDTO pareja, GrupoDTO grupo, JugadorDTO admin) throws RemoteException;
 
 	public PartidoDTO armarPartidoGrupo(List<ParejaDTO> parejas, GrupoDTO grupo, JugadorDTO admin) throws RemoteException;
+
+	public List<PartidoDTO> obtenerPartidosGrupo(GrupoDTO grupoSeleccionado, JugadorDTO jugador) throws RemoteException;
 
 }

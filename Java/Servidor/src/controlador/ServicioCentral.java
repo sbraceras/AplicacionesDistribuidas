@@ -260,8 +260,9 @@ public class ServicioCentral {
 						Date date = new Date();
 						Partido partido = new Partido(ingresan,
 								(Timestamp) date, TipoPartido.Grupo);
-						grupo.agregarPartido(partido);
+						
 						partido.setEstadoPartido(EstadoPartido.Pendiente);
+						grupo.agregarPartido(partido);
 						partidos.add(partido);
 						
 						int idPartido = PartidoDAO.getInstance().guardarPartido(partido).intValue();
@@ -577,11 +578,6 @@ public class ServicioCentral {
 		return devolver;
 	}
 	
-	/* DESARROLLAR CON HQL */
-	public List<PartidoDTO> obtenerPartidosJugador(JugadorDTO jugador){
-		return null;
-	}
-
 	/* DESARROLLAR */
 	public ArrayList<PartidoDTO> obtenerPartidosEntreFechas(Timestamp fechaDesde,
 			Timestamp fechaHasta, TipoPartido modalidad, JugadorDTO jugador) throws PartidoException {
@@ -1193,6 +1189,25 @@ public class ServicioCentral {
 		
 		
 
+	}
+
+	public List<PartidoDTO> obtenerPartidosGrupo(GrupoDTO grupoSeleccionado, JugadorDTO jugadorDTO) {
+		// TODO Auto-generated method stub
+		Jugador jug = obtenerJugador(jugadorDTO);
+		Grupo grupo = obtenerGrupo(grupoSeleccionado);
+		
+		List<PartidoDTO> partidosGrupo = new ArrayList<PartidoDTO>();
+		for (Partido p : partidos) {
+			if (grupo.tenesPartido(p) && (p.participoJugador(jug)) && (!p.estasTerminado()) && (p.getTipoPartido().equals(TipoPartido.Grupo))) {
+				partidosGrupo.add(p.toDTO());
+			}
+		}
+
+		/* No buscamos en la BD los partidos porque ya estan levantados los pendientes en memoria!  */
+		if(partidosGrupo.isEmpty())
+			return null;
+		else
+			return partidosGrupo;		
 	}
 	
 	

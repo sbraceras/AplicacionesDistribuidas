@@ -302,6 +302,11 @@ public class BusinessDelegate {
 		return objetoRemoto.armarPartidoGrupo(parejas, grupo, admin);
 	}
 
+	public List<PartidoDTO> obtenerPartidosGrupo(GrupoDTO grupoSeleccionado, JugadorDTO jugador) throws RemoteException{
+		// TODO Auto-generated method stub
+		return objetoRemoto.obtenerPartidosGrupo(grupoSeleccionado, jugador);
+	}
+
 
 
 	
