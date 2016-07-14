@@ -59,12 +59,14 @@
 		var idJ4 = selectorJ4.options[selectorJ4.selectedIndex].value;
 			
 		/*Me fijo si no se repite ningun nombre. Ver si existe una manera mas limpia*/		
-				
-		if(nombreJ1 && nombreJ2 && nombreJ3 && nombreJ4){
-			if(nombreJ1!=nombreJ2 && nombreJ1!=nombreJ3 && nombreJ1!=nombreJ4){
-				if(nombreJ2!=nombreJ3 && nombreJ2!=nombreJ4){
-					if(nombreJ3!=nombreJ4){
-						location.href='CrearPartidaCerrada?idJugador1=' + idJ1 + '&apodoJugador1=' + nombreJ1 + '&apodoJugador2=' + nombreJ2 + '&idJugador2=' + idJ2 + '&apodoJugador3=' + nombreJ3 + '&idJugador3=' + nombreJ3 + '&apodoJugador4=' + nombreJ4 + '&idJugador4=' + idJ4 + '&nombreGrupo=<%=grupo.getNombre()%>';
+		if(idJ1!=0 && idJ2!=0 && idJ3!=0 && idJ4!=0){		
+			if(nombreJ1 && nombreJ2 && nombreJ3 && nombreJ4){
+				if(nombreJ1!=nombreJ2 && nombreJ1!=nombreJ3 && nombreJ1!=nombreJ4){
+					if(nombreJ2!=nombreJ3 && nombreJ2!=nombreJ4){
+						if(nombreJ3!=nombreJ4){
+							location.href='CrearPartidaCerrada?idJugador1=' + idJ1 + '&apodoJugador1=' + nombreJ1 + '&apodoJugador2=' + nombreJ2 + '&idJugador2=' + idJ2 + '&apodoJugador3=' + nombreJ3 + '&idJugador3=' + nombreJ3 + '&apodoJugador4=' + nombreJ4 + '&idJugador4=' + idJ4 + '&nombreGrupo=<%=grupo.getNombre()%>';
+							return true;
+						}
 					}
 				}
 			}
@@ -91,6 +93,11 @@
 					<h4>Pareja 1</h4>
 					<div class="col-sm-10">
 						<select class="selector-grupo-jugador" name="idGrupo" id="selectorJugador1">
+
+							<%if (miembros.isEmpty()){ %>
+								<option value=0>
+								</option>
+							<%} %>							
 							
 							<%
 								for (MiembroGrupoDTO miembro: miembros) {
@@ -108,6 +115,11 @@
 						
 					<div class="col-sm-10">
 						<select class="selector-grupo-jugador" name="idGrupo" id="selectorJugador2">
+							
+							<%if (miembros.isEmpty()){ %>
+								<option value=0>
+								</option>
+							<%} %>
 							
 							<%
 								for (MiembroGrupoDTO miembro: miembros) {
@@ -127,6 +139,11 @@
 					<div class="col-sm-10">					
 						<select class="selector-grupo-jugador" name="idGrupo" id="selectorJugador3">
 							
+							<%if (miembros.isEmpty()){ %>
+								<option value=0>
+								</option>
+							<%} %>
+							
 							<%
 								for (MiembroGrupoDTO miembro: miembros) {
 							%>
@@ -143,6 +160,11 @@
 						
 					<div class="col-sm-10">	
 						<select class="selector-grupo-jugador" name="idGrupo" id="selectorJugador4">
+							
+							<%if (miembros.isEmpty()){ %>
+								<option value=0>
+								</option>
+							<%} %>
 							
 							<%
 								for (MiembroGrupoDTO miembro: miembros) {

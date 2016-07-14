@@ -99,4 +99,24 @@
     <servlet-name>CrearPartidaCerradaServlet</servlet-name>
     <url-pattern>/CrearPartidaCerradaServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BuscarGrupoCerradoServlet</display-name>
+    <servlet-name>BuscarGrupoCerradoServlet</servlet-name>
+    <servlet-class>servlets.BuscarGrupoCerradoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BuscarGrupoCerradoServlet</servlet-name>
+    <url-pattern>/BuscarGrupoCerradoServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>BuscarPartidosGrupoServlet</display-name>
+    <servlet-name>BuscarPartidosGrupoServlet</servlet-name>
+    <servlet-class>servlets.BuscarPartidosGrupoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BuscarPartidosGrupoServlet</servlet-name>
+    <url-pattern>/BuscarPartidosGrupoServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

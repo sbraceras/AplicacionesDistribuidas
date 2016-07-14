@@ -79,6 +79,7 @@ public class SeleccionarJugadoresCerradoServlet extends HttpServlet {
 			jugador = bd.obtenerJugadorCompleto(jugador);
 
 			// Traigo la lista de miembros del grupo que seleccione anteriormente//
+			
 			miembros = bd.obtenerMiembrosGrupo(grupoSeleccionado);
 
 			request.setAttribute("grupo", grupoSeleccionado);

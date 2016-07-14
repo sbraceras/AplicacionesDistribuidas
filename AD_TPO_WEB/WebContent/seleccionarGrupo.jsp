@@ -25,6 +25,8 @@
 <%
 	JugadorDTO jugador = (JugadorDTO) request.getAttribute("jugador");
 	
+	GrupoDTO grupo = (GrupoDTO) request.getAttribute("grupo");
+
 	//Voy a buscar la lista de grupos que tiene y los filtro por administrados.//
 	if (jugador.getGrupos()!=null){
 	
@@ -48,13 +50,15 @@
 		var selector = document.getElementById("grupoSelectField");
 		var nombreGrupo = selector.options[selector.selectedIndex].text;
 		var idGrupo = selector.options[selector.selectedIndex].value;
-				
-		if (!nombreGrupo){
-
-			document.getElementById("divError").style.display = ''
-			return false;	
+		
+		if(idGrupo!=0){
+			if (nombreGrupo){
+				location.href='SeleccionarJugadoresCerrado?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&idGrupo=' + idGrupo + '&nombreGrupo=' + nombreGrupo;
+				}
 		}
-		location.href='SeleccionarJugadoresCerrado?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&idGrupo=' + idGrupo + '&nombreGrupo=' + nombreGrupo;
+		
+		document.getElementById("divError").style.display = ''
+		return false;	
 		
 	}
 
@@ -74,6 +78,11 @@
 			<form class="seleccionarGrupo" id="seleccionarGrupo">
 					<div class="col-sm-10">
 						<select class="selector-grupo-jugador" name="idGrupo" id="grupoSelectField">
+							<%if (jugador.getGrupos().isEmpty()){ %>
+								<option value=0>
+								</option>
+							<%} %>
+							
 							<%
 								for (GrupoDTO g : jugador.getGrupos()) {
 							%>
@@ -81,9 +90,7 @@
 							<option value=<%=g.getId()%>>
 								<%=g.getNombre()%>
 							</option>
-							<%
-								}
-							%>
+							<% }%>
 						</select> 
 						
 					</div>

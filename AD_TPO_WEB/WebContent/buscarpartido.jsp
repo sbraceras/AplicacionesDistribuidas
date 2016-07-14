@@ -48,7 +48,7 @@
 			<p class="textoBoton">Libre Parejas</p>
 		</div>
 		<div class="verticalDerecho">
-			<input type="image" src="images/iconoPartidaGrupo.png" onclick="location.href='buscarPartidaGrupo.jsp'"/>
+			<input type="image" src="images/iconoPartidaGrupo.png" onclick="location.href='BuscarGrupoCerrado?idJugador=<%=jugador.getId()%>&apodoJugador<%=jugador.getApodo()%>'"/>
 			<p class="textoBoton">Cerrada</p>
 		</div>
 		<div class="abajoCentro">   
