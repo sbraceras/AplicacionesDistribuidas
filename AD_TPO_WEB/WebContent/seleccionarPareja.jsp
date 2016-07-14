@@ -44,8 +44,9 @@ request.setAttribute("jugador", jugador);
 		var apodoJugador1 = document.getElementById("ApodoJugador").value;
 		var apodoJugador2 = document.getElementById("ApodoJugador2").value;
 		
-		if (apodoJugador1 != apodoJugador2 && apodoJugador2){
+		if (apodoJugador2 && apodoJugador1 != apodoJugador2){
 				location.href='CrearPartidaParejasServlet?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&apodoJugador2=' + apodoJugador2;
+				return true;
 		}
 		
 		document.getElementById("divError").style.display = ''

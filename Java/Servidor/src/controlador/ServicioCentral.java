@@ -410,28 +410,45 @@ public class ServicioCentral {
 		List<Pareja> parejasPosibles = new ArrayList<Pareja>();
 		Partido partido = null;
 		parejasPosibles.add(esperandoLibreParejas.get(esperandoLibreParejas.size()-1));
+		
 		TipoCategoria categoriaSuperior = parejasPosibles.get(0).obtenerCategoriaSuperior();
 		
 		for (Pareja p : esperandoLibreParejas){
-			if (p.obtenerCategoriaSuperior().equals(categoriaSuperior) && !parejasPosibles.contains(p)){
+			if (p.obtenerCategoriaSuperior().equals(categoriaSuperior) && !parejasPosibles.contains(p) && (!p.tenesJugador(parejasPosibles.get(0).getJugador1()) && !p.tenesJugador(parejasPosibles.get(0).getJugador2()))){
 				//Encontre pareja, armo el partido//
 				parejasPosibles.add(p);
-
 				parejasPosibles.get(0).setNumeroPareja(1);
 				parejasPosibles.get(1).setNumeroPareja(2);
 
-				partido = new Partido(parejasPosibles, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreParejas);
-				partido.setId(PartidoDAO.getInstance().guardarPartido(partido).intValue());
-				partidos.add(partido);
+				int encontradoParejas = 0;
+				for (Pareja buscar1 : esperandoLibreParejas){
+					if (buscar1.tenesJugador(parejasPosibles.get(0).getJugador1()) && buscar1.tenesJugador(parejasPosibles.get(0).getJugador2())){
+						encontradoParejas++;
+					}
+				}
+				for (Pareja buscar2 : esperandoLibreParejas){
+					if (buscar2.tenesJugador(parejasPosibles.get(1).getJugador1()) && buscar2.tenesJugador(parejasPosibles.get(1).getJugador2())){
+						encontradoParejas++;
+					}
+				}
 
-
-
-				// PREGUNTA: ACA MISMO NO HABRIA QUE QUITARLOS DE LA LISTA DE ESPERA?
-				// algo asi?  "esperandoLibreParejas.remove(...)"
-
-
-
-				return partido.toDTO();
+				if(encontradoParejas>=4){
+										
+					partido = new Partido(parejasPosibles, new Timestamp(System.currentTimeMillis()), TipoPartido.LibreParejas);
+					partido.setId(PartidoDAO.getInstance().guardarPartido(partido).intValue());
+					partidos.add(partido);
+	
+					// PREGUNTA: ACA MISMO NO HABRIA QUE QUITARLOS DE LA LISTA DE ESPERA?
+					// algo asi?  "esperandoLibreParejas.remove(...)"
+					for (Pareja parejaBorrar : esperandoLibreParejas){
+						if (!esperandoLibreParejas.isEmpty()){
+							if( (parejaBorrar.tenesJugador(parejasPosibles.get(0).getJugador1()) && parejaBorrar.tenesJugador(parejasPosibles.get(0).getJugador2()) || (parejaBorrar.tenesJugador(parejasPosibles.get(1).getJugador1()) && parejaBorrar.tenesJugador(parejasPosibles.get(1).getJugador2()))) ){
+								esperandoLibreParejas.remove(parejaBorrar);
+							}
+						}
+					}
+					return partido.toDTO();
+				}
 			}
 		}
 				
@@ -1154,13 +1171,19 @@ public class ServicioCentral {
 				jug2 = null;
 			}
 			
-			//Si encontre ambos jugadores, me fijo que no esten en la lista de espera. Si no estan los agrego como pareja//
+			//Si encontre ambos jugadores, me fijo que no esten en la lista de espera. Si no estan los agrego como pareja.//
+			//Si estan una sola vez los vuelvo a agregar para luego poder armar el partido//
+			boolean encontrePrimeraVez = false;
 			if (jug1 != null && jug2 != null){
 				for (Pareja p : esperandoLibreParejas){
-					if (p.getJugador1().sosJugador(jug1) && p.getJugador2().sosJugador(jug2)){
-						return p;
-					}else if (p.getJugador2().sosJugador(jug1) && p.getJugador1().sosJugador(jug2)){
-						return p;
+					if (p.tenesJugador(jug1)){
+						if (p.tenesJugador(jug2)){
+							if(encontrePrimeraVez){	
+								return p;
+							}else{
+								encontrePrimeraVez = true;
+							}
+						}
 					}
 				}
 			}
