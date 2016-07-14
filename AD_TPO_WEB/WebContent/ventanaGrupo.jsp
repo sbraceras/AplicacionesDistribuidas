@@ -46,7 +46,7 @@
     <td><p><%=grupo.getNombre()%></p></td>
   </tr>  
   <tr>
-    <th scope="Lider">Lider</th>
+    <th scope="Administrador">Administrador</th>
     <td><p><%=jugador.getApodo()%></p></td>
   </tr>
 </table>

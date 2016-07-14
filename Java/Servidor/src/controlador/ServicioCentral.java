@@ -1011,6 +1011,7 @@ public class ServicioCentral {
 					{
 						puntajesAgregar.add(puntaje.toDTO());
 					}
+					agregar.setNumeroChico(chico.getNumeroChico());
 					agregar.setPuntajes(puntajesAgregar);
 					devolver.add(agregar);
 					

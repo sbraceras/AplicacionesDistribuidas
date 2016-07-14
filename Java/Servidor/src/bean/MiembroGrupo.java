@@ -47,7 +47,7 @@ public class MiembroGrupo {
 		dto.setActivo(this.activo);
 		dto.setId(this.id);
 		dto.setJugador(this.jugador.getApodo());
-		dto.setRanking(this.ranking.toDTO());
+		dto.setRanking(new RankingDTO()); // this.ranking.toDTO());
 		dto.setTipoMiembro(tipoMiembro);
 		
 		return dto;
