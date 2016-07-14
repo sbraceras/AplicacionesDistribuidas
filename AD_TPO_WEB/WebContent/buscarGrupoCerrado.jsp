@@ -88,7 +88,7 @@
 							<%
 								for (GrupoDTO g : jugador.getGrupos()) {
 							%>
-							a
+							
 							<option value=<%=g.getId()%>>
 								<%=g.getNombre()%>
 							</option>
