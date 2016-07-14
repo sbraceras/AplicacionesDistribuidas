@@ -485,10 +485,11 @@ h1 {
   top: 500px;
 }
 
-.selector-grupo{
+.selector-grupo-jugador{
 	height: 30px;
   	line-height: 30px;
   	width: 300px;
   	position : relative;
-  	background-color : #2feaee;
+  	background-color : #0ef7cb;
+  	margin-bottom: 15px;
 }

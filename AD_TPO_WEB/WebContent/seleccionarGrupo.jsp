@@ -28,7 +28,6 @@
 	//Voy a buscar la lista de grupos que tiene y los filtro por administrados.//
 	if (jugador.getGrupos()!=null){
 	
-		
 	//mensaje de debug//
 	System.out.println("Grupos size: " + jugador.getGrupos().size());
 	
@@ -50,13 +49,13 @@
 		var nombreGrupo = selector.options[selector.selectedIndex].text;
 		var idGrupo = selector.options[selector.selectedIndex].value;
 				
-		if (nombreGrupo){
-			
-				location.href='SeleccionarJugadoresCerrado?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&idGrupo=' + idGrupo + '&nombreGrupo=' + nombreGrupo;
+		if (!nombreGrupo){
+
+			document.getElementById("divError").style.display = ''
+			return false;	
 		}
+		location.href='SeleccionarJugadoresCerrado?idJugador=<%=jugador.getId()%>&apodoJugador=<%=jugador.getApodo()%>&idGrupo=' + idGrupo + '&nombreGrupo=' + nombreGrupo;
 		
-		document.getElementById("divError").style.display = ''
-		return false;
 	}
 
 	function volverAlMenu(pagina) {
@@ -74,7 +73,7 @@
 		<div class="form">
 			<form class="seleccionarGrupo" id="seleccionarGrupo">
 					<div class="col-sm-10">
-						<select class="selector-grupo" name="idGrupo" id="grupoSelectField">
+						<select class="selector-grupo-jugador" name="idGrupo" id="grupoSelectField">
 							<%
 								for (GrupoDTO g : jugador.getGrupos()) {
 							%>
@@ -91,10 +90,8 @@
 										
 					<div id="divError">
 						<br>
-						<br>
 						<span id="mensajeErrorLoginIncompleto">Debe seleccionar un grupo valido.</span>
 					</div>
-					<br>
 					<br>
 				
 			</form>

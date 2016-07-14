@@ -86,7 +86,7 @@ public class SeleccionarJugadoresCerradoServlet extends HttpServlet {
 			request.setAttribute("miembrosGrupo", miembros);
 			request.setAttribute("jugador", jugador);
 
-			rd = getServletContext().getRequestDispatcher("/CrearPartidoGrupo.jsp");
+			rd = getServletContext().getRequestDispatcher("/seleccionarJugadoresCerrado.jsp");
 			rd.forward(request, response);
 
 		} catch (Exception e) {
