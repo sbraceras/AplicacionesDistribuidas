@@ -48,6 +48,49 @@
 		color: #f2f3f0;
 	}
 	
+	.estiloTabla {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 10px;
+	font-weight: bold;
+	color: #FFF;
+	}
+	
+	.TablaResultados {
+	
+	position: absolute;
+	top: 150px;
+    left: 10px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #FFC;
+	border-right-color: #FFC;
+	border-bottom-color: #FFC;
+	border-left-color: #FFC;
+	color: #FFF;
+	}
+	
+	
+	.botonVolver{
+	width: 400x;
+	height: 40px;
+	position: absolute;
+	top: 350px;
+	left: 50px;
+	text-transform: uppercase;
+	outline: 0;
+	font-weight: bold;
+	background: #06F;
+	border: 0;
+	padding: 15px;
+	color: #FFFFFF;
+	font-size: 14px;
+	-webkit-transition: all 0.3 ease;
+	transition: all 0.3 ease;
+	text-align: center;
+}
+	
 	.Estilo2 {
 		color: #f2f3f0;
 		;
@@ -56,12 +99,44 @@
 		height: 80px;
 	}
 	
+	h1.Despedida {
+
+	position: absolute;
+    top: 10px;
+    left: 10px;
+    
+    height: 100px;
+    color: white;
+
+	}
+
+	h2.Resultado {
+
+	position: absolute;
+    top: 65px;
+    left: 10px;
+    
+    height: 100px;
+    color: white;
+
+	}
+
+	h3.TituloTabla{
+
+	position: absolute;
+    top: 100px;
+    left: 10px;
+    
+    height: 100px;
+    color: red;
+	}
+	
 	#divReceptorCartaTirada {
 		width: 200px;
 		height: 150px;
 		left: 440px;
 		top: 320px;
-		border: 2px solid #aaaaaa;
+/* 		border: 2px solid #aaaaaa; */
 		position: absolute;
 		visibility: visible;
 	}
@@ -246,13 +321,13 @@
 <%
 
 JugadorDTO yo = (JugadorDTO) request.getAttribute("jugador");
-JugadorDTO jugadorActual = (JugadorDTO) request.getAttribute("jugadorActual");
-PartidoDTO miPartido = (PartidoDTO) request.getAttribute("miPartido");
 EstadoPartido estadoPartido = (EstadoPartido) request.getAttribute("estadoPartido");
-List<BazaDTO> bazas = (List<BazaDTO>) request.getAttribute("bazas");
 
 if (!estadoPartido.equals(EstadoPartido.Terminado)) {
 	
+	List<BazaDTO> bazas = (List<BazaDTO>) request.getAttribute("bazas");
+	JugadorDTO jugadorActual = (JugadorDTO) request.getAttribute("jugadorActual");
+	PartidoDTO miPartido = (PartidoDTO) request.getAttribute("miPartido");
 	List<ParejaDTO> parejas = (List<ParejaDTO>) request.getAttribute("parejas");
 	List<CartaJugadorDTO> misCartas = (List<CartaJugadorDTO>) request.getAttribute("misCartas");
 	List<PuntajeParejaDTO> puntajes = (List<PuntajeParejaDTO>) request.getAttribute("puntajes");
@@ -661,21 +736,55 @@ for (int i=0; i < bazas.size(); i++) {
 
 <% }
 
-	else
-// 		ESTA TERMINADO
-		{
-		ParejaDTO pareja = (ParejaDTO) request.getAttribute("parejaGanadora");
-	%> 
+else
+{
+	List<ChicoDTO> puntajes = (List<ChicoDTO>)request.getAttribute("puntajes");
+	ParejaDTO ganadora = (ParejaDTO) request.getAttribute("parejaGanadora");
+	List<ParejaDTO> parejas = (List<ParejaDTO>) request.getAttribute("parejas");
 	
-<h1 align="center">El PARTIDO ESTA TERMINADO</h1>   
-<h2 align="center">GANO LA PAREJA: <%=pareja.getNumeroPareja()%></h2>
+	
+	%>
+	
+	<h1 class="Despedida">El Partido ha finalizado</h1>
+	<h2 class="Resultado">La Pareja Ganadora es la de <%=ganadora.getJugador1() +" y " + ganadora.getJugador2()%></h2>
+	
+	<h3 class="TituloTabla">Los Resultados Fueron: </h3>
 
-	<div align="center">Falta codear ir al menu
-      <button>Volver al Menu</button>
+		<table class="TablaResultados" width="200" border="1">
+		<tr>
+	    <th scope="col">N° Chico</th>
+	    <th scope="col"><%=parejas.get(0).getJugador1()+"/"+ parejas.get(0).getJugador2()%></th>
+	    <th scope="col"><%=parejas.get(1).getJugador1()+"/"+ parejas.get(1).getJugador2()%></th>
+	    <th scope="col">Ganador</th>
+	</tr>
+		
+		<% 
+			
+		for(ChicoDTO chico: puntajes){
+			%>
+			<tr>
+			<th scope="col"><%=chico.getNumeroChico()%></th>
+			<th scope="col"><%=chico.getPuntajes().get(0).getPuntaje()%></th>
+			<th scope="col"><%=chico.getPuntajes().get(1).getPuntaje()%></th>
+			<th scope="col"><%
+			
+			if(chico.getPuntajes().get(0).getPuntaje()>chico.getPuntajes().get(1).getPuntaje())
+			{
+				%><%=parejas.get(0).getJugador1()+"/"+ parejas.get(0).getJugador2()%><%
+			}
+			else
+			{
+				%><%=parejas.get(1).getJugador1()+"/"+ parejas.get(1).getJugador2()%><%
+			}%></th> </tr><%
+		}
 
-<% }%>
+	%>	
+	<input class="botonVolver" type="submit" value="Volver al Menu" onclick="location.href='VolverAlMenu?idJugador=<%=yo.getId()%>&apodoJugador=<%=yo.getApodo()%>'"/>  
+		
+<%}%>
+	
 
-    </div>
+</div>
 
 
 <footer>

@@ -123,9 +123,11 @@ public class gestionarMovimientoServlet extends HttpServlet {
 			if (bd.partidoEstaTerminado(partido, jugador)) {
 				//Se termino el partido, True es 1
 				request.setAttribute("estadoPartido", EstadoPartido.Terminado);
-				
-//				request.setAttribute("parejaGanadora", );
-				// OBTENER QUIEN GANO EL PARTIDO
+				request.setAttribute("parejas", bd.obtenerParejasPartido(partido));
+				request.setAttribute("jugador", jugador);
+				request.setAttribute("miPartido", partido);
+				request.setAttribute("parejaGanadora", bd.obtenerParejaGanadoraPartido(jugador, partido));
+				request.setAttribute("puntajes", bd.obtenerResultadoFinalPartido(jugador, partido));
 			}
 			else
 			{
@@ -160,7 +162,6 @@ public class gestionarMovimientoServlet extends HttpServlet {
 			
 			rd = getServletContext().getRequestDispatcher("/ventanaJuego.jsp");
 			rd.forward(request, response);
-
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}	

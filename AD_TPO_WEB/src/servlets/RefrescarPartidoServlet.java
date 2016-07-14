@@ -73,36 +73,53 @@ public class RefrescarPartidoServlet extends HttpServlet {
 		partido.setId(idPartido);
 
 		try {
+			
+			
 			RequestDispatcher rd = null;
 			
-			jugadorActual = bd.obtenerJugadorActual(partido, jugador);
-			List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(partido, jugador);
-			List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(partido, jugador);
-			List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
-			ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(partido, jugador);
-			List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
-//			List<MovimientoDTO> movimientos = bd.obtenerMovimientosUltimaBaza(partido, jugador);
-
-			request.setAttribute("miPartido", partido);
-			request.setAttribute("jugador", jugador);
-			request.setAttribute("jugadorActual", jugadorActual);
-			request.setAttribute("parejas", parejas);
-			request.setAttribute("misCartas", misCartas);
-			request.setAttribute("puntajes", puntajes);
-			request.setAttribute("estadoPartido", EstadoPartido.Empezado);
-			request.setAttribute("bazas", ultimaMano.getBazas());
-			request.setAttribute("ganadoresBazas", ganadoresBazas);
-//			request.setAttribute("movimientos", movimientos);
-
-			if(idJugador== jugadorActual.getId()) {
-				//Es el Turno de este jugador
-				List<TipoEnvite> envites = bd.obtenerEnvitesDisponibles(partido, jugador);
-				request.setAttribute("envites", envites);
+			if (bd.partidoEstaTerminado(partido, jugador)) {
+					//Se termino el partido, True es 1
+					request.setAttribute("estadoPartido", EstadoPartido.Terminado);
+					request.setAttribute("parejas", bd.obtenerParejasPartido(partido));
+					request.setAttribute("jugador", jugador);
+					request.setAttribute("miPartido", partido);
+					request.setAttribute("parejaGanadora", bd.obtenerParejaGanadoraPartido(jugador, partido));
+					request.setAttribute("puntajes", bd.obtenerResultadoFinalPartido(jugador, partido));
+					
 			}
+			else
+			{
+				jugadorActual = bd.obtenerJugadorActual(partido, jugador);
+				List<CartaJugadorDTO> misCartas = bd.obtenerCartasJugador(partido, jugador);
+				List<PuntajeParejaDTO> puntajes = bd.obtenerPuntajeChico(partido, jugador);
+				List<ParejaDTO> parejas = bd.obtenerParejasPartido(partido);
+				ManoDTO ultimaMano = bd.obtenerUltimaManoActiva(partido, jugador);
+				List<JugadorDTO> ganadoresBazas = bd.obtenerGanadoresBazas(partido, jugador);
+	//			List<MovimientoDTO> movimientos = bd.obtenerMovimientosUltimaBaza(partido, jugador);
 	
+				request.setAttribute("miPartido", partido);
+				request.setAttribute("jugador", jugador);
+				request.setAttribute("jugadorActual", jugadorActual);
+				request.setAttribute("parejas", parejas);
+				request.setAttribute("misCartas", misCartas);
+				request.setAttribute("puntajes", puntajes);
+				request.setAttribute("estadoPartido", EstadoPartido.Empezado);
+				request.setAttribute("bazas", ultimaMano.getBazas());
+				request.setAttribute("ganadoresBazas", ganadoresBazas);
+	//			request.setAttribute("movimientos", movimientos);
+	
+				if(idJugador== jugadorActual.getId()) {
+					//Es el Turno de este jugador
+					List<TipoEnvite> envites = bd.obtenerEnvitesDisponibles(partido, jugador);
+					request.setAttribute("envites", envites);
+				}
+		
+			
+			}
+			
 			rd = getServletContext().getRequestDispatcher("/ventanaJuego.jsp");
 			rd.forward(request, response);
-		
+			
 	  } catch (RemoteException e) {
 		  e.printStackTrace();
 	 }
