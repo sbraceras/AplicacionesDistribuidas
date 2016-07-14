@@ -57,14 +57,14 @@
 		var idJ2 = selectorJ2.options[selectorJ2.selectedIndex].value;
 		var idJ3 = selectorJ3.options[selectorJ3.selectedIndex].value;
 		var idJ4 = selectorJ4.options[selectorJ4.selectedIndex].value;
-		
-		
-		/*Me fijo si no se repite ningun nombre. Ver si existe una manera mas limpia*/			
+			
+		/*Me fijo si no se repite ningun nombre. Ver si existe una manera mas limpia*/		
+				
 		if(nombreJ1 && nombreJ2 && nombreJ3 && nombreJ4){
 			if(nombreJ1!=nombreJ2 && nombreJ1!=nombreJ3 && nombreJ1!=nombreJ4){
 				if(nombreJ2!=nombreJ3 && nombreJ2!=nombreJ4){
 					if(nombreJ3!=nombreJ4){
-						location.href='CrearPartidaCerrada?idJugador=' + idJ1 + '&apodoJugador=' + nombreJ1 + '&apodoJugador2=' + nombreJ2 + '&idJugador2=' + idJ2 + '&apodoJugador3=' + nombreJ3 + '&idJugador3=' + nombreJ3 + '&apodoJugador4=' + nombreJ4 + '&idJugador4=' + idJ4;
+						location.href='CrearPartidaCerrada?idJugador1=' + idJ1 + '&apodoJugador1=' + nombreJ1 + '&apodoJugador2=' + nombreJ2 + '&idJugador2=' + idJ2 + '&apodoJugador3=' + nombreJ3 + '&idJugador3=' + nombreJ3 + '&apodoJugador4=' + nombreJ4 + '&idJugador4=' + idJ4 + '&nombreGrupo=<%=grupo.getNombre()%>';
 					}
 				}
 			}

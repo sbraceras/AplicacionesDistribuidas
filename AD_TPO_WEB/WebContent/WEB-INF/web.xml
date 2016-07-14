@@ -89,4 +89,14 @@
     <servlet-name>SeleccionarJugadoresCerradoServlet</servlet-name>
     <url-pattern>/SeleccionarJugadoresCerradoServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CrearPartidaCerradaServlet</display-name>
+    <servlet-name>CrearPartidaCerradaServlet</servlet-name>
+    <servlet-class>servlets.CrearPartidaCerradaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CrearPartidaCerradaServlet</servlet-name>
+    <url-pattern>/CrearPartidaCerradaServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -61,7 +61,6 @@ public class SeleccionarJugadoresCerradoServlet extends HttpServlet {
 
 		int idJugador = Integer.valueOf(request.getParameter("idJugador")).intValue();
 		String apodoJugador = request.getParameter("apodoJugador");
-		int idGrupo = Integer.valueOf(request.getParameter("idGrupo")).intValue();
 		String nombreGrupo = request.getParameter("nombreGrupo");
 
 		JugadorDTO jugador = new JugadorDTO();

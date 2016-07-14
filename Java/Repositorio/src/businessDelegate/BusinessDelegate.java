@@ -292,6 +292,16 @@ public class BusinessDelegate {
 		}
 	}
 
+	public void armarParejaGrupo(ParejaDTO pareja, GrupoDTO grupo, JugadorDTO admin) throws RemoteException {
+		// TODO Auto-generated method stub
+		objetoRemoto.armarParejaGrupo(pareja, grupo, admin);
+	}
+
+	public PartidoDTO armarPartidoGrupo(List<ParejaDTO> parejas, GrupoDTO grupo, JugadorDTO admin) throws RemoteException {
+		// TODO Auto-generated method stub
+		return objetoRemoto.armarPartidoGrupo(parejas, grupo, admin);
+	}
+
 
 
 	

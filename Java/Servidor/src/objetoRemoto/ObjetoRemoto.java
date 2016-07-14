@@ -299,6 +299,18 @@ public class ObjetoRemoto extends UnicastRemoteObject implements TDATruco {
 		controlador.eliminarMiembroGrupo(jugador, grupo, administrador);
 	}
 
+	@Override
+	public void armarParejaGrupo(ParejaDTO pareja, GrupoDTO grupo, JugadorDTO admin) throws RemoteException {
+		// TODO Auto-generated method stub
+		controlador.armarParejaGrupo(pareja, grupo, admin);
+	}
+
+	@Override
+	public PartidoDTO armarPartidoGrupo(List<ParejaDTO> parejas, GrupoDTO grupo, JugadorDTO admin) throws RemoteException {
+		// TODO Auto-generated method stub
+		return controlador.crearPartidaGrupo(parejas, grupo, admin);
+	}
+
 
 
 }

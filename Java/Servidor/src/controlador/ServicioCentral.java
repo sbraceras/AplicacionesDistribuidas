@@ -115,17 +115,6 @@ public class ServicioCentral {
 
 		return jug;
 	}
-	
-	public JugadorDTO obtenerJugadorCompleto (JugadorDTO jugador){
-		
-		return obtenerJugador(jugador).toDTO();
-	}
-
-	public boolean existeGrupo(GrupoDTO dto) {
-		if (obtenerGrupo(dto) != null)
-			return true;
-		return false;
-	}
 
 	public RankingDTO obtenerRankingGeneral(JugadorDTO jugador,
 			ArrayList<RankingDTO> rank) {
@@ -140,6 +129,18 @@ public class ServicioCentral {
 
 	public RankingDTO obtenerRanking(Jugador jug) {
 		return jug.getRanking().toDTO();
+	}
+	
+	
+	public JugadorDTO obtenerJugadorCompleto (JugadorDTO jugador){
+		
+		return obtenerJugador(jugador).toDTO();
+	}
+
+	public boolean existeGrupo(GrupoDTO dto) {
+		if (obtenerGrupo(dto) != null)
+			return true;
+		return false;
 	}
 
 	public void crearGrupo(GrupoDTO dto, JugadorDTO administrador) throws ControladorException {
@@ -200,27 +201,29 @@ public class ServicioCentral {
 		return null;
 	}
 
-	public void armarParejaGrupo(ArrayList<JugadorDTO> integrantes,
-			GrupoDTO dto, JugadorDTO administrador) {
+	public void armarParejaGrupo(ParejaDTO parejaDTO,
+			GrupoDTO grupoDTO, JugadorDTO administrador) {
 
-		Grupo grupo = obtenerGrupo(dto);
-
+		Grupo grupo = obtenerGrupo(grupoDTO);
+				
 		if (grupo != null) {
 
-			Jugador jugador = obtenerJugador(administrador);
+			Jugador admin = obtenerJugador(administrador);
 
-			if (jugador != null) {
+			if (admin!= null) {
 
-				if (grupo.esAdministrador(jugador)) {
+				if (grupo.esAdministrador(admin)) {
 
-					ArrayList<Jugador> parejas = new ArrayList<Jugador>();
-
-					for (int i = 0; i < integrantes.size(); i++) {
-
-						parejas.add(obtenerJugador(integrantes.get(i)));
-					}
-
-					grupo.armarPareja(parejas);
+					ArrayList<Jugador> pareja = new ArrayList<Jugador>();
+					JugadorDTO jug1 = new JugadorDTO();
+					jug1.setApodo(parejaDTO.getJugador1());
+					JugadorDTO jug2 = new JugadorDTO();
+					jug2.setApodo(parejaDTO.getJugador2());
+					
+					pareja.add(obtenerJugador(jug1));
+					pareja.add(obtenerJugador(jug2));
+					
+					grupo.armarPareja(pareja);
 
 				}
 
@@ -231,7 +234,7 @@ public class ServicioCentral {
 	}
 
 	/* HACER SEGUN DIAGRAMA DE SECUENCIAS */
-	public PartidoDTO crearPartidaGrupo(ArrayList<ParejaDTO> parejas, GrupoDTO dto,
+	public PartidoDTO crearPartidaGrupo(List<ParejaDTO> parejas, GrupoDTO dto,
 			JugadorDTO administrador) {
 		Grupo grupo = obtenerGrupo(dto);
 
@@ -252,6 +255,8 @@ public class ServicioCentral {
 
 					if (ingresan.size() == 2) /* tengo ambas parejas activas */
 					{
+						ingresan.get(0).setNumeroPareja(1);
+						ingresan.get(1).setNumeroPareja(2);
 						Date date = new Date();
 						Partido partido = new Partido(ingresan,
 								(Timestamp) date, TipoPartido.Grupo);
