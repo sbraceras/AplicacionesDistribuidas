@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import daos.GrupoDAO;
 import dtos.GrupoDTO;
 import dtos.JugadorDTO;
@@ -13,7 +16,6 @@ import dtos.MiembroGrupoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 import dtos.RankingDTO;
-
 import enums.TipoMiembro;
 import enums.TipoPartido;
 
@@ -39,7 +41,8 @@ public class Grupo {
 	@Transient
 	private List<Pareja> parejasActivas;
 
-	@OneToMany (cascade = CascadeType.ALL)  /*fetch = FetchType.EAGER)*/
+	@OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinColumn (name = "id_grupo")
 	private List<Partido> partidos;
 	
@@ -117,7 +120,7 @@ public class Grupo {
 	}
 
 	public List<Partido> getPartidos() {
-		partidos = GrupoDAO.getInstancia().buscarPartidos(this);
+//		partidos = GrupoDAO.getInstancia().buscarPartidos(this);
 		return partidos;
 	}
 

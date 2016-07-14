@@ -525,22 +525,22 @@ List<ParejaDTO> parejas = (List<ParejaDTO>) request.getAttribute("parejas");
 			
 				if(cartaJugador.getJugador().getApodo().equals(jugador1))
 				{
-					cartasJ1.add("images/cartas/" + cartaJugador.getCarta().getPalo()+ cartaJugador.getCarta().getNumero()+ ".png"); 
+					cartasJ1.add("images/cartas/" + cartaJugador.getCarta().getNombreImagen()); 
 				}
 				else{
 					if(cartaJugador.getJugador().getApodo().equals(jugador2))
 					{
-						cartasJ2.add("images/cartas/" + cartaJugador.getCarta().getPalo()+ cartaJugador.getCarta().getNumero()+ ".png"); 
+						cartasJ2.add("images/cartas/" + cartaJugador.getCarta().getNombreImagen()); 
 					}
 					else{
 						if(cartaJugador.getJugador().getApodo().equals(jugador3))
 						{
-							cartasJ3.add("images/cartas/" + cartaJugador.getCarta().getPalo()+ cartaJugador.getCarta().getNumero()+ ".png"); 
+							cartasJ3.add("images/cartas/" + cartaJugador.getCarta().getNombreImagen()); 
 						}
 						else{
 							if(cartaJugador.getJugador().getApodo().equals(jugador4))
 							{
-								cartasJ4.add("images/cartas/" + cartaJugador.getCarta().getPalo()+ cartaJugador.getCarta().getNumero()+ ".png"); 
+								cartasJ4.add("images/cartas/" + cartaJugador.getCarta().getNombreImagen()); 
 							}
 						}
 					}
@@ -555,22 +555,22 @@ List<ParejaDTO> parejas = (List<ParejaDTO>) request.getAttribute("parejas");
 			
 			if(((CartaTiradaDTO)mov).getCartaJugador().getJugador().getApodo().equals(jugador1))
 			{
-				cartasTiradasJ1.add("images/cartas/" + ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getPalo()+ ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getNumero()+ ".png");
+				cartasTiradasJ1.add("images/cartas/" + ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getNombreImagen());
 			}
 			else{
 				if(((CartaTiradaDTO)mov).getCartaJugador().getJugador().getApodo().equals(jugador2))
 				{
-					cartasTiradasJ2.add("images/cartas/" + ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getPalo()+ ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getNumero()+ ".png");
+					cartasTiradasJ2.add("images/cartas/" + ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getNombreImagen());
 				}
 				else{
 					if(((CartaTiradaDTO)mov).getCartaJugador().getJugador().getApodo().equals(jugador3))
 					{
-						cartasTiradasJ3.add("images/cartas/" + ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getPalo()+ ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getNumero()+ ".png");
+						cartasTiradasJ3.add("images/cartas/" + ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getNombreImagen());
 					}
 					else{
 						if(((CartaTiradaDTO)mov).getCartaJugador().getJugador().getApodo().equals(jugador4))
 						{
-							cartasTiradasJ4.add("images/cartas/" + ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getPalo()+ ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getNumero()+ ".png");
+							cartasTiradasJ4.add("images/cartas/" + ((CartaTiradaDTO)mov).getCartaJugador().getCarta().getNombreImagen());
 						}
 						
 					}
