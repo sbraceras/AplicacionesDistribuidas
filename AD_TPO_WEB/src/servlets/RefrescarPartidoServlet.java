@@ -15,7 +15,6 @@ import businessDelegate.BusinessDelegate;
 import dtos.CartaJugadorDTO;
 import dtos.JugadorDTO;
 import dtos.ManoDTO;
-import dtos.MovimientoDTO;
 import dtos.ParejaDTO;
 import dtos.PartidoDTO;
 import dtos.PuntajeParejaDTO;

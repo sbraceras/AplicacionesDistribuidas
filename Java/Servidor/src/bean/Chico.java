@@ -60,6 +60,7 @@ public class Chico {
 		this.manos = new ArrayList<Mano>();
 		this.puntajes = new ArrayList<PuntajePareja>();
 		this.puntajeMaximo = puntajeMaximo;
+		this.terminado = false;
 		
 		this.puntajes.add(new PuntajePareja(parejas.get(0), 0));
 		this.puntajes.add(new PuntajePareja(parejas.get(1), 0));
